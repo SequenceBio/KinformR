@@ -1,9 +1,9 @@
 
 
 # Calculate a relatedness-weighted score for a given rare variant.
-# 
+#
 # These scores can be used to compare variants of interest within a family
-# 
+#
 # For each individual, a relationship-informed weight is applied to their sharing
 # or not sharing of a variant.
 # Their score is:
@@ -23,7 +23,7 @@
 # Giving a final score of 7 for the variant. Comparing values across variants can be used
 # to rank them based on pedigree-informed levels of variant sharing across affected
 # and unaffected individuals.
-# 
+#
 # Input:
 #     fam_dict
 #         - A dictionary with the keys: ['A_c', 'A_i', 'U_c', 'U_i']
@@ -37,7 +37,7 @@
 #         - a coefficient to multiply the calculated A_c and A_i relatedness values by.
 #     unaffected_weight
 #         - a coefficient to multiply the U_c and U_i relatedness values by.
-# 
+#
 #     Increasing the affected_weight relative to the unaffected_weight will make the scores
 #     give more weight to the correct/incorrect status of affected individuals. The default
 #     is 2:1 weight for affected relative to unaffected, which accounts for the fact that
@@ -46,13 +46,14 @@
 calc_rv_score <- function(fam_list, affected_weight=1, unaffected_weight=0.5){
 
     relatedness = list()
-    
+
     for(i in 0:6){
-        relatedness[i+1] =  1 / (2 ** (i)) 
+        relatedness[i+1] =  1 / (2 ** (i))
         }
 
     score_dict = list()
 
+    #TODO - change this to apply the different formula for the unaffecteds
     for (n in names(fam_list)){
         scores = c()
         for (x in fam_list[[n]]){
@@ -61,11 +62,11 @@ calc_rv_score <- function(fam_list, affected_weight=1, unaffected_weight=0.5){
         score_dict[[n]] = scores
     }
 
-    weighted_for =  sum(score_dict[["A_c"]]*affected_weight ) + 
+    weighted_for =  sum(score_dict[["A_c"]]*affected_weight ) +
                     sum(score_dict[["U_c"]]*unaffected_weight)
-    
 
-    weighted_against = sum(score_dict[["A_i"]]*affected_weight ) + 
+
+    weighted_against = sum(score_dict[["A_i"]]*affected_weight ) +
                     sum(score_dict[["U_i"]]*unaffected_weight)
 
 
@@ -79,9 +80,9 @@ calc_rv_score <- function(fam_list, affected_weight=1, unaffected_weight=0.5){
 
 
 # Count the number of non-overlapping paths between all pedigree members
-# (1/2)^n. 
-# We can do this twice - once for the total potential relatedness in a pedigree, 
-# and again for the actual relatedness across collected samples. 
+# (1/2)^n.
+# We can do this twice - once for the total potential relatedness in a pedigree,
+# and again for the actual relatedness across collected samples.
 pedigree_paths <- function(n){
     return(0.5^n)
 }
