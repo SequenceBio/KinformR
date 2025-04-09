@@ -112,6 +112,16 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 }
 
 
+#' Sum all the given scores and return a single vector with cumulative "score", "for" and "against" vals.
+sum.fam.scores <- funciton(score.vec){
+
+  as.list(rowSums(sapply(score.vec, unlist)))
+
+  outvec<-tapply(score.vec, names(score.vec), sum)
+  return(outvec[c("score", "for", "against")])
+}
+
+
 
 
 # Count the number of non-overlapping paths between all pedigree members
