@@ -19,7 +19,7 @@ read.relation.mat <- function(fname, indiv.df){
   #this resets the auto replacement of - with . in the colnames
   colnames(rmat)<-rownames(rmat)
 
-  #TODO - add a safety check and error is the matrix is not a diagnonal mirror
+  #TODO - add a safety check and error is the matrix is not a diagonal mirror
   # this would suggest an encoding error.
   return(rmat)
 }
