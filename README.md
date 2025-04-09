@@ -19,3 +19,9 @@ If ideas are deemed to have external merit, we could make the repository public 
 ## Introduction
 When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. 
 This package is a method for scoring the evidence of a series of individuals in a way that takes into account the relatedness of the individuals as well as their disease status and genotype.
+
+
+## TODO 
+- add a description of the formulas and scoring system here
+- outline how to deploy the code
+- a means of building the relationship matricies easily?
