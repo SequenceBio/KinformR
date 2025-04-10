@@ -6,21 +6,30 @@
 #'
 #' For each individual, a relationship-informed weight is applied to their sharing
 #' or not sharing of a variant.
-#' Their score is:
+#' The score for affected status is:
 #'     (1 / coefficient_of_relatedness) * status_weight
 #' For example, an affected cousin (encoded as a 3) would get a score of:
 #'     (1/0.125) * affected weight
 #'     8 * 1
 #'     = 8 points in favour of the variant.
-#' Whereas a unaffected sister that has a variant would get a score of
-#'     (1 / 0.5) * unaffected weight
-#'     2 * 0.5
-#'     = 1 point against the variant.
-#' If these were the only two relatives considered we could sum the points for and against
-#' for - against
-#' 8 - 1
-#' = 7
-#' Giving a final score of 7 for the variant. Comparing values across variants can be used
+#' Whereas for unaffected unaffected individuals, scores decay the further a person is in
+#' relation to the proband based on the formula:
+#'     ((unaffected_max*2) * coefficient_of_relatedness ) * unaffected_weight
+#' For example, with the default unaffected_max of 8. The sister that does not have a variant would get a score of
+#'     ((8*2) 0.5) * unaffected_weight
+#'     (16 * 0.5) * 0.5
+#'     = 4 points for the variant.
+#' If these were the only two relatives considered we could sum the points
+#' and get a score in favour of the variant of
+#'     8 + 4 = 12
+#' Ig there is evidence against a variant, this is factored into the score as:
+#'     total_score = evidence_for - evidence_against
+#' For example, if there were also an affected sibling without the variant we would have the score against of:
+#'  (1/0.5) * 1 = 2
+#' The final score for the variant would then be
+#'.    for - against = total
+#'     12 - 2 = 10
+#' Giving a final score of 10 for the variant. Comparing values across variants can be used
 #' to rank them based on pedigree-informed levels of variant sharing across affected
 #' and unaffected individuals.
 #'
@@ -88,8 +97,8 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 
     return(
         list("score" = weighted_for - weighted_against,
-        "for" = weighted_for,
-        "against" = weighted_against )
+        "score.for" = weighted_for,
+        "score.against" = weighted_against )
     )
 
 }
@@ -97,28 +106,51 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 
 
 
-#' Given a
-score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5, return.sums = TRUE){
+#' Given a relationship matrix and status dataframe, score a family by applying the calc.rv.score
+#' scoring system to every pairwise combination of individuals.
+#'
+#' By default all individuals are treated as the reference 'proband' and
+#' the given variant's score  is calculated based on relationships to all other individuals.
+#' e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
+#' reference individual that the calcualtion is relative to.
+#'
+#' There are several return options possible.
+#'
+#' - If affected.only is TRUE, the final scores will be reported for only rows where the reference
+#' individual is affected (default = True).
+#' - If return.means is TRUE, the average scores for the rows will be reported. (default = TRUE)
+#' - If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
+#' NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
+#'
+score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
+                      return.sums  = FALSE, return.means = TRUE,
+                      affected.only = TRUE){
   encoded.dat <- encode.rows(relation.mat, status.df, drop.unrelated=TRUE)
 
   per.indv.scores <- lapply(encoded.dat, calc.rv.score, affected.weight=affected.weight, unaffected.weight=unaffected.weight)
 
   scores <- do.call(rbind.data.frame,  per.indv.scores)
 
+  if (affected.only){
+        affected.indiv = status.df[status.df$status == "A",]
+        scores<-scores[row.names(scores) %in% affected.indiv$name,]
+  }
+
   if(return.sums){
     return(colSums(scores))
+  }else if(return.means){
+    return(colMeans(scores))
   }
   return(scores)
 }
 
 
 #' Sum all the given scores and return a single vector with cumulative "score", "for" and "against" vals.
-sum.fam.scores <- funciton(score.vec){
-
-  as.list(rowSums(sapply(score.vec, unlist)))
+#' For use in instances where one wishes to combine scores from multiple families.
+sum.fam.scores <- function(score.vec){
 
   outvec<-tapply(score.vec, names(score.vec), sum)
-  return(outvec[c("score", "for", "against")])
+  return(outvec[c("score", "score.for", "score.against")])
 }
 
 

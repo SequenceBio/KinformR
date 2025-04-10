@@ -17,21 +17,30 @@ These scores can be used to compare variants of interest within a family
 \details{
 For each individual, a relationship-informed weight is applied to their sharing
 or not sharing of a variant.
-Their score is:
+The score for affected status is:
 (1 / coefficient_of_relatedness) * status_weight
 For example, an affected cousin (encoded as a 3) would get a score of:
 (1/0.125) * affected weight
 8 * 1
 = 8 points in favour of the variant.
-Whereas a unaffected sister that has a variant would get a score of
-(1 / 0.5) * unaffected weight
-2 * 0.5
-= 1 point against the variant.
-If these were the only two relatives considered we could sum the points for and against
-for - against
-8 - 1
-= 7
-Giving a final score of 7 for the variant. Comparing values across variants can be used
+Whereas for unaffected unaffected individuals, scores decay the further a person is in
+relation to the proband based on the formula:
+((unaffected_max\emph{2) * coefficient_of_relatedness ) * unaffected_weight
+For example, with the default unaffected_max of 8. The sister that does not have a variant would get a score of
+((8}2) 0.5) * unaffected_weight
+(16 * 0.5) * 0.5
+= 4 points for the variant.
+If these were the only two relatives considered we could sum the points
+and get a score in favour of the variant of
+8 + 4 = 12
+Ig there is evidence against a variant, this is factored into the score as:
+total_score = evidence_for - evidence_against
+For example, if there were also an affected sibling without the variant we would have the score against of:
+(1/0.5) * 1 = 2
+The final score for the variant would then be
+.    for - against = total
+12 - 2 = 10
+Giving a final score of 10 for the variant. Comparing values across variants can be used
 to rank them based on pedigree-informed levels of variant sharing across affected
 and unaffected individuals.
 

@@ -2,16 +2,32 @@
 % Please edit documentation in R/relatedness.r
 \name{score.fam}
 \alias{score.fam}
-\title{Given a}
+\title{Given a relationship matrix and status dataframe, score a family by applying the calc.rv.score
+scoring system to every pairwise combination of individuals.}
 \usage{
 score.fam(
   relation.mat,
   status.df,
   affected.weight = 1,
   unaffected.weight = 0.5,
-  return.sums = TRUE
+  return.sums = FALSE,
+  return.means = TRUE,
+  affected.only = TRUE
 )
 }
 \description{
-Given a
+By default all individuals are treated as the reference 'proband' and
+the given variant's score  is calculated based on relationships to all other individuals.
+e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
+reference individual that the calcualtion is relative to.
+}
+\details{
+There are several return options possible.
+\itemize{
+\item If affected.only is TRUE, the final scores will be reported for only rows where the reference
+individual is affected (default = True).
+\item If return.means is TRUE, the average scores for the rows will be reported. (default = TRUE)
+\item If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
+NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
+}
 }
