@@ -2,6 +2,7 @@
 
 #' Read in variant and status info for individuals
 #'
+#' @export
 read.indiv <- function(fname){
 
   df<-read.csv(fname, sep = "\t")
@@ -13,6 +14,7 @@ read.indiv <- function(fname){
 #'
 #' Row/column intersections give the degree of relationship for the
 #' two individuals. 0 = self, -1 = unrelated.
+#' @export
 read.relation.mat <- function(fname, indiv.df){
 
   rmat <- as.matrix(read.table(fname))

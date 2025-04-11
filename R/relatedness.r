@@ -55,6 +55,7 @@
 #'     is 2:1 weight for affected relative to unaffected, which accounts for the fact that
 #'     variants are likely to be incompletely penetrant and we therefore want to be more tolerant
 #'     of unaffected individuals that have a variant rather than affected individuals that do not.
+#' @export
 calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, unaffected_max=8){
 
     relatedness = list()
@@ -94,13 +95,11 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
     weighted_against = sum(score_dict[["A_i"]]*affected.weight ) +
                     sum(score_dict[["U_i"]]*unaffected.weight)
 
-
     return(
         list("score" = weighted_for - weighted_against,
         "score.for" = weighted_for,
         "score.against" = weighted_against )
     )
-
 }
 
 
@@ -122,6 +121,7 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' - If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
 #' NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
 #'
+#' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,
                       affected.only = TRUE){
@@ -147,6 +147,7 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 
 #' Sum all the given scores and return a single vector with cumulative "score", "for" and "against" vals.
 #' For use in instances where one wishes to combine scores from multiple families.
+#' @export
 sum.fam.scores <- function(score.vec){
 
   outvec<-tapply(score.vec, names(score.vec), sum)

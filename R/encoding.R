@@ -47,6 +47,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' when TRUE, function encodes the theoretical max,
 #' using a dummy perfect associatng variant generated to see what a family could score.
 #' TODO - switch to numbers 1-4 and -1?
+#' @export
 score.variant.status <- function(indiv.df, theoretical.max=FALSE){
 
   #when encoding theoretical max, dummy perfect associatng variant generated to see what a family could score.
