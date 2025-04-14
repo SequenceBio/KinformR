@@ -26,3 +26,5 @@ This package is a method for scoring the evidence of a series of individuals in 
 - outline how to deploy the code
 - a means of building the relationship matricies easily?
 - generate scores for a variety of situations. Do they make sense? Can they be summed across families?
+
+

@@ -26,4 +26,42 @@ read.relation.mat <- function(fname, indiv.df){
   return(rmat)
 }
 
+#' Read in a vcf-like subset of information obtained from
+#' use of seqbiopy's vcf_extract function on a vcf with the
+#' status encoded in the indivudal's names
+#'
+#' Note - ensure the status in the names match your desired encoding!
+#' There are individuals with ambigious statues, that you may require to
+#' be encoded in a specific fashion for you current purposes.
+#'
+#' Expected input format is:
+#' #CHROM  POS       REF  ALT  MS-4107-1001_A  MS-4107-1002_U  ...
+#' chr3    46203838  G    A    0/1             0/0      ...
+#'
+#'
+#' Data will be worked into a data frame with format.
+#' name	         status	variant
+#' MS-4107-1001      A      0/1
+read.var.table <- function(fname){
+
+  in.table <- read.table(fname, header = TRUE, comment.char = "~")
+
+  in.variants <- unname(unlist(in.table[1,5:length(in.table)]))
+  in.ids <- colnames(in.table)[5:length(colnames(in.table))]
+
+  trimmed.ids <-  unlist(lapply(in.ids, function(x){strsplit(x, "_")[[1]][[1]]}))
+
+  subbed.ids <- unlist(lapply(trimmed.ids, function(x){
+    gsub("\\.", "-", x)
+  }))
+
+  status <- unlist(lapply(in.ids, function(x){strsplit(x, "_")[[1]][[2]]}))
+
+  out.df<-data.frame("name" = subbed.ids,
+                     "status" = status,
+                     "variant" = in.variants)
+  return(out.df)
+}
+
+
 

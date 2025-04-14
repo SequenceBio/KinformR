@@ -42,7 +42,7 @@ test_that("Scoring proceeds as expected in all cases", {
 
   expected.score3<- list("score" = -3,
                          "score.for" = 1,
-                         "score.against" = 3)
+                         "score.against" = 4)
   score3 <- calc.rv.score(encoded.dat3)
   expect_equal(expected.score3, score3)
 
