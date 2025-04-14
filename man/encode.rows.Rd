@@ -3,11 +3,11 @@
 \name{encode.rows}
 \alias{encode.rows}
 \title{Take the relationship matrix and the encoded statuses of info.
-For each row, generate the encoded data for scoring}
+For each row, generate the encoded data for scoring.}
 \usage{
 encode.rows(relation.mat, status.df, ...)
 }
 \description{
 Take the relationship matrix and the encoded statuses of info.
-For each row, generate the encoded data for scoring
+For each row, generate the encoded data for scoring.
 }

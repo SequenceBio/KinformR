@@ -2,10 +2,15 @@
 % Please edit documentation in R/io.R
 \name{read.indiv}
 \alias{read.indiv}
-\title{Read in variant and status info for individuals}
+\title{Read in variant and status info for individuals.}
 \usage{
 read.indiv(fname)
 }
+\arguments{
+\item{fname}{A file name, expected format of contents is:
+name             status    variant
+MS-4107-1001      A      0/1}
+}
 \description{
-Read in variant and status info for individuals
+Read in variant and status info for individuals.
 }

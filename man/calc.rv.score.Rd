@@ -11,6 +11,29 @@ calc.rv.score(
   unaffected_max = 8
 )
 }
+\arguments{
+\item{affected.weight}{\itemize{
+\item a coefficient to multiply the calculated A_c and A_i relatedness values by.
+}}
+
+\item{unaffected.weight}{\itemize{
+\item a coefficient to multiply the U_c and U_i relatedness values by.
+}}
+
+\item{unaffected_max}{\itemize{
+\item is the param controlling the score given to a first degree unaffected relatives
+scores decay from this specified maximum by half for each subsequent relationship degree.
+
+Increasing the affected.weight relative to the unaffected.weight will make the scores
+give more weight to the correct/incorrect status of affected individuals. The default
+is 2:1 weight for affected relative to unaffected, which accounts for the fact that
+variants are likely to be incompletely penetrant and we therefore want to be more tolerant
+of unaffected individuals that have a variant rather than affected individuals that do not.
+}}
+}
+\value{
+A list with three components: score, score.for, score.against.
+}
 \description{
 These scores can be used to compare variants of interest within a family
 }
@@ -45,26 +68,17 @@ to rank them based on pedigree-informed levels of variant sharing across affecte
 and unaffected individuals.
 
 Input:
-fam_dict
-- A dictionary with the keys: \link{'A_c', 'A_i', 'U_c', 'U_i'}
+@param fam_list
+- A list with the names: \link{'A_c', 'A_i', 'U_c', 'U_i'}
 respectively containing the affected correct, affected incorrect,
 unaffected correct and unaffected incorrect.
-- where each value in the dictionary is a list containing the proband and the
-proband's relatives as encoded based on their degree of relatedness to the
-proband. (proband = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
+- This can be generated with the function: score.variant.status
+- where each value in the dictionary is a list containing the reference and the
+reference's relatives as encoded based on their degree of relatedness to the
+reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
 cousin = 3, etc.)
-affected.weight
-- a coefficient to multiply the calculated A_c and A_i relatedness values by.
-unaffected.weight
-- a coefficient to multiply the U_c and U_i relatedness values by.
-unaffected_max
-- is the param controlling the score given to a first degree unaffected relatives
-scores decay from this specified maximum by half for each subsequent relationship degree.
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{Increasing the affected.weight relative to the unaffected.weight will make the scores
-give more weight to the correct/incorrect status of affected individuals. The default
-is 2:1 weight for affected relative to unaffected, which accounts for the fact that
-variants are likely to be incompletely penetrant and we therefore want to be more tolerant
-of unaffected individuals that have a variant rather than affected individuals that do not.
-}\if{html}{\out{</div>}}
+}
+\examples{
+relations<-list("A_c" = c(0, 1, 3, 1),"A_i" = c(3),"U_c" = c(1, 2),"U_i" = c(1))
+rv.scores <- calc.rv.score(relations)
 }

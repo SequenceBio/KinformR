@@ -1,11 +1,15 @@
 
 
-#' Read in variant and status info for individuals
+#' Read in variant and status info for individuals.
 #'
+#' @param fname A file name, expected format of contents is:
+#' name	         status	variant
+#' MS-4107-1001      A      0/1
+#' @return
+#' @examples
 #' @export
 read.indiv <- function(fname){
-
-  df<-read.csv(fname, sep = "\t")
+  df <- read.csv(fname, sep = "\t")
   return(df)
 }
 
@@ -14,6 +18,10 @@ read.indiv <- function(fname){
 #'
 #' Row/column intersections give the degree of relationship for the
 #' two individuals. 0 = self, -1 = unrelated.
+#'
+#' @param
+#' @return
+#' @examples
 #' @export
 read.relation.mat <- function(fname, indiv.df){
 
@@ -34,14 +42,20 @@ read.relation.mat <- function(fname, indiv.df){
 #' There are individuals with ambigious statues, that you may require to
 #' be encoded in a specific fashion for you current purposes.
 #'
-#' Expected input format is:
+#'
+#'
+#' @param fname A file name, expected format of contents is:
 #' #CHROM  POS       REF  ALT  MS-4107-1001_A  MS-4107-1002_U  ...
 #' chr3    46203838  G    A    0/1             0/0      ...
-#'
-#'
+#' @return A dataframe.
 #' Data will be worked into a data frame with format.
 #' name	         status	variant
 #' MS-4107-1001      A      0/1
+#' @examples
+#' ex.infile <-system.file('extdata/example_vcf_extract_4107.tsv',
+#'                          package = 'seqbio.variant.scoring')
+#' read.var.table(ex.infile)
+#' @export
 read.var.table <- function(fname){
 
   in.table <- read.table(fname, header = TRUE, comment.char = "~")

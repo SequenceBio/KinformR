@@ -9,6 +9,10 @@
 #' affected/unaffected are assigned A_c and U_c respectively.
 #' These encodings can then be used show what a family's max score would be.
 #'
+#' @param
+#' @return
+#' @examples
+#' @export
 assign.status <- function(status, variant,  theoretical.max=FALSE){
   if(status == "A"){
     if(theoretical.max){
@@ -47,6 +51,9 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' when TRUE, function encodes the theoretical max,
 #' using a dummy perfect associatng variant generated to see what a family could score.
 #' TODO - switch to numbers 1-4 and -1?
+#' @param
+#' @return
+#' @examples
 #' @export
 score.variant.status <- function(indiv.df, theoretical.max=FALSE){
 
@@ -69,6 +76,10 @@ return(indiv.df)
 
 
 #' Build dictonary with the relationships falling in the different categories for the query row.
+#' @param
+#' @return
+#' @examples
+#' @export
 build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
   indiv.rels = list(
     "A_c" = c(),
@@ -92,7 +103,11 @@ build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
 
 
 #' Take the relationship matrix and the encoded statuses of info.
-#' For each row, generate the encoded data for scoring
+#' For each row, generate the encoded data for scoring.
+#' @param
+#' @return
+#' @examples
+#' @export
 encode.rows <- function(relation.mat, status.df, ...){
 
   name.stat.dict <- status.df$statvar.cat
