@@ -4,12 +4,16 @@
 #' A_c = Affected individual with ALT variant
 #' A_i = Affected individual without ALT variant
 #' U_c = Unaffected individual without ALT variant
-#' U_i = Unaffected individualwith ALT variant
+#' U_i = Unaffected individual with ALT variant
 #' If theoretical.max = TRUE the true variant statuses are ignored and all
 #' affected/unaffected are assigned A_c and U_c respectively.
-#' These encodings can then be used show what a family's max score would be.
+#' These encoding can then be used show what a family's max score would be.
 #'
-#' @param
+#' @param status Disease status of an individual. A = affected, U = unaffected.
+#' @param variant Variant for individual. genotypes, phased genotypes, or binary encodings accepted.
+#' @param theoretical.max Should the theoretical maxima be returned instead of the observed values?
+#' When true, the scoring assumes correct variant-status pair for each individual.
+#' Default is FALSE.
 #' @return
 #' @examples
 #' @export
@@ -51,7 +55,10 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' when TRUE, function encodes the theoretical max,
 #' using a dummy perfect associatng variant generated to see what a family could score.
 #' TODO - switch to numbers 1-4 and -1?
-#' @param
+#' @param indiv.df
+#' @param theoretical.max Should the theoretical maxima be returned instead of the observed values?
+#' When true, the scoring assumes correct variant-status pair for each individual.
+#' Default is FALSE.
 #' @return
 #' @examples
 #' @export
@@ -75,9 +82,12 @@ return(indiv.df)
 
 
 
-#' Build dictonary with the relationships falling in the different categories for the query row.
-#' @param
-#' @return
+#' Build dictionary with the relationships falling in the different categories for the query row.
+#' @param mat.row
+#' @param name.stat.dict
+#' @param drop.unrelated
+#'
+#' @return A list with the categorized relationship/variant information.
 #' @examples
 #' @export
 build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
@@ -104,8 +114,10 @@ build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
 
 #' Take the relationship matrix and the encoded statuses of info.
 #' For each row, generate the encoded data for scoring.
-#' @param
-#' @return
+#' @param relation.mat The relationship matrix for all pairwise combinations of individuals.
+#' @param status.df The ID, status, and genotypes for each individual.
+#' @return A dictionary with the per-individual relationship lists.
+#' One value for each row of the matrix.
 #' @examples
 #' @export
 encode.rows <- function(relation.mat, status.df, ...){
