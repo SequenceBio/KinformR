@@ -5,8 +5,10 @@
 #' @param fname A file name, expected format of contents is:
 #' name	         status	variant
 #' MS-4107-1001      A      0/1
-#' @return
+#' @return A dataframe.
 #' @examples
+#' tsv.name1 <-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+#' id.df1 <- read.indiv(tsv.name1)
 #' @export
 read.indiv <- function(fname){
   df <- read.csv(fname, sep = "\t")
@@ -19,11 +21,13 @@ read.indiv <- function(fname){
 #' Row/column intersections give the degree of relationship for the
 #' two individuals. 0 = self, -1 = unrelated.
 #'
-#' @param
-#' @return
+#' @param fname The file with the relationship matrix information.
+#' @return A matrix with the relationships and individual ids as rownames and colnames.
 #' @examples
+#' mat.name1 <-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+#' mat1 <- read.relation.mat(mat.name1)
 #' @export
-read.relation.mat <- function(fname, indiv.df){
+read.relation.mat <- function(fname){
 
   rmat <- as.matrix(read.table(fname))
   #this resets the auto replacement of - with . in the colnames

@@ -127,7 +127,10 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' - If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
 #' NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
 #'
-#' @param
+#' @param relation.mat
+#' @param status.df
+#' @param affected.weight A coefficient to multiply the calculated A_c and A_i relatedness values by.
+#' @param unaffected.weight A coefficient to multiply the U_c and U_i relatedness values by.
 #' @return
 #' @examples
 #' @export
