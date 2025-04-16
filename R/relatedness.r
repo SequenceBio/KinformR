@@ -159,9 +159,13 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 
 #' Sum all the given scores and return a single vector with cumulative "score", "for" and "against" vals.
 #' For use in instances where one wishes to combine scores from multiple families.
-#' @param
-#' @return
+#' @param score.vec A vector will all of the per family score outputs.
+#' @return A vector with the summed scores of all inputs.
 #' @examples
+#' score.fam1 <- c("score" = 1.0,"score.for" = 2.0, "score.against" = 1.0)
+#' score.fam2 <- c("score" = 1.0,"score.for" = 3.0, "score.against" = 2.0)
+#' sum.fam.scores(c(score.fam1, score.fam2))
+#' #returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 #' @export
 sum.fam.scores <- function(score.vec){
   outvec<-tapply(score.vec, names(score.vec), sum)
