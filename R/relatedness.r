@@ -2,7 +2,7 @@
 
 #' Calculate a relatedness-weighted score for a given rare variant.
 #'
-#' These scores can be used to compare variants of interest within a family
+#' These scores can be used to compare variants of interest within a family.
 #'
 #' For each individual, a relationship-informed weight is applied to their sharing
 #' or not sharing of a variant.

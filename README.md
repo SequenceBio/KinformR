@@ -1,12 +1,17 @@
 # seqbio-variant-scoring
-A method for scoring variants based on relationships of individuals.
+## A method for scoring variants based on relationships of individuals.
 
 *WORK IN PROGRESS*
 
-Idea here is to start with a simple R package continaing the functions needed, so that we could import and apply in different workflows or locations as required.
-Could incorporate related code from pedigree ranking: https://github.com/SequenceBio/seqbio-pedigree-ranking
-and build a scoring/ranking package that we can host on sb-conda.
-If ideas are deemed to have external merit, we could make the repository public at some point to add the methods to a manuscript.
+This R package is designed to score rare variants, assigning values based on the disease status of individuals, 
+the presence or absence of a rare variant in those individuals, and their pairwise coefficients of relatedness.
+The package uses a custom formula to assign value to a variant that gives more weight to shared variants common
+to distantly related affected individuals. The variant status for unaffected individuals can optionally be considered
+as well, with the highest scoring values being given to closely related individuals that *do not* share a variant of interst.
+Since variants can be incompletely penetrant, the scoring can be based solely on the affected individuals, or the weight 
+of unaffected evidence can be customized.
+
+
 
 
 ## related info
