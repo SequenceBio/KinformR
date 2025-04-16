@@ -164,9 +164,12 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 #' @examples
 #' @export
 sum.fam.scores <- function(score.vec){
-
   outvec<-tapply(score.vec, names(score.vec), sum)
-  return(outvec[c("score", "score.for", "score.against")])
+
+  sorted.out<-c("score" = outvec[["score"]],
+                "score.for" = outvec[["score.for"]],
+                "score.against" = outvec[["score.against"]])
+  return(sorted.out)
 }
 
 
