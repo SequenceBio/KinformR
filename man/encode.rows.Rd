@@ -7,6 +7,15 @@ For each row, generate the encoded data for scoring.}
 \usage{
 encode.rows(relation.mat, status.df, ...)
 }
+\arguments{
+\item{relation.mat}{The relationship matrix for all pairwise combinations of individuals.}
+
+\item{status.df}{The ID, status, and genotypes for each individual.}
+}
+\value{
+A dictionary with the per-individual relationship lists.
+One value for each row of the matrix.
+}
 \description{
 Take the relationship matrix and the encoded statuses of info.
 For each row, generate the encoded data for scoring.

@@ -7,7 +7,19 @@ For use in instances where one wishes to combine scores from multiple families.}
 \usage{
 \method{sum}{fam.scores}(score.vec)
 }
+\arguments{
+\item{score.vec}{A vector will all of the per family score outputs.}
+}
+\value{
+A vector with the summed scores of all inputs.
+}
 \description{
 Sum all the given scores and return a single vector with cumulative "score", "for" and "against" vals.
 For use in instances where one wishes to combine scores from multiple families.
+}
+\examples{
+score.fam1 <- c("score" = 1.0,"score.for" = 2.0, "score.against" = 1.0)
+score.fam2 <- c("score" = 1.0,"score.for" = 3.0, "score.against" = 2.0)
+sum.fam.scores(c(score.fam1, score.fam2))
+#returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 }

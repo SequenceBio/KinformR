@@ -6,20 +6,29 @@
 A_c = Affected individual with ALT variant
 A_i = Affected individual without ALT variant
 U_c = Unaffected individual without ALT variant
-U_i = Unaffected individualwith ALT variant
+U_i = Unaffected individual with ALT variant
 If theoretical.max = TRUE the true variant statuses are ignored and all
 affected/unaffected are assigned A_c and U_c respectively.
-These encodings can then be used show what a family's max score would be.}
+These encoding can then be used show what a family's max score would be.}
 \usage{
 assign.status(status, variant, theoretical.max = FALSE)
+}
+\arguments{
+\item{status}{Disease status of an individual. A = affected, U = unaffected.}
+
+\item{variant}{Variant for individual. genotypes, phased genotypes, or binary encodings accepted.}
+
+\item{theoretical.max}{Should the theoretical maxima be returned instead of the observed values?
+When true, the scoring assumes correct variant-status pair for each individual.
+Default is FALSE.}
 }
 \description{
 Take a disease status and a genetic variant and determine which category the combo falls in.
 A_c = Affected individual with ALT variant
 A_i = Affected individual without ALT variant
 U_c = Unaffected individual without ALT variant
-U_i = Unaffected individualwith ALT variant
+U_i = Unaffected individual with ALT variant
 If theoretical.max = TRUE the true variant statuses are ignored and all
 affected/unaffected are assigned A_c and U_c respectively.
-These encodings can then be used show what a family's max score would be.
+These encoding can then be used show what a family's max score would be.
 }

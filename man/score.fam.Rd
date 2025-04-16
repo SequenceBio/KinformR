@@ -15,6 +15,11 @@ score.fam(
   affected.only = TRUE
 )
 }
+\arguments{
+\item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
+
+\item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
+}
 \description{
 By default all individuals are treated as the reference 'proband' and
 the given variant's score  is calculated based on relationships to all other individuals.

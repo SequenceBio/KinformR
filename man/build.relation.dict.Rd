@@ -2,10 +2,16 @@
 % Please edit documentation in R/encoding.R
 \name{build.relation.dict}
 \alias{build.relation.dict}
-\title{Build dictonary with the relationships falling in the different categories for the query row.}
+\title{Build dictionary with the relationships falling in the different categories for the query row.}
 \usage{
 build.relation.dict(mat.row, name.stat.dict, drop.unrelated = TRUE)
 }
+\arguments{
+\item{drop.unrelated}{}
+}
+\value{
+A list with the categorized relationship/variant information.
+}
 \description{
-Build dictonary with the relationships falling in the different categories for the query row.
+Build dictionary with the relationships falling in the different categories for the query row.
 }

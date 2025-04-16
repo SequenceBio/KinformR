@@ -35,7 +35,7 @@ of unaffected individuals that have a variant rather than affected individuals t
 A list with three components: score, score.for, score.against.
 }
 \description{
-These scores can be used to compare variants of interest within a family
+These scores can be used to compare variants of interest within a family.
 }
 \details{
 For each individual, a relationship-informed weight is applied to their sharing

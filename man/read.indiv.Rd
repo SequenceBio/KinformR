@@ -11,6 +11,13 @@ read.indiv(fname)
 name             status    variant
 MS-4107-1001      A      0/1}
 }
+\value{
+A dataframe.
+}
 \description{
 Read in variant and status info for individuals.
+}
+\examples{
+tsv.name1 <-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+id.df1 <- read.indiv(tsv.name1)
 }

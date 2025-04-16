@@ -8,6 +8,11 @@ Assign an A_c, A_i, U_c, U_i, unk}
 \usage{
 score.variant.status(indiv.df, theoretical.max = FALSE)
 }
+\arguments{
+\item{theoretical.max}{Should the theoretical maxima be returned instead of the observed values?
+When true, the scoring assumes correct variant-status pair for each individual.
+Default is FALSE.}
+}
 \description{
 Variants can be encoded as binary (0 or 1, genotypes 0/0 or 0/1, or phased genotypes 0|0 0|1).
 Note the program assumes alt is the disease allele. homozygous alts are allowed.
