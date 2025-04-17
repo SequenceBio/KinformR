@@ -18,8 +18,8 @@ Sum all the given scores and return a single vector with cumulative "score", "fo
 For use in instances where one wishes to combine scores from multiple families.
 }
 \examples{
-score.fam1 <- c("score" = 1.0,"score.for" = 2.0, "score.against" = 1.0)
-score.fam2 <- c("score" = 1.0,"score.for" = 3.0, "score.against" = 2.0)
-sum.fam.scores(c(score.fam1, score.fam2))
+score.fam1 <- c("score" = 1.0, "score.for" = 2.0, "score.against" = 1.0)
+score.fam2 <- c("score" = 1.0, "score.for" = 3.0, "score.against" = 2.0)
+# out <- sum.fam.scores(c(score.fam1, score.fam2))
 #returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 }

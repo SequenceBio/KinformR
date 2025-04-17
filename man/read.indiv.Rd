@@ -12,7 +12,7 @@ name             status    variant
 MS-4107-1001      A      0/1}
 }
 \value{
-A dataframe.
+A data frame.
 }
 \description{
 Read in variant and status info for individuals.

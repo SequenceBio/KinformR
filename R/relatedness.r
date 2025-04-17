@@ -34,7 +34,7 @@
 #' and unaffected individuals.
 #'
 #' Input:
-#'  @param fam_list
+#' @param fam_list
 #'         - A list with the names: ['A_c', 'A_i', 'U_c', 'U_i']
 #'           respectively containing the affected correct, affected incorrect,
 #'           unaffected correct and unaffected incorrect.
@@ -127,12 +127,21 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' - If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
 #' NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
 #'
-#' @param relation.mat
-#' @param status.df
+#' @param relation.mat A relationship matrix for the family.
+#' @param status.df A dataframe with the encoded variant/disease status of each individual
 #' @param affected.weight A coefficient to multiply the calculated A_c and A_i relatedness values by.
 #' @param unaffected.weight A coefficient to multiply the U_c and U_i relatedness values by.
-#' @return
+#' @param return.sums Boolean indicating if sum of family variant scores should be returned (default = FALSE).
+#' @param return.means Boolean indicating if mean of all family variant scores should be returned (default = TRUE).
+#' @param affected.only Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).
+#' @return A labelled vector with names: score, score.for, score.against
 #' @examples
+#' mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+#' tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+#' mat.df <- read.relation.mat(mat.name1)
+#' ind.df <- read.indiv(tsv.name1)
+#' ind.df.status <-  score.variant.status(ind.df)
+#' score_default <- score.fam(mat.df, ind.df.status)
 #' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,
@@ -162,9 +171,9 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 #' @param score.vec A vector will all of the per family score outputs.
 #' @return A vector with the summed scores of all inputs.
 #' @examples
-#' score.fam1 <- c("score" = 1.0,"score.for" = 2.0, "score.against" = 1.0)
-#' score.fam2 <- c("score" = 1.0,"score.for" = 3.0, "score.against" = 2.0)
-#' sum.fam.scores(c(score.fam1, score.fam2))
+#' score.fam1 <- c("score" = 1.0, "score.for" = 2.0, "score.against" = 1.0)
+#' score.fam2 <- c("score" = 1.0, "score.for" = 3.0, "score.against" = 2.0)
+#' # out <- sum.fam.scores(c(score.fam1, score.fam2))
 #' #returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 #' @export
 sum.fam.scores <- function(score.vec){
@@ -178,16 +187,4 @@ sum.fam.scores <- function(score.vec){
 
 
 
-
-# Count the number of non-overlapping paths between all pedigree members
-# (1/2)^n.
-# We can do this twice - once for the total potential relatedness in a pedigree,
-# and again for the actual relatedness across collected samples.
-#' @param
-#' @return
-#' @examples
-#' @export
-pedigree.paths <- function(n){
-    return(0.5^n)
-}
 

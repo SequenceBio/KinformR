@@ -22,6 +22,9 @@ assign.status(status, variant, theoretical.max = FALSE)
 When true, the scoring assumes correct variant-status pair for each individual.
 Default is FALSE.}
 }
+\value{
+a string
+}
 \description{
 Take a disease status and a genetic variant and determine which category the combo falls in.
 A_c = Affected individual with ALT variant
@@ -31,4 +34,10 @@ U_i = Unaffected individual with ALT variant
 If theoretical.max = TRUE the true variant statuses are ignored and all
 affected/unaffected are assigned A_c and U_c respectively.
 These encoding can then be used show what a family's max score would be.
+}
+\examples{
+assign.status("A", "0/1") == "A_c"
+assign.status("A", "0|0") == "A_i"
+assign.status("U", 1) == "U_i"
+assign.status("U", "0|0") =="U_c"
 }

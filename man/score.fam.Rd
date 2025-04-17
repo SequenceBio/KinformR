@@ -16,9 +16,22 @@ score.fam(
 )
 }
 \arguments{
+\item{relation.mat}{A relationship matrix for the family.}
+
+\item{status.df}{A dataframe with the encoded variant/disease status of each individual}
+
 \item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
 
 \item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
+
+\item{return.sums}{Boolean indicating if sum of family variant scores should be returned (default = FALSE).}
+
+\item{return.means}{Boolean indicating if mean of all family variant scores should be returned (default = TRUE).}
+
+\item{affected.only}{Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).}
+}
+\value{
+A labelled vector with names: score, score.for, score.against
 }
 \description{
 By default all individuals are treated as the reference 'proband' and
@@ -35,4 +48,12 @@ individual is affected (default = True).
 \item If return.sums is True, the sum of the scores for all the rows will be reported. (default = False)
 NOTE: if affected.only = True, the averages and sums are calculated using only the affected reference individuals.
 }
+}
+\examples{
+mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+mat.df <- read.relation.mat(mat.name1)
+ind.df <- read.indiv(tsv.name1)
+ind.df.status <-  score.variant.status(ind.df)
+score_default <- score.fam(mat.df, ind.df.status)
 }

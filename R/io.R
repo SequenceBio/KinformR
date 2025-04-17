@@ -5,7 +5,7 @@
 #' @param fname A file name, expected format of contents is:
 #' name	         status	variant
 #' MS-4107-1001      A      0/1
-#' @return A dataframe.
+#' @return A data frame.
 #' @examples
 #' tsv.name1 <-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
 #' id.df1 <- read.indiv(tsv.name1)

@@ -9,9 +9,16 @@ Assign an A_c, A_i, U_c, U_i, unk}
 score.variant.status(indiv.df, theoretical.max = FALSE)
 }
 \arguments{
+\item{indiv.df}{A dataframe with the format:
+name             status    variant
+MS-4107-1001      A      0/1}
+
 \item{theoretical.max}{Should the theoretical maxima be returned instead of the observed values?
 When true, the scoring assumes correct variant-status pair for each individual.
 Default is FALSE.}
+}
+\value{
+Copy of input dataframe, with dataframe with the status categroies added as a new column "statvar.cat"
 }
 \description{
 Variants can be encoded as binary (0 or 1, genotypes 0/0 or 0/1, or phased genotypes 0|0 0|1).
@@ -22,4 +29,7 @@ theoretical.max - bool, default is FALSE
 when TRUE, function encodes the theoretical max,
 using a dummy perfect associatng variant generated to see what a family could score.
 TODO - switch to numbers 1-4 and -1?
+}
+\examples{
+#TODO - add
 }

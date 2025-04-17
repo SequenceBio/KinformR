@@ -7,11 +7,18 @@
 build.relation.dict(mat.row, name.stat.dict, drop.unrelated = TRUE)
 }
 \arguments{
-\item{drop.unrelated}{}
+\item{mat.row}{A row from a relationship matrix}
+
+\item{name.stat.dict}{A list with the labelled status/variant combo for each individual.}
+
+\item{drop.unrelated}{Should unrelated (-1) relationships be dropped? Default = TRUE.}
 }
 \value{
 A list with the categorized relationship/variant information.
 }
 \description{
 Build dictionary with the relationships falling in the different categories for the query row.
+}
+\examples{
+#TODO - add
 }

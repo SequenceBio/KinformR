@@ -20,3 +20,6 @@ One value for each row of the matrix.
 Take the relationship matrix and the encoded statuses of info.
 For each row, generate the encoded data for scoring.
 }
+\examples{
+#TODO - add
+}

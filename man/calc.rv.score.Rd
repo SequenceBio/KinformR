@@ -12,6 +12,17 @@ calc.rv.score(
 )
 }
 \arguments{
+\item{fam_list}{\itemize{
+\item A list with the names: \link{'A_c', 'A_i', 'U_c', 'U_i'}
+respectively containing the affected correct, affected incorrect,
+unaffected correct and unaffected incorrect.
+- This can be generated with the function: score.variant.status
+- where each value in the dictionary is a list containing the reference and the
+reference's relatives as encoded based on their degree of relatedness to the
+reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
+cousin = 3, etc.)
+}}
+
 \item{affected.weight}{\itemize{
 \item a coefficient to multiply the calculated A_c and A_i relatedness values by.
 }}
@@ -68,15 +79,6 @@ to rank them based on pedigree-informed levels of variant sharing across affecte
 and unaffected individuals.
 
 Input:
-@param fam_list
-- A list with the names: \link{'A_c', 'A_i', 'U_c', 'U_i'}
-respectively containing the affected correct, affected incorrect,
-unaffected correct and unaffected incorrect.
-- This can be generated with the function: score.variant.status
-- where each value in the dictionary is a list containing the reference and the
-reference's relatives as encoded based on their degree of relatedness to the
-reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
-cousin = 3, etc.)
 }
 \examples{
 relations<-list("A_c" = c(0, 1, 3, 1),"A_i" = c(3),"U_c" = c(1, 2),"U_i" = c(1))

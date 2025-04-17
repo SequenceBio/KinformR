@@ -14,8 +14,12 @@
 #' @param theoretical.max Should the theoretical maxima be returned instead of the observed values?
 #' When true, the scoring assumes correct variant-status pair for each individual.
 #' Default is FALSE.
-#' @return
+#' @return a string
 #' @examples
+#' assign.status("A", "0/1") == "A_c"
+#' assign.status("A", "0|0") == "A_i"
+#' assign.status("U", 1) == "U_i"
+#' assign.status("U", "0|0") =="U_c"
 #' @export
 assign.status <- function(status, variant,  theoretical.max=FALSE){
   if(status == "A"){
@@ -55,16 +59,19 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' when TRUE, function encodes the theoretical max,
 #' using a dummy perfect associatng variant generated to see what a family could score.
 #' TODO - switch to numbers 1-4 and -1?
-#' @param indiv.df
+#' @param indiv.df A dataframe with the format:
+#' name	         status	variant
+#' MS-4107-1001      A      0/1
 #' @param theoretical.max Should the theoretical maxima be returned instead of the observed values?
 #' When true, the scoring assumes correct variant-status pair for each individual.
 #' Default is FALSE.
-#' @return
+#' @return Copy of input dataframe, with dataframe with the status categroies added as a new column "statvar.cat"
 #' @examples
+#' #TODO - add
 #' @export
 score.variant.status <- function(indiv.df, theoretical.max=FALSE){
 
-  #when encoding theoretical max, dummy perfect associatng variant generated to see what a family could score.
+  #when encoding theoretical max, dummy perfect associating variant generated to see what a family could score.
   if(theoretical.max){
     indiv.df$statvar.cat <- unlist(lapply(1:nrow(indiv.df), function(i){
       assign.status(indiv.df$status[[i]], indiv.df$variant[[i]] ,  theoretical.max=TRUE )
@@ -83,12 +90,13 @@ return(indiv.df)
 
 
 #' Build dictionary with the relationships falling in the different categories for the query row.
-#' @param mat.row
-#' @param name.stat.dict
-#' @param drop.unrelated
+#' @param mat.row A row from a relationship matrix
+#' @param name.stat.dict A list with the labelled status/variant combo for each individual.
+#' @param drop.unrelated Should unrelated (-1) relationships be dropped? Default = TRUE.
 #'
 #' @return A list with the categorized relationship/variant information.
 #' @examples
+#' #TODO - add
 #' @export
 build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
   indiv.rels = list(
@@ -119,6 +127,7 @@ build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
 #' @return A dictionary with the per-individual relationship lists.
 #' One value for each row of the matrix.
 #' @examples
+#' #TODO - add
 #' @export
 encode.rows <- function(relation.mat, status.df, ...){
 
