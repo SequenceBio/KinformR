@@ -1,7 +1,7 @@
 # seqbio-variant-scoring
 ## A method for scoring variants based on relationships of individuals.
 
-*WORK IN PROGRESS*
+*WORK IN PROGRESS - currently a minimal viable product.*
 
 This R package is designed to score rare variants, assigning values based on the disease status of individuals, 
 the presence or absence of a rare variant in those individuals, and their pairwise coefficients of relatedness.
@@ -10,8 +10,6 @@ to distantly related affected individuals. The variant status for unaffected ind
 as well, with the highest scoring values being given to closely related individuals that *do not* share a variant of interst.
 Since variants can be incompletely penetrant, the scoring can be based solely on the affected individuals, or the weight 
 of unaffected evidence can be customized.
-
-
 
 
 ## related info

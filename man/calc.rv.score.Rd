@@ -8,7 +8,8 @@ calc.rv.score(
   fam_list,
   affected.weight = 1,
   unaffected.weight = 0.5,
-  unaffected_max = 8
+  unaffected.max = 8,
+  max.err = 4
 )
 }
 \arguments{
@@ -23,24 +24,16 @@ reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
 cousin = 3, etc.)
 }}
 
-\item{affected.weight}{\itemize{
-\item a coefficient to multiply the calculated A_c and A_i relatedness values by.
-}}
+\item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
 
-\item{unaffected.weight}{\itemize{
-\item a coefficient to multiply the U_c and U_i relatedness values by.
-}}
+\item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
 
-\item{unaffected_max}{\itemize{
-\item is the param controlling the score given to a first degree unaffected relatives
-scores decay from this specified maximum by half for each subsequent relationship degree.
+\item{unaffected.max}{This  param controls the score given to a first degree unaffected relatives
+scores decay from this specified maximum by half for each subsequent relationship degree.}
 
-Increasing the affected.weight relative to the unaffected.weight will make the scores
-give more weight to the correct/incorrect status of affected individuals. The default
-is 2:1 weight for affected relative to unaffected, which accounts for the fact that
-variants are likely to be incompletely penetrant and we therefore want to be more tolerant
-of unaffected individuals that have a variant rather than affected individuals that do not.
-}}
+\item{max.err}{A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
+of incorrect (sum of affected and unaffected) is exceeded,  the variant's score is set to 0, regardless of the number
+of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.}
 }
 \value{
 A list with three components: score, score.for, score.against.
@@ -59,8 +52,8 @@ For example, an affected cousin (encoded as a 3) would get a score of:
 = 8 points in favour of the variant.
 Whereas for unaffected unaffected individuals, scores decay the further a person is in
 relation to the proband based on the formula:
-((unaffected_max\emph{2) * coefficient_of_relatedness ) * unaffected_weight
-For example, with the default unaffected_max of 8. The sister that does not have a variant would get a score of
+((unaffected.max\emph{2) * coefficient_of_relatedness ) * unaffected_weight
+For example, with the default unaffected.max of 8. The sister that does not have a variant would get a score of
 ((8}2) 0.5) * unaffected_weight
 (16 * 0.5) * 0.5
 = 4 points for the variant.
@@ -77,6 +70,11 @@ The final score for the variant would then be
 Giving a final score of 10 for the variant. Comparing values across variants can be used
 to rank them based on pedigree-informed levels of variant sharing across affected
 and unaffected individuals.
+Increasing the affected.weight relative to the unaffected.weight will make the scores
+give more weight to the correct/incorrect status of affected individuals. The default
+is 2:1 weight for affected relative to unaffected, which accounts for the fact that
+variants are likely to be incompletely penetrant and we therefore want to be more tolerant
+of unaffected individuals that have a variant rather than affected individuals that do not.
 
 Input:
 }
