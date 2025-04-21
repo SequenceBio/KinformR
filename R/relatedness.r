@@ -140,6 +140,9 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' @param return.sums Boolean indicating if sum of family variant scores should be returned (default = FALSE).
 #' @param return.means Boolean indicating if mean of all family variant scores should be returned (default = TRUE).
 #' @param affected.only Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).
+#' @param max.err A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
+#' of incorrect (sum of affected and unaffected) is exceeded,  the variant's score is set to 0, regardless of the number
+#' of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.
 #' @return A labelled vector with names: score, score.for, score.against
 #' @examples
 #' mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
@@ -151,10 +154,12 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,
-                      affected.only = TRUE){
+                      affected.only = TRUE, max.err=4){
   encoded.dat <- encode.rows(relation.mat, status.df, drop.unrelated=TRUE)
 
-  per.indv.scores <- lapply(encoded.dat, calc.rv.score, affected.weight=affected.weight, unaffected.weight=unaffected.weight)
+  per.indv.scores <- lapply(encoded.dat, calc.rv.score,
+                            affected.weight=affected.weight, unaffected.weight=unaffected.weight,
+                            max.err=max.err)
 
   scores <- do.call(rbind.data.frame,  per.indv.scores)
 
