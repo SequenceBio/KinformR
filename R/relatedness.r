@@ -39,6 +39,7 @@
 #'     of unaffected individuals that have a variant rather than affected individuals that do not.
 #'
 #' Input:
+#'
 #' @param fam_list
 #'         - A list with the names: ['A_c', 'A_i', 'U_c', 'U_i']
 #'           respectively containing the affected correct, affected incorrect,
@@ -116,6 +117,14 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 
 
 
+#' Take the matrix and subset out only the encoded individuals that are present in the status dataframe.
+subset.mat <- function(mat.df, status.df){
+  sub.ids <- rownames(mat.df)[rownames(mat.df) %in% status.df$name]
+  sub.mat <- mat.df[sub.ids, sub.ids]
+  return(sub.mat)
+}
+
+
 
 #' Given a relationship matrix and status dataframe, score a family by applying the calc.rv.score
 #' scoring system to every pairwise combination of individuals.
@@ -123,7 +132,9 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' By default all individuals are treated as the reference 'proband' and
 #' the given variant's score  is calculated based on relationships to all other individuals.
 #' e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
-#' reference individual that the calcualtion is relative to.
+#' reference individual that the calculation is relative to.
+#' Note that the relation.mat can include more individuals than are present within the status.df, but the matrix will
+#' be subset to include only those individuals that have status information provided.
 #'
 #' There are several return options possible.
 #'
@@ -154,8 +165,13 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
 #' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,
-                      affected.only = TRUE, max.err=4){
-  encoded.dat <- encode.rows(relation.mat, status.df, drop.unrelated=TRUE)
+                      affected.only = TRUE, max.err=4,
+                      subset.fam = TRUE){
+
+  #The family encoding matrix needs to be subset to include only the individuals in the status dataframe
+  sub.relation.mat <- subset.mat(relation.mat, status.df)
+
+  encoded.dat <- encode.rows(sub.relation.mat, status.df, drop.unrelated=TRUE)
 
   per.indv.scores <- lapply(encoded.dat, calc.rv.score,
                             affected.weight=affected.weight, unaffected.weight=unaffected.weight,

@@ -12,7 +12,8 @@ score.fam(
   unaffected.weight = 0.5,
   return.sums = FALSE,
   return.means = TRUE,
-  affected.only = TRUE
+  affected.only = TRUE,
+  max.err = 4
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ score.fam(
 \item{return.means}{Boolean indicating if mean of all family variant scores should be returned (default = TRUE).}
 
 \item{affected.only}{Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).}
+
+\item{max.err}{A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
+of incorrect (sum of affected and unaffected) is exceeded,  the variant's score is set to 0, regardless of the number
+of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.}
 }
 \value{
 A labelled vector with names: score, score.for, score.against
