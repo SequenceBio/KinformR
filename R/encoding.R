@@ -26,7 +26,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
     if(theoretical.max){
       return("A_c")
     }
-    else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0"|| variant == "1|1"  ){
+    else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
       return("A_c")
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
       return("A_i")
@@ -36,7 +36,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
   }else if (status == "U"){
     if(theoretical.max){
       return("U_c")
-    } else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0"|| variant == "1|1"  ){
+    } else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
       return("U_i")
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
       return("U_c")
