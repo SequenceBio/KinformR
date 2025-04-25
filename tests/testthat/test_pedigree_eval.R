@@ -9,3 +9,4 @@ test_that("Data are read from files correctly", {
 
 
   penetrance.df <- cal.penetrance(example.pedigree.df)
+})

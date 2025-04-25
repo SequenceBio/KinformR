@@ -13,7 +13,8 @@ score.fam(
   return.sums = FALSE,
   return.means = TRUE,
   affected.only = TRUE,
-  max.err = 4
+  max.err = 4,
+  subset.fam = TRUE
 )
 }
 \arguments{
@@ -42,7 +43,9 @@ A labelled vector with names: score, score.for, score.against
 By default all individuals are treated as the reference 'proband' and
 the given variant's score  is calculated based on relationships to all other individuals.
 e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
-reference individual that the calcualtion is relative to.
+reference individual that the calculation is relative to.
+Note that the relation.mat can include more individuals than are present within the status.df, but the matrix will
+be subset to include only those individuals that have status information provided.
 }
 \details{
 There are several return options possible.

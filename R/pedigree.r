@@ -1,14 +1,15 @@
 
-#' Title
+#' Likelihood function for calculation of Pedigree-based autosomal dominant penetrance value.
+#' Formula deployed via optimize so as to determine the optimal value.
 #'
-#' @param K The estimate of penetrance rate.
+#' @param K Seed value for the estimate of penetrance rate.
 #' @param a Count of affected individuals
 #' @param b Count of obligate carriers
 #' @param c Count of children of either affecteds or carriers, with no children of their own
 #' @param d Count of Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
 #' @param n Count of the number of second generation progeny in a given tree.
 #'
-#' @return
+#' @return K Pedigree-based estimation of autosomal dominant penetrance rate.
 #' @export
 #'
 #' @examples
@@ -17,6 +18,10 @@ penetrance <- function(K, a, b, c, d, n) {
 }
 
 
+#TODO - CHECK with BARI
+# for IBD, am I wrong and is this the correct param description?
+#' @param n The number of non-overlapping paths between all pedigree members.
+
 
 #' Calculation of Identity by descent (IBD).
 #'
@@ -24,18 +29,21 @@ penetrance <- function(K, a, b, c, d, n) {
 #' estimate of the amount of the genome they have inherited it from a
 #' common ancestor without recombination.
 #'
-#' @param a
-#' @param b
-#' @param c
-#' @param d
-#' @param n
+#' Can do this for the total potential relatedness in a pedigree (theoretical=TRUE),
+#' or for the actual relatedness across collected samples (theoretical=FALSE)
+#'
+#' @param a Count of affected individuals
+#' @param b Count of obligate carriers
+#' @param c Count of children of either affecteds or carriers, with no children of their own
+#' @param d Count of Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
+#' @param n Count of the number of second generation progeny in a given tree.
 #' @param K The estimate of penetrance rate.
 #' @param theoretical Boolean indicating if the calculation should be
 #' theoretical IBD calculation (using only d and k), or if the calculation
 #' should use the provided n value.
 #'
 #'
-#' @return
+#' @return pi-hat value. The proportion of genome shared between individuals.
 #' @export
 #'
 #' @examples
@@ -45,26 +53,27 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
   } else {
     x <- sum(d*(1 - (2^n-1)/2^(n+1))) * 2^K
   }
-  (a + b + c * 2^K + x) - 1
+  pihat<-(a + b + c * 2^K + x) - 1
+  return(pihat)
 }
 
 
-#TODO - CHECK with BARI ?The number of non-overlapping paths between all pedigree members.
-# for IBD is this the correct param?
-#' @param n The number of non-overlapping paths between all pedigree members.
 
-#' Title
+#' Rank the pedigrees using the pihat values.
 #'
-#' @param pihat
-#' @param K
+#' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
+#' @param K Estimated penetrance value, from function: penetrance.
+#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
 #'
 #' @return
 #' @export
 #'
 #' @examples
-rank <- function(pihat, K) {
+rank <- function(pihat, K=-1,rank.by.K=FALSE) {
+  if(rank.by.K==TRUE){
+    log(2^pihat*K)
+  }
   log(2^pihat)
-  #log(2^pihat*K)
 }
 
 
@@ -77,14 +86,14 @@ rank <- function(pihat, K) {
 #' @export
 #'
 #' @examples
+#' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+#' example.pedigree.df <- read.pedigree(example.pedigree.file)
 read.pedigree <- function(filename){
   h <- read.table(filename, header=TRUE, sep="\t", check.names=FALSE, colClasses=c("Family"="character"))
   return(h)
 }
 
 
-count the number of non-overlapping paths between all pedigree members
-That number becomes n in (1/2)^n.  We can do this twice - once for the total potential relatedness in a pedigree, and again for the actual relatedness across collected samples.  This method avoids the issue of using IBD estimates relative to the proband, which is that the relatedness estimates change based on who you are in the pedigree,
 
 #' Take the encoded information about the pedigrees and calculate penetrance.
 #'
@@ -104,14 +113,17 @@ That number becomes n in (1/2)^n.  We can do this twice - once for the total pot
 #'   - Exclude subjects younger than age of onset
 #'
 #' @param h A data frame containing the encoded pedigree information
-#'
+#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
 #' @return A data frame containing the theoretical ranking of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
 #' as well as a current ranking, examining only those for whom you currently have DNA.
 #' @export
 #'
 #' @examples
-cal.penetrance <- function(h){
+#' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+#' example.pedigree.df <- read.pedigree(example.pedigree.file)
+#' penetrance.df <- cal.penetrance(example.pedigree.df)
+cal.penetrance <- function(h, rank.by.K=FALSE){
 
   family_vec <- c()
   penetrance_vec <- c()
@@ -137,7 +149,7 @@ cal.penetrance <- function(h){
 
     K <- optimize(penetrance, c(0,1), max_a, max_b, max_c, max_d, max_n, maximum=TRUE)$max
     max_pihat <- ibd(max_a, max_b, max_c, max_d, max_n, K)
-    max_rank <- rank(max_pihat, K)
+    max_rank <- rank(max_pihat, K, rank.by.K = rank.by.K )
     current_pihat <- ibd(a_actual, b_actual, c_actual, d_actual, n_actual, K, FALSE)
     current_rank <- rank(current_pihat, K)
 
