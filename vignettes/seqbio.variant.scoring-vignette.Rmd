@@ -1,0 +1,20 @@
+---
+title: "seqbio.variant.scoring - pedigree-informed rare variant association and penetrance scoring"
+author: "Cameron M. Nugent"
+data: "`r Sys.Date()`"
+output: pdf_document #rmarkdown::html_vignette # 
+vignette: >
+  %\VignetteIndexEntry{seqbio.variant.scoring-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+seqbio.variant.scoring, an R package meant to aid in comparative evaluation of candidate in family based rare-variant association studies. The package considers evidence of rare variants' association with disease status in a family, based on relationships of individuals in a pedigree and can thereby assess the relative merit of candidate variants.
+
+The program leverages Wright’s coefficient of relatedness to score families based on the disease status, genotypes and relationship of individuals. A candidate is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not associated with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large portion of the genome shared by chance alone by the two individuals and thereby gives evidence in favour of the candidate.
+
+```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(seqbio.variant.scoring)
+```
