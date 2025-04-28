@@ -1,7 +1,10 @@
-# seqbio-variant-scoring
-## A method for scoring variants based on relationships of individuals.
+# seqbio.variant.scoring
+## An R package method for scoring variants based on relationships of individuals.
 
 *WORK IN PROGRESS - currently a minimal viable product.*
+
+## Introduction
+When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. 
 
 This R package is designed to score rare variants, assigning values based on the disease status of individuals, 
 the presence or absence of a rare variant in those individuals, and their pairwise coefficients of relatedness.
@@ -18,10 +21,6 @@ of unaffected evidence can be customized.
 - penetrance related code: https://github.com/SequenceBio/seqbio-pedigree-ranking
 - penetrance related notes: https://sequencebio.atlassian.net/wiki/spaces/SEQUENCEPE/pages/1443364866/Quantifying+power+of+a+family+for+discovery
 
-
-## Introduction
-When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. 
-This package is a method for scoring the evidence of a series of individuals in a way that takes into account the relatedness of the individuals as well as their disease status and genotype.
 
 
 ## TODO 

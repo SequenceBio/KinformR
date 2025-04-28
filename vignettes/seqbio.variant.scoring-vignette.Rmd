@@ -11,10 +11,118 @@ vignette: >
 
 ## Introduction
 
-seqbio.variant.scoring, an R package meant to aid in comparative evaluation of candidate in family based rare-variant association studies. The package considers evidence of rare variants' association with disease status in a family, based on relationships of individuals in a pedigree and can thereby assess the relative merit of candidate variants.
+When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. seqbio.variant.scoring is an R package meant to aid in comparative evaluation of candidate in family based rare-variant association studies. The package considers evidence of rare variants' association with disease status in a family, based on relationships of individuals in a pedigree and can thereby assess the relative merit of candidate variants.
 
 The program leverages Wright’s coefficient of relatedness to score families based on the disease status, genotypes and relationship of individuals. A candidate is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not associated with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large portion of the genome shared by chance alone by the two individuals and thereby gives evidence in favour of the candidate.
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
 library(seqbio.variant.scoring)
 ```
+
+
+## Input data
+
+### The relation matrix
+
+The function `read.relation.mat`
+```{r}
+mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+rel.mat <- read.relation.mat(mat.name1)
+rel.mat
+``` 
+
+
+### The status file
+
+This file include the disease and variant status for all individuals
+
+
+```{r}
+
+tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+status.df <- read.indiv(tsv.name1)
+
+status.df
+``` 
+
+The disease-genotype scoring can then be encoded using the `score.variant.status` function.
+
+```{r}
+
+full.df.status <-  score.variant.status(status.df)
+full.df.status 
+``` 
+
+
+## How it works
+### A Minimal example: Scoring a variant from perspective of a single individual.
+
+Calculate a relatedness-weighted score for a given rare variant can be performed for
+
+
+## Scoring a family
+
+For most real-world applications you will likely want to score an entire family in conjunction with one another and take the mean score. This can be accomplished with `score.fam`, which takes in the matrix of relationships and the table with encoded `statvar.cat` of all individuals.
+
+```{r}
+
+ex_score_default <- score.fam(rel.mat, full.df.status)
+ex_score_default
+``` 
+
+
+By default `score.fam` returns:
+- Nhe scores considering only the Affected individuals as the starting points (skipping the rows for MS-7003-1002, MS-7003-1006, and MS-7003-6001) in the previous example.
+- The of the calculated score for each starting individuals.
+
+Note that if an individual is present in the relationship matrix and not in the status file, it is assumed there is no genetic information for this individual and they are ignored when calculating the variant score.
+
+The scoring can be changed to summing across all combinations as opposed to the mean by passing the following options. Note using the program in this way will return higher scores for more dense pedigrees.
+```{r}
+
+ex_score_sum <- score.fam(rel.mat, full.df.status, return.sums = TRUE, return.means = FALSE)
+ex_score_sum
+``` 
+
+
+To obtain a long form table with the scores for variants expressed relative to each individual, set both `return.sums` and `return.means` to `FALSE`.
+```{r}
+
+ex_score_table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
+ex_score_table
+``` 
+
+
+
+
+```{r}
+
+
+``` 
+
+
+
+
+```{r}
+
+
+``` 
+
+
+
+```{r}
+
+
+``` 
+
+
+```{r}
+
+
+``` 
+
+
+```{r}
+
+
+``` 
