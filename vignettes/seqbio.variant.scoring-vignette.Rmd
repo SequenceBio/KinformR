@@ -86,8 +86,8 @@ To obtain a long form table with the scores for variants expressed relative to e
 ex_score_table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
 ex_score_table
 ``` 
-## How it works. A Minimal example
-### Scoring a variant from perspective of a single individual.
+## How scoring works 
+### A Minimal example, scoring a variant from perspective of a single individual.
 
 This section is meant to demonstrate how the variant scoring is accomplished on a finer scale. A user does not need to interact with the package on this level of granularity. This section is for explanatory purposes only.
 
@@ -183,6 +183,8 @@ The weights of the scoring can be adjusted, for example if we wanted to consider
 ```{r}
 calc.rv.score(rel.dict, unaffected.weight=0)
 ``` 
+
+The `score.fam` function automatically walks through this process from all specified perspectives in the pedigree and by default returns the average score. The use of the averages and different perspectives is meant to eliminate pedigree-associated bias, such as for instances when a proband is distantly related to all other members in a family (considering the relaitonships from only the perspective of the proband in this case would give an inflated score for the variant's value).
 
 
 ```{r}
