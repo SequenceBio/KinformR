@@ -11,9 +11,9 @@ vignette: >
 
 ## Introduction
 
-When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. seqbio.variant.scoring is an R package meant to aid in comparative evaluation of candidate in family based rare-variant association studies. The package considers evidence of rare variants' association with disease status in a family, based on relationships of individuals in a pedigree and can thereby assess the relative merit of candidate variants.
+When looking at shared rare variants across families, not all affected and unaffected individuals are equal. seqbio.variant.scoring is an R package meant to aid in comparative evaluation of candidate in family-based rare-variant association studies; the package considers evidence of rare variants' association with disease status in a family and score the variants based on relationships of individuals in a pedigree. Comparingscores across candidates can thereby help in assessing their relative merit.
 
-The program leverages Wright’s coefficient of relatedness to score families based on the disease status, genotypes and relationship of individuals. A candidate is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not associated with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large portion of the genome shared by chance alone by the two individuals and thereby gives evidence in favour of the candidate.
+The program leverages Wright’s coefficient of relatedness to score families based on the relationship of individuals as well as their disease status and genotypes for a given variant. A candidate variant is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not due to association with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large IBD portion of the genome shared by the two individuals and thereby gives evidence in favour of the candidate.
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
 library(seqbio.variant.scoring)
@@ -184,7 +184,7 @@ The weights of the scoring can be adjusted, for example if we wanted to consider
 calc.rv.score(rel.dict, unaffected.weight=0)
 ``` 
 
-The `score.fam` function automatically walks through this process from all specified perspectives in the pedigree and by default returns the average score. The use of the averages and different perspectives is meant to eliminate pedigree-associated bias, such as for instances when a proband is distantly related to all other members in a family (considering the relaitonships from only the perspective of the proband in this case would give an inflated score for the variant's value).
+The `score.fam` function automatically walks through this process from all specified perspectives in the pedigree and by default returns the average score. The use of the averages and different perspectives is meant to eliminate pedigree-associated bias, such as for instances when a proband is distantly related to all other members in a family (considering the relationships from only the perspective of the proband in this case would give an inflated score for the variant's value).
 
 
 ```{r}

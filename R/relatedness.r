@@ -27,7 +27,7 @@
 #' For example, if there were also an affected sibling without the variant we would have the score against of:
 #'  (1/0.5) * 1 = 2
 #' The final score for the variant would then be
-#'.    for - against = total
+#'     for - against = total
 #'     12 - 2 = 10
 #' Giving a final score of 10 for the variant. Comparing values across variants can be used
 #' to rank them based on pedigree-informed levels of variant sharing across affected
