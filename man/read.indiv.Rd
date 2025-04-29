@@ -9,7 +9,7 @@ read.indiv(fname)
 \arguments{
 \item{fname}{A file name, expected format of contents is:
 name             status    variant
-MS-4107-1001      A      0/1}
+MS-5678-1001      A      0/1}
 }
 \value{
 A data frame.
@@ -18,6 +18,6 @@ A data frame.
 Read in variant and status info for individuals.
 }
 \examples{
-tsv.name1 <-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
 id.df1 <- read.indiv(tsv.name1)
 }

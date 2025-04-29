@@ -26,7 +26,7 @@ library(seqbio.variant.scoring)
 
 The function `read.relation.mat`
 ```{r}
-mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
 rel.mat <- read.relation.mat(mat.name1)
 rel.mat
 ``` 
@@ -39,7 +39,7 @@ This file include the disease and variant status for all individuals
 
 ```{r}
 
-tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
 status.df <- read.indiv(tsv.name1)
 
 status.df
@@ -67,7 +67,7 @@ ex_score_default
 
 
 By default `score.fam` returns:
-- Nhe scores considering only the Affected individuals as the starting points (skipping the rows for MS-7003-1002, MS-7003-1006, and MS-7003-6001) in the previous example.
+- Nhe scores considering only the Affected individuals as the starting points (skipping the rows for MS-1234-1002, MS-1234-1006, and MS-1234-6001) in the previous example.
 - The of the calculated score for each starting individuals.
 
 Note that if an individual is present in the relationship matrix and not in the status file, it is assumed there is no genetic information for this individual and they are ignored when calculating the variant score.
@@ -96,7 +96,7 @@ Under the hood, the `score.fam` function is running the scoring method once for 
 For example, the degrees of relationships of all other members of the example family relative to the proband are show in the following subset of the matrix:
 
 ```{r}
-rel.mat.proband <-  rel.mat["MS-7003-1001",]
+rel.mat.proband <-  rel.mat["MS-1234-1001",]
 rel.mat.proband
 ```
 This is taken along with a list of encoded statuses of all individuals for the given variant. Obove `score.variant.status` used the disease status and a genetic variant are used to determine which category the combo falls in. Within `score.fam`, a labelled list of encodings for all individuals is generated. Where:

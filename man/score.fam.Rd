@@ -58,8 +58,8 @@ NOTE: if affected.only = True, the averages and sums are calculated using only t
 }
 }
 \examples{
-mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
-tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
 mat.df <- read.relation.mat(mat.name1)
 ind.df <- read.indiv(tsv.name1)
 ind.df.status <-  score.variant.status(ind.df)

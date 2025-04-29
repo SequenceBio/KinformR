@@ -11,7 +11,7 @@ score.variant.status(indiv.df, theoretical.max = FALSE)
 \arguments{
 \item{indiv.df}{A dataframe with the format:
 name             status    variant
-MS-4107-1001      A      0/1}
+MS-5678-1001      A      0/1}
 
 \item{theoretical.max}{Should the theoretical maxima be returned instead of the observed values?
 When true, the scoring assumes correct variant-status pair for each individual.
