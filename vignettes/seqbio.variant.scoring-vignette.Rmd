@@ -54,11 +54,6 @@ full.df.status
 ``` 
 
 
-## How it works
-### A Minimal example: Scoring a variant from perspective of a single individual.
-
-Calculate a relatedness-weighted score for a given rare variant can be performed for
-
 
 ## Scoring a family
 
@@ -91,28 +86,102 @@ To obtain a long form table with the scores for variants expressed relative to e
 ex_score_table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
 ex_score_table
 ``` 
+## How it works. A Minimal example
+### Scoring a variant from perspective of a single individual.
 
+This section is meant to demonstrate how the variant scoring is accomplished on a finer scale. A user does not need to interact with the package on this level of granularity. This section is for explanatory purposes only.
 
+Under the hood, the `score.fam` function is running the scoring method once for each affected individual in the status dataframe (or for each individual regardless of status if `affected.only = FALSE`). To do this, for each individual, the program takes corresponding row of the relationship matrix to determine the relations to all other individuals in the pedigree.  
 
+For example, the degrees of relationships of all other members of the example family relative to the proband are show in the following subset of the matrix:
 
 ```{r}
+rel.mat.proband <-  rel.mat["MS-7003-1001",]
+rel.mat.proband
+```
+This is taken along with a list of encoded statuses of all individuals for the given variant. Obove `score.variant.status` used the disease status and a genetic variant are used to determine which category the combo falls in. Within `score.fam`, a labelled list of encodings for all individuals is generated. Where:
+    - A_c = Affected individual with ALT variant
+    - A_i = Affected individual without ALT variant
+    - U_c = Unaffected individual without ALT variant
+    - U_i = Unaffected individual with ALT variant
+```{r}
+name.stat.dict <- full.df.status$statvar.cat
+names(name.stat.dict) <- full.df.status$name
+name.stat.dict
+```
 
+`build.relation.dict` is used summarize the collate the status and relationship information and evidence affected and unaffected relations giving evidence for and evidence against a variant.
+```{r}
+rel.dict<-build.relation.dict(rel.mat.proband, name.stat.dict)
+rel.dict
+``` 
+In this example, the proband, two first degree relations, and a third degree relations are all affected and share the candadte variant. For the affected correct (`A_c`) category we therefore see the following encoded:
 
+```{r}
+rel.dict$A_c
 ``` 
 
-
-
-
+Since one first degree unaffected relative has the variant, they are categorized as "unaffected incorrect"(`U_i`) and we see:
 ```{r}
-
-
+rel.dict$U_i
 ``` 
 
+Scoring a relatedness-weighted score for the variant from the perspective of the given individual is then performed by `calc.rv.score`
 
+For each encoded relationship, a relationship-informed weight is applied to their sharing or not sharing of a variant.
+
+The score for affected status increase as individuals become more distantly related. The formula is:
+```
+   (1 / coefficient_of_relatedness) * affected.weight
+```
+For example, an affected cousin (encoded as a 3) would get a score of:
+```
+     (1/0.125) * affected.weight
+     8 * 1
+     = 8 points in favour of the variant.
+```
+
+for unaffected individuals, scores decay the further a person is in relation to the query individual based on the formula:
+```
+((unaffected.max*2) * coefficient_of_relatedness ) * unaffected.weight
+```
+For example, with the default `unaffected.weight = 0.5` and unaffected sister that does not have a variant would get a score of
+```
+     ((8*2) 0.5) * unaffected_weight
+     (16 * 0.5) * 0.5
+     = 4 points for the variant.
+
+```
+
+If these were the only two relatives considered we could sum the points and get a score in favour of the variant of
+```
+    8 + 4 = 12
+```
+If there is evidence against a variant, this is factored into the score as:
+```
+     total_score = evidence_for - evidence_against
+```
+For example, if there were also an affected sibling without the variant we would have the score against of:
+```
+  (1/0.5) * 1 = 2
+```
+
+The final score for the variant would then be:
+```
+     for - against = total
+     12 - 2 = 10
+```
+Giving a final score of 10 for the variant.
+
+This is all accomplished by the function `calc.rv.score`. 
+```{r}
+calc.rv.score(rel.dict)
+``` 
+
+The weights of the scoring can be adjusted, for example if we wanted to consider only `affected`-based evidence, we could turn off the unaffected part of the calculation by setting the unaffected weighting to 0. This can be useful for incompletely penetrant variants, where disease status and genotype of unaffected indiviudals are more likely to have imperfect concordance.
 
 ```{r}
-
-
+calc.rv.score(rel.dict, unaffected.weight=0)
 ``` 
 
 
