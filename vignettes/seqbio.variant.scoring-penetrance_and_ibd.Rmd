@@ -10,9 +10,26 @@ vignette: >
 ---
 
 #TODO - pull origin dev once both the penetrance and vignette PRs are approved and merged in.
+#TODO - round out the unit tests as you develop and work through the minimalist examples.
+
+
 
 ## Introduction
 
 The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families
 
+
+## The input data
+
+
+## Calculating IBD
+
+
+## Calculating penetrance
+
+
+## Combining IBD and penetrance into a pedigree score
+
+
+## Comparison of current and maximum pedigree score
 
