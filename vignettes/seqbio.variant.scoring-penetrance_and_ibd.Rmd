@@ -1,0 +1,18 @@
+---
+title: "seqbio.variant.scoring - penetrance and idb informed scoring of families"
+author: "Cameron M. Nugent"
+data: "`r Sys.Date()`"
+output: pdf_document #rmarkdown::html_vignette # 
+vignette: >
+  %\VignetteIndexEntry{seqbio.variant.scoring-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#TODO - pull origin dev once both the penetrance and vignette PRs are approved and merged in.
+
+## Introduction
+
+The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families
+
+
