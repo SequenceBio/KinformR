@@ -15,6 +15,23 @@ Since variants can be incompletely penetrant, the scoring can be based solely on
 of unaffected evidence can be customized.
 
 
+## How it works
+
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette: 
+
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette: 
+
+
+
+### The relationship matrix
+
+This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations. = 1, etc. Unrelated individuals are given a value of -1). As of version `0.1.0` the relation matrix is a manually created file, where relationship values are assigned via manual inspection of the family pedigree.
+
+### The status file
+
+This file includes the same individual IDs used in the relationship matrix as well as the disease and variant status for all individuals.
+
+
 ## related info
 
 - slides on concept: https://docs.google.com/presentation/d/1yWlj400fbsrS1CCd4wpy7ve9Sov56H82lZh7hoW8vyg/edit#slide=id.g34c18bf0cf2_0_112

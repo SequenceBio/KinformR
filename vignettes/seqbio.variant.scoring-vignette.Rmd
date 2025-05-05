@@ -11,7 +11,7 @@ vignette: >
 
 ## Introduction
 
-When looking at shared rare variants across families, not all affected and unaffected individuals are of equal importance. `seqbio.variant.scoring` is an R package meant to aid in comparative evaluation of information in family-based rare-variant association studies; the package considers evidence of rare variant's association with disease status in a family and scores the variant based on relationships of individuals in a pedigree. Comparing scores across candidates can thereby help in assessing their relative merit.
+When looking at rare variants within a family, not all affected and unaffected individuals are of equal importance. `seqbio.variant.scoring` is an R package meant to aid in comparative evaluation of information in family-based rare-variant association studies; the package considers evidence of rare variant's association with disease status in a family and scores the variant based on relationships of individuals in a pedigree. Comparing scores across candidates can thereby help in assessing their relative merit.
 
 The program leverages Wright’s coefficient of relatedness to score families based on the relationship of individuals as well as their disease status and genotypes for a given variant. A candidate variant is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not due to association with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large IBD portion of the genome shared by the two individuals and thereby gives evidence in favour of the candidate.
 
@@ -24,7 +24,7 @@ library(seqbio.variant.scoring)
 
 ### The relation matrix
 
-This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations. = 1, etc. Unrelated individuals are given a value of -1).
+This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations. = 1, etc. Unrelated individuals are given a value of -1). As of version `0.1.0` the relation matrix is a manually created file, where relationship values are assigned via manual inspection of the family pedigree.
 
 The function `read.relation.mat`
 ```{r}
@@ -101,11 +101,12 @@ For example, the degrees of relationships of all other members of the example fa
 rel.mat.proband <-  rel.mat["MS-1234-1001",]
 rel.mat.proband
 ```
-This is taken along with a list of encoded statuses of all individuals for the given variant. Above `score.variant.status` used the disease status and a genetic variant are used to determine which category the combo falls in. Within `score.fam`, a labelled list of encodings for all individuals is generated. Where:
+This is taken along with a list of encoded statuses of all individuals for the given variant. Above `score.variant.status` used the disease status and a genetic variant of each individual to determine which of the following categories they fall in to:
     - A_c = Affected individual with variant
     - A_i = Affected individual without variant
     - U_c = Unaffected individual without variant
     - U_i = Unaffected individual with variant
+Within `score.fam`, a labelled list of encodings for all individuals is generated.
 ```{r}
 name.stat.dict <- full.df.status$statvar.cat
 names(name.stat.dict) <- full.df.status$name
@@ -186,6 +187,8 @@ calc.rv.score(rel.dict)
 ``` 
 
 The weights of the scoring can be adjusted, for example if we wanted to consider only `affected`-based evidence, we could turn off the unaffected part of the calculation by setting the unaffected weighting to 0. This can be useful for incompletely penetrant variants, where disease status and genotype of unaffected individuals are more likely to have imperfect concordance.
+
+Additionally, families with low numbers of affected individuals sequenced and high number of unaffected individuals may haved inflated variant scores and potentially be misleading, focusing the scoring algorithm on the affected individuals only can overcome this bias.
 
 ```{r}
 calc.rv.score(rel.dict, unaffected.weight=0)
