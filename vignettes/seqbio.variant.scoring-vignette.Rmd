@@ -38,6 +38,7 @@ rel.mat
 
 This file includes the same individual IDs used in the relationship matrix as well as the disease and variant status for all individuals.
 
+Note that the order of individuals can be different between the two files. All individual in the status file must be present within the relationship matrix, but you can have individuals in the realtionship matrix that are not present in the status file. The program assumes there is no genotypes for individuals without a status indicated and they are ignored in the variant scoring.
 
 ```{r}
 
@@ -59,7 +60,7 @@ full.df.status
 
 ## Scoring a family
 
-For most real-world applications you will likely want to score an entire family in conjunction with one another and take the mean score. This can be accomplished with `score.fam`, which takes in the matrix of relationships and the table with encoded `statvar.cat` of all individuals.
+For most real-world applications, you will likely want to score family members in conjunction with one another, and take the mean score for an entire family.  This can be accomplished with `score.fam`, which takes in the matrix of relationships and the table with encoded `statvar.cat` of all individuals.
 
 ```{r}
 
