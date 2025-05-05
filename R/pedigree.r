@@ -6,7 +6,7 @@
 #' @param a Count of affected individuals
 #' @param b Count of obligate carriers
 #' @param c Count of children of either affecteds or carriers, with no children of their own
-#' @param d Count of Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
+#' @param d Count of trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
 #' @param n Count of the number of second generation progeny in a given tree.
 #'
 #' @return K Pedigree-based estimation of autosomal dominant penetrance rate.
@@ -59,18 +59,18 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 
 
 
-#' Rank the pedigrees using the pihat values.
+#' Score the pedigrees using the pihat values.
 #'
 #' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
 #' @param K Estimated penetrance value, from function: penetrance.
-#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
+#' @param score.by.K Should the scoreing of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
 #'
 #' @return
 #' @export
 #'
 #' @examples
-rank <- function(pihat, K=-1,rank.by.K=FALSE) {
-  if(rank.by.K==TRUE){
+score <- function(pihat, K=-1,score.by.K=FALSE) {
+  if(score.by.K==TRUE){
     log(2^pihat*K)
   }
   log(2^pihat)
@@ -97,7 +97,7 @@ read.pedigree <- function(filename){
 
 #' Take the encoded information about the pedigrees and calculate penetrance.
 #'
-#' Determine a value rank of families by comparing their relationship structure.
+#' Determine a value score of families by comparing their relationship structure.
 #' More distant relationships between affecteds (e.g. affected cousins)
 #' is more valuable that close relationships (e.g. affected siblings)
 #' as there is less IBD and therefore a smaller search space.
@@ -113,24 +113,24 @@ read.pedigree <- function(filename){
 #'   - Exclude subjects younger than age of onset
 #'
 #' @param h A data frame containing the encoded pedigree information
-#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
-#' @return A data frame containing the theoretical ranking of the power of a
+#' @param score.by.K Should the scoreing of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
+#' @return A data frame containing the theoretical scoreing of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
-#' as well as a current ranking, examining only those for whom you currently have DNA.
+#' as well as a current scoreing, examining only those for whom you currently have DNA.
 #' @export
 #'
 #' @examples
 #' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
 #' example.pedigree.df <- read.pedigree(example.pedigree.file)
 #' penetrance.df <- cal.penetrance(example.pedigree.df)
-cal.penetrance <- function(h, rank.by.K=FALSE){
+cal.penetrance <- function(h, score.by.K=FALSE){
 
   family_vec <- c()
   penetrance_vec <- c()
   max_pihat_vec <- c()
-  max_rank_vec <- c()
+  max_score_vec <- c()
   current_pihat_vec <- c()
-  current_rank_vec <- c()
+  current_score_vec <- c()
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
     max_a <- h[i, "max_a"]
@@ -149,21 +149,21 @@ cal.penetrance <- function(h, rank.by.K=FALSE){
 
     K <- optimize(penetrance, c(0,1), max_a, max_b, max_c, max_d, max_n, maximum=TRUE)$max
     max_pihat <- ibd(max_a, max_b, max_c, max_d, max_n, K)
-    max_rank <- rank(max_pihat, K, rank.by.K = rank.by.K )
+    max_score <- score(max_pihat, K, score.by.K = score.by.K )
     current_pihat <- ibd(a_actual, b_actual, c_actual, d_actual, n_actual, K, FALSE)
-    current_rank <- rank(current_pihat, K)
+    current_score <- score(current_pihat, K)
 
     family_vec <- c(family_vec, family)
     penetrance_vec <- c(penetrance_vec, K)
     max_pihat_vec <- c(max_pihat_vec, max_pihat)
-    max_rank_vec <- c(max_rank_vec, max_rank)
+    max_score_vec <- c(max_score_vec, max_score)
     current_pihat_vec <- c(current_pihat_vec, current_pihat)
-    current_rank_vec <- c(current_rank_vec,current_rank)
+    current_score_vec <- c(current_score_vec,current_score)
   }
 
-  df <- data.frame(family_vec, penetrance_vec, max_pihat_vec, max_rank_vec, current_pihat_vec, current_rank_vec)
-  colnames(df) <- c("family", "penetrance", "max_pi-hat", "max_rank", "current_pi-hat", "current_rank")
-  df$pct_of_max <- df$current_rank / df$max_rank * 100
+  df <- data.frame(family_vec, penetrance_vec, max_pihat_vec, max_score_vec, current_pihat_vec, current_score_vec)
+  colnames(df) <- c("family", "penetrance", "max_pi-hat", "max_score", "current_pi-hat", "current_score")
+  df$pct_of_max <- df$current_score / df$max_score * 100
   df[, -1] <- round(df[, -1], 2)
   return(df)
 }

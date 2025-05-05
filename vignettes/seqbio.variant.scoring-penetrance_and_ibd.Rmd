@@ -9,14 +9,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-#TODO - pull origin dev once both the penetrance and vignette PRs are approved and merged in.
-#TODO - round out the unit tests as you develop and work through the minimalist examples.
-
+```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(seqbio.variant.scoring)
+```
 
 
 ## Introduction
 
 The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families.
+
+## Estimating power of families
 
 The `cal.penetrance` function generates both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
 
@@ -24,42 +26,39 @@ The `cal.penetrance` function generates both a theoretical ranking of the power 
 
 ## The input data
 
-# Estimating power of families
+The family power calculations depend on a single tab-delimited input file, where each row represents a family. The input file is read inusing the `read.pedigree` function.
 
-This tool facilitates comparison of the relative "power" of families as they come into our studies, e.g. to prioritize followup.  This is upstream of sequencing, so is entirely dependent on relationship structure and reported affected status.
+```{r}
+example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
 
-Essentially, more distant relationships between affecteds (e.g. affected cousins) are more valuable than close relationships (e.g. affected siblings), as there is less IBD and therefore a smaller search space.  On the other hand, if the line of relatives between those affected individuals contains any unaffected subjects, then we have detected the presence of obligate carriers; we can use this information to penalize the ranking as it indicates that there is a chance any unaffected actually carries the pertinent variant.
+example.pedigree.df <- read.pedigree(example.pedigree.file)
 
+head(example.pedigree.df)
+```
+The input file is expected to have the following 11 columns (with a header). 
+```{r}
+colnames(example.pedigree.df)
+```
 
-## Simplifying pedigrees
+### Simplified summary of pedigrees
 
-First, you'll need to prune down pedigrees to informative allele transfers.  For
-the purposes of this tool, we are excluding young generations (under 20-ish) and
-large (more than two sequential generations)  trees of exclusively unaffected family
-members.  There are some judgment calls happening here.  See [this](https://sequencebio.atlassian.net/wiki/spaces/SEQUENCEPE/pages/1443364866/Quantifying+power+of+a+family+for+discovery) page for an example.  
-
-Simplifying assumptions:
-- Condition is autosomal dominant
-- There are no ambiguous statuses
-- No more than two sequential generations of unknown carrier status (non-obligate carrier vs. non-carrier).  Generalized support of arbitrary tree structures gets a lot more complicated, especially for the likelihood function.
-- Exclude big giant trees of unaffecteds - related to above.  Will slightly bias the result toward higher penetrance.
-- Exclude subjects younger than age of onset
+For now this file should be be constructed through careful manual inspection of the predigrees. To encode the rows for each family, you should first prune down pedigrees to informative allele transfers. For
+the purposes of this tool, we exclude young generations (non-adults, younger than age of onset) and large (more than two sequential generations) trees of exclusively unaffected family members. Additionally all individuals require a binary A/U status, there should be no ambigious individuals.  There will be some judgment calls required here.  
 
 
-## Categories of relationships
+### Encoding categories of relationships
+
+From the simplified pedigrees, the individuals are assigned to the following categories.
 
 |Category|Description|
 |---|---|
-|A|Affected individuals|
-|B|Obligate carriers|
-|C|Children of either affecteds or carriers, with no children of their own|
-|D|Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)|
+|a|Affected individuals|
+|b|Obligate carriers|
+|c|Children of either affecteds or carriers, with no children of their own|
+|d|Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring; trees of unaffecteds that are larger than this are omitted.)|
 
-We have made the editorial decision to exclude trees of unaffecteds that are larger than those described in D.
 
-## Encoding into categories
-
-Encoding of families is input via a tab-separated manifest with a header, e.g.:
+The counts of individuals assgined to these categories are then added to the tab-delimited input file:
 
 ```
 Family	max_a	a	max_b	b	max_c	c	max_d	d	max_n	n
@@ -67,14 +66,11 @@ Family	max_a	a	max_b	b	max_c	c	max_d	d	max_n	n
 ```
 
 All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
-the columns without this prefix are the number of each category for whom we have samples.  
+the columns without this prefix are the number of each category for whom samples have been collected.  
 
 The categories correspond to A, B, and C as defined above.
 
-Category D is represented by two numbers, d and n.  n is the number of offspring in a tree
-of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with
-commas separating the values.  For example, the following represents a family with three total trees of unaffecteds.
-One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1). 
+Category D is represented by two numbers, d and n.  n is the number of offspring in a tree of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with commas separating the values.  For example, the following represents a family with three total trees of unaffecteds. One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1). 
 
 ```
 d   n
@@ -83,12 +79,26 @@ d   n
 
 ## Theoretical vs. current rankings
 
-This function generates both a theoretical ranking of the power of a family assuming
-you were able to collect everyone on the simplified pedigree, as well as a current
-ranking, examining only those for whom you currently have DNA.  This allows evaluation
-of the impact on the ranking if certain other family members are enrolled in the study.
+With the encoded data loaded, the function `cal.penetrance` will generate both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
 
-### Special cases
+```{r}
+penetrance.df <- cal.penetrance(example.pedigree.df)
+penetrance.df
+```
+
+The output includes seven columns that with the following information:
+|Output Column|Description|
+|---|---|
+|family|The family id.|
+|penetrance| Estimated penetrance rate (K) for the family.|
+|max_pi-hat| The estimated proportion of the genome that is shared between all individuals  *that could be sampled* in the family (IBD).|
+|max_score| The theoretical maximum score for the given family *that could* be achieved if all individuals were sampled.|
+|current_pi-hat|The estimated proportion of the genome that is shared between all individuals  *that have been sampled* in the family (IBD).|
+|current_score| The score for the given family *that has* been achieved through the sampled individuals|
+|pct_of_max| The percentage of the theoretical maximum score that has been realized in the family sampling.|
+
+
+### Note on a few special cases
 
 In trees of unaffecteds, there are two special cases for current ranking:
 1.  You have collected the parent (regardless of collection status of the child).  In
@@ -97,7 +107,6 @@ we only count the parent. (d=1, n=0; equivalently, c=1)
 2.  You have collected one or more children, but not the parent.  In this case,
 each of the children contribute a portion of what the parent would have contributed
 to our understanding.  (d=1, n>0)
-
 
 
 ## Calculating IBD
