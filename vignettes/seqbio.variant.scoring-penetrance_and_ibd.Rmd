@@ -16,10 +16,88 @@ vignette: >
 
 ## Introduction
 
-The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families
+The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families.
+
+The `cal.penetrance` function generates both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
+
 
 
 ## The input data
+
+# Estimating power of families
+
+This tool facilitates comparison of the relative "power" of families as they come into our studies, e.g. to prioritize followup.  This is upstream of sequencing, so is entirely dependent on relationship structure and reported affected status.
+
+Essentially, more distant relationships between affecteds (e.g. affected cousins) are more valuable than close relationships (e.g. affected siblings), as there is less IBD and therefore a smaller search space.  On the other hand, if the line of relatives between those affected individuals contains any unaffected subjects, then we have detected the presence of obligate carriers; we can use this information to penalize the ranking as it indicates that there is a chance any unaffected actually carries the pertinent variant.
+
+
+## Simplifying pedigrees
+
+First, you'll need to prune down pedigrees to informative allele transfers.  For
+the purposes of this tool, we are excluding young generations (under 20-ish) and
+large (more than two sequential generations)  trees of exclusively unaffected family
+members.  There are some judgment calls happening here.  See [this](https://sequencebio.atlassian.net/wiki/spaces/SEQUENCEPE/pages/1443364866/Quantifying+power+of+a+family+for+discovery) page for an example.  
+
+Simplifying assumptions:
+- Condition is autosomal dominant
+- There are no ambiguous statuses
+- No more than two sequential generations of unknown carrier status (non-obligate carrier vs. non-carrier).  Generalized support of arbitrary tree structures gets a lot more complicated, especially for the likelihood function.
+- Exclude big giant trees of unaffecteds - related to above.  Will slightly bias the result toward higher penetrance.
+- Exclude subjects younger than age of onset
+
+
+## Categories of relationships
+
+|Category|Description|
+|---|---|
+|A|Affected individuals|
+|B|Obligate carriers|
+|C|Children of either affecteds or carriers, with no children of their own|
+|D|Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)|
+
+We have made the editorial decision to exclude trees of unaffecteds that are larger than those described in D.
+
+## Encoding into categories
+
+Encoding of families is input via a tab-separated manifest with a header, e.g.:
+
+```
+Family	max_a	a	max_b	b	max_c	c	max_d	d	max_n	n
+1111    2   1   0   0   0   0   0   0   0   0
+```
+
+All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
+the columns without this prefix are the number of each category for whom we have samples.  
+
+The categories correspond to A, B, and C as defined above.
+
+Category D is represented by two numbers, d and n.  n is the number of offspring in a tree
+of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with
+commas separating the values.  For example, the following represents a family with three total trees of unaffecteds.
+One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1). 
+
+```
+d   n
+1,2 3,1
+```
+
+## Theoretical vs. current rankings
+
+This function generates both a theoretical ranking of the power of a family assuming
+you were able to collect everyone on the simplified pedigree, as well as a current
+ranking, examining only those for whom you currently have DNA.  This allows evaluation
+of the impact on the ranking if certain other family members are enrolled in the study.
+
+### Special cases
+
+In trees of unaffecteds, there are two special cases for current ranking:
+1.  You have collected the parent (regardless of collection status of the child).  In
+this case, the child cannot provide any additional information beyond the parent, so
+we only count the parent. (d=1, n=0; equivalently, c=1)
+2.  You have collected one or more children, but not the parent.  In this case,
+each of the children contribute a portion of what the parent would have contributed
+to our understanding.  (d=1, n>0)
+
 
 
 ## Calculating IBD
