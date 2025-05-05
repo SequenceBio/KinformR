@@ -58,11 +58,10 @@ From the simplified pedigrees, the individuals are assigned to the following cat
 |d|Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring; trees of unaffecteds that are larger than this are omitted.)|
 
 
-The counts of individuals assgined to these categories are then added to the tab-delimited input file:
+The counts of individuals assigned to these categories are then added to the tab-delimited input file:
 
-```
-Family	max_a	a	max_b	b	max_c	c	max_d	d	max_n	n
-1111    2   1   0   0   0   0   0   0   0   0
+```{r}
+head(example.pedigree.df)
 ```
 
 All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
@@ -98,6 +97,23 @@ The output includes seven columns that with the following information:
 |pct_of_max| The percentage of the theoretical maximum score that has been realized in the family sampling.|
 
 
+With the scoring completed, the values can be queried to learn more about the realized and potential value of the families relative to one another.
+
+Sorting on `current_score` shows which family has the most detection power based on collected samples.
+
+```{r}
+penetrance.df[order(penetrance.df$current_score, decreasing = TRUE),]
+```
+If we had to work with only what we have, then family 5031 gives the most detection power.
+
+Sorting on `max_score` shows which family could have the most detection power, if all individuals were sampled. This can be useful in targeting future sampling efforts as it shows where more samples would give the most value.
+
+```{r}
+penetrance.df[order(penetrance.df$max_score, decreasing = TRUE),]
+```
+Here we can see that family `0347` has a maximum score of 30.84, but a realized score of only 4.17. Given the high potential detection power for this family, it is an ideal target for future sampling efforts as current samples reveal on 13.5% of the family's potential value.
+
+
 ### Note on a few special cases
 
 In trees of unaffecteds, there are two special cases for current ranking:
@@ -109,14 +125,4 @@ each of the children contribute a portion of what the parent would have contribu
 to our understanding.  (d=1, n>0)
 
 
-## Calculating IBD
-
-
-## Calculating penetrance
-
-
-## Combining IBD and penetrance into a pedigree score
-
-
-## Comparison of current and maximum pedigree score
 

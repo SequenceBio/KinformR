@@ -32,6 +32,13 @@ or within R, run:
 vignette('seqbio.variant.scoring-variant_scoring')
 ```
 
+## Scoring families
+
+### Then encoding file
+
+
+## Scoring Variants
+
 ### The relationship matrix
 
 This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations. = 1, etc. Unrelated individuals are given a value of -1). As of version `0.1.0` the relation matrix is a manually created file, where relationship values are assigned via manual inspection of the family pedigree.
@@ -40,19 +47,5 @@ This input is a matrix containing all the pairwise relationships of individuals 
 
 This file includes the same individual IDs used in the relationship matrix as well as the disease and variant status for all individuals.
 
-
-## related info
-
-- slides on concept: https://docs.google.com/presentation/d/1yWlj400fbsrS1CCd4wpy7ve9Sov56H82lZh7hoW8vyg/edit#slide=id.g34c18bf0cf2_0_112
-- penetrance related code: https://github.com/SequenceBio/seqbio-pedigree-ranking
-- penetrance related notes: https://sequencebio.atlassian.net/wiki/spaces/SEQUENCEPE/pages/1443364866/Quantifying+power+of+a+family+for+discovery
-
-
-
-## TODO 
-- add a description of the formulas and scoring system here
-- outline how to deploy the code
-- a means of building the relationship matricies easily?
-- generate scores for a variety of situations. Do they make sense? Can they be summed across families?
 
 
