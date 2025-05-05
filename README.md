@@ -17,11 +17,20 @@ of unaffected evidence can be customized.
 
 ## How it works
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette: 
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette file: 
+`vignettes/seqbio.variant.scoring-penetrance_and_ibd.Rmd`
+or within R, run:
+```
+vignette('seqbio.variant.scoring-penetrance_and_ibd')
+```
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette: 
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette file: 
+`vignettes/seqbio.variant.scoring-variant_scoring.Rmd`
 
-
+or within R, run:
+```
+vignette('seqbio.variant.scoring-variant_scoring')
+```
 
 ### The relationship matrix
 
