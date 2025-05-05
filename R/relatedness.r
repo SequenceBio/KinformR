@@ -4,7 +4,7 @@
 #'
 #' These scores can be used to compare variants of interest within a family.
 #'
-#' For each individual, a relationship-informed weight is applied to their sharing
+#' For each encoded relationship, a relationship-informed weight is applied to their sharing
 #' or not sharing of a variant.
 #' The score for affected status is:
 #'     (1 / coefficient_of_relatedness) * status_weight
@@ -12,7 +12,7 @@
 #'     (1/0.125) * affected weight
 #'     8 * 1
 #'     = 8 points in favour of the variant.
-#' Whereas for unaffected unaffected individuals, scores decay the further a person is in
+#' Whereas for unaffected individuals, scores decay the further a person is in
 #' relation to the proband based on the formula:
 #'     ((unaffected.max*2) * coefficient_of_relatedness ) * unaffected_weight
 #' For example, with the default unaffected.max of 8. The sister that does not have a variant would get a score of
@@ -22,12 +22,12 @@
 #' If these were the only two relatives considered we could sum the points
 #' and get a score in favour of the variant of
 #'     8 + 4 = 12
-#' Ig there is evidence against a variant, this is factored into the score as:
+#' If there is evidence against a variant, this is factored into the score as:
 #'     total_score = evidence_for - evidence_against
 #' For example, if there were also an affected sibling without the variant we would have the score against of:
 #'  (1/0.5) * 1 = 2
 #' The final score for the variant would then be
-#'.    for - against = total
+#'     for - against = total
 #'     12 - 2 = 10
 #' Giving a final score of 10 for the variant. Comparing values across variants can be used
 #' to rank them based on pedigree-informed levels of variant sharing across affected
@@ -156,8 +156,8 @@ subset.mat <- function(mat.df, status.df){
 #' of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.
 #' @return A labelled vector with names: score, score.for, score.against
 #' @examples
-#' mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
-#' tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+#' mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+#' tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
 #' mat.df <- read.relation.mat(mat.name1)
 #' ind.df <- read.indiv(tsv.name1)
 #' ind.df.status <-  score.variant.status(ind.df)

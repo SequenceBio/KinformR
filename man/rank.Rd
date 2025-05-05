@@ -4,14 +4,14 @@
 \alias{rank}
 \title{Rank the pedigrees using the pihat values.}
 \usage{
-rank(pihat, rank.by.K = FALSE)
+rank(pihat, K = -1, rank.by.K = FALSE)
 }
 \arguments{
 \item{pihat}{Estimated proportion of genome shared between individuals, from function: ibd.}
 
-\item{rank.by.K}{Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE}
-
 \item{K}{Estimated penetrance value, from function: penetrance.}
+
+\item{rank.by.K}{Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE}
 }
 \description{
 Rank the pedigrees using the pihat values.

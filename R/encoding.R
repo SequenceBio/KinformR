@@ -61,7 +61,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' TODO - switch to numbers 1-4 and -1?
 #' @param indiv.df A dataframe with the format:
 #' name	         status	variant
-#' MS-4107-1001      A      0/1
+#' MS-5678-1001      A      0/1
 #' @param theoretical.max Should the theoretical maxima be returned instead of the observed values?
 #' When true, the scoring assumes correct variant-status pair for each individual.
 #' Default is FALSE.
