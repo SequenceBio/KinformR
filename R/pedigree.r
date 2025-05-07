@@ -18,19 +18,26 @@ penetrance <- function(K, a, b, c, d, n) {
 }
 
 
-#TODO - CHECK with BARI
-# for IBD, am I wrong and is this the correct param description?
-#' @param n The number of non-overlapping paths between all pedigree members.
-
-
 #' Calculation of Identity by descent (IBD).
 #'
-#' Use the relationships of information from the pedigree to calculate and
+#' Use the relationship informationfrom the pedigree to
 #' estimate of the amount of the genome they have inherited it from a
 #' common ancestor without recombination.
 #'
 #' Can do this for the total potential relatedness in a pedigree (theoretical=TRUE),
-#' or for the actual relatedness across collected samples (theoretical=FALSE)
+#' or for the actual relatedness across collected samples (theoretical=FALSE).
+#' For the theoretical=TRUE case, in the unaffected trees, if we have a sample from the parent,
+#' then the offspring do not provide any additional information for a max IBD calculation.
+#' This means that K does not scale with n.
+#'
+#' For theoretical=FALSE,  sometimes we don’t have the healthy parent in an unaffected tree,
+#' and only have a child. In this case, the IBD contribution from the child is 1/4,
+#' and since they’re unaffected and therefore are a counter-filter,
+#' they would contribute 1-1/4 = 3/4 to the total relatedness.
+#' Either the parent is a non-obligate carrier, or is a non-carrier.
+#' The probability of the children depends on which of those is true,
+#' so we have the additional set of terms in the theoretical=FALSE logic.
+#'
 #'
 #' @param a Count of affected individuals
 #' @param b Count of obligate carriers
@@ -63,16 +70,12 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 #'
 #' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
 #' @param K Estimated penetrance value, from function: penetrance.
-#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
 #'
 #' @return
 #' @export
 #'
 #' @examples
-rank <- function(pihat, K=-1,rank.by.K=FALSE) {
-  if(rank.by.K==TRUE){
-    log(2^pihat*K)
-  }
+rank <- function(pihat, K=-1) {
   log(2^pihat)
 }
 
@@ -113,7 +116,6 @@ read.pedigree <- function(filename){
 #'   - Exclude subjects younger than age of onset
 #'
 #' @param h A data frame containing the encoded pedigree information
-#' @param rank.by.K Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
 #' @return A data frame containing the theoretical ranking of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
 #' as well as a current ranking, examining only those for whom you currently have DNA.
@@ -122,8 +124,8 @@ read.pedigree <- function(filename){
 #' @examples
 #' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
 #' example.pedigree.df <- read.pedigree(example.pedigree.file)
-#' penetrance.df <- cal.penetrance(example.pedigree.df)
-cal.penetrance <- function(h, rank.by.K=FALSE){
+#' penetrance.df <- score.pedigree(example.pedigree.df)
+score.pedigree <- function(h){
 
   family_vec <- c()
   penetrance_vec <- c()
@@ -149,7 +151,7 @@ cal.penetrance <- function(h, rank.by.K=FALSE){
 
     K <- optimize(penetrance, c(0,1), max_a, max_b, max_c, max_d, max_n, maximum=TRUE)$max
     max_pihat <- ibd(max_a, max_b, max_c, max_d, max_n, K)
-    max_rank <- rank(max_pihat, K, rank.by.K = rank.by.K )
+    max_rank <- rank(max_pihat, K)
     current_pihat <- ibd(a_actual, b_actual, c_actual, d_actual, n_actual, K, FALSE)
     current_rank <- rank(current_pihat, K)
 
