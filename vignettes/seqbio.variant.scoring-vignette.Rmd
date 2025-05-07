@@ -64,8 +64,8 @@ For most real-world applications, you will likely want to score family members i
 
 ```{r}
 
-ex_score_default <- score.fam(rel.mat, full.df.status)
-ex_score_default
+ex.score.default <- score.fam(rel.mat, full.df.status)
+ex.score.default
 ``` 
 
 
@@ -78,16 +78,16 @@ As previously noted, if an individual is present in the relationship matrix and 
 The scoring can be changed to summing across all combinations as opposed to the mean by passing the following options. Note using the program in this way will return higher scores for more dense pedigrees.
 ```{r}
 
-ex_score_sum <- score.fam(rel.mat, full.df.status, return.sums = TRUE, return.means = FALSE)
-ex_score_sum
+ex.score.sum <- score.fam(rel.mat, full.df.status, return.sums = TRUE, return.means = FALSE)
+ex.score.sum
 ``` 
 
 
 To obtain a long form table with the scores for variants expressed relative to each individual, set both `return.sums` and `return.means` to `FALSE`. This output can aid in identifying which individuals are carrying the most weight in a family's score.
 ```{r}
 
-ex_score_table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
-ex_score_table
+ex.score.table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
+ex.score.table
 ``` 
 ## How scoring works 
 ### A Minimal example, scoring a variant from perspective of a single individual.
@@ -103,10 +103,10 @@ rel.mat.proband <-  rel.mat["MS-1234-1001",]
 rel.mat.proband
 ```
 This is taken along with a list of encoded statuses of all individuals for the given variant. Above `score.variant.status` used the disease status and a genetic variant of each individual to determine which of the following categories they fall in to:
-    - A_c = Affected individual with variant
-    - A_i = Affected individual without variant
-    - U_c = Unaffected individual without variant
-    - U_i = Unaffected individual with variant
+    - A.c = Affected individual with variant
+    - A.i = Affected individual without variant
+    - U.c = Unaffected individual without variant
+    - U.i = Unaffected individual with variant
 Within `score.fam`, a labelled list of encodings for all individuals is generated.
 ```{r}
 name.stat.dict <- full.df.status$statvar.cat
@@ -119,15 +119,15 @@ name.stat.dict
 rel.dict<-build.relation.dict(rel.mat.proband, name.stat.dict)
 rel.dict
 ``` 
-In this example, the proband, two first degree relations, and a third degree relations are all affected and share the candidate variant. For the affected correct (`A_c`) category we therefore see the following encoded:
+In this example, the proband, two first degree relations, and a third degree relations are all affected and share the candidate variant. For the affected correct (`A.c`) category we therefore see the following encoded:
 
 ```{r}
-rel.dict$A_c
+rel.dict$A.c
 ``` 
 
-Since one first degree unaffected relative has the variant, they are categorized as "unaffected incorrect"(`U_i`) and we see:
+Since one first degree unaffected relative has the variant, they are categorized as "unaffected incorrect"(`U.i`) and we see:
 ```{r}
-rel.dict$U_i
+rel.dict$U.i
 ``` 
 
 Deriving a relatedness-weighted score for the variant from the perspective of the given individual is then performed by `calc.rv.score`
@@ -141,7 +141,7 @@ for(i in 0:7){
 
 The score for affected status increase as individuals become more distantly related. The formula is:
 ```
-   (1 / coefficient_of_relatedness) * affected.weight
+   (1 / coefficient.of.relatedness) * affected.weight
 ```
 For example, an affected cousin (encoded as a 3 and having a coefficient of relatedness of 0.125) would get a score of:
 ```
@@ -152,11 +152,11 @@ For example, an affected cousin (encoded as a 3 and having a coefficient of rela
 
 For unaffected individuals, scores decay the further a person is in relation to the query individual based on the formula:
 ```
-((unaffected.max*2) * coefficient_of_relatedness ) * unaffected.weight
+((unaffected.max*2) * coefficient.of.relatedness ) * unaffected.weight
 ```
 For example, with the default `unaffected.weight = 0.5` and unaffected sister that does not have a variant would get a score of
 ```
-     ((8*2) 0.5) * unaffected_weight
+     ((8*2) 0.5) * unaffected.weight
      (16 * 0.5) * 0.5
      = 4 points for the variant.
 
@@ -168,7 +168,7 @@ If these were the only two relatives considered we could sum the points and get 
 ```
 If there is evidence against a variant, this is factored into the score as:
 ```
-     total_score = evidence_for - evidence_against
+     total.score = evidence.for - evidence.against
 ```
 For example, if there were also an affected sibling without the variant we would have the score against of:
 ```

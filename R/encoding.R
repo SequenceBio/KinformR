@@ -1,12 +1,12 @@
 
 
 #' Take a disease status and a genetic variant and determine which category the combo falls in.
-#' A_c = Affected individual with ALT variant
-#' A_i = Affected individual without ALT variant
-#' U_c = Unaffected individual without ALT variant
-#' U_i = Unaffected individual with ALT variant
+#' A.c = Affected individual with ALT variant
+#' A.i = Affected individual without ALT variant
+#' U.c = Unaffected individual without ALT variant
+#' U.i = Unaffected individual with ALT variant
 #' If theoretical.max = TRUE the true variant statuses are ignored and all
-#' affected/unaffected are assigned A_c and U_c respectively.
+#' affected/unaffected are assigned A.c and U.c respectively.
 #' These encoding can then be used show what a family's max score would be.
 #'
 #' @param status Disease status of an individual. A = affected, U = unaffected.
@@ -16,30 +16,30 @@
 #' Default is FALSE.
 #' @return a string
 #' @examples
-#' assign.status("A", "0/1") == "A_c"
-#' assign.status("A", "0|0") == "A_i"
-#' assign.status("U", 1) == "U_i"
-#' assign.status("U", "0|0") =="U_c"
+#' assign.status("A", "0/1") == "A.c"
+#' assign.status("A", "0|0") == "A.i"
+#' assign.status("U", 1) == "U.i"
+#' assign.status("U", "0|0") =="U.c"
 #' @export
 assign.status <- function(status, variant,  theoretical.max=FALSE){
   if(status == "A"){
     if(theoretical.max){
-      return("A_c")
+      return("A.c")
     }
     else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
-      return("A_c")
+      return("A.c")
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
-      return("A_i")
+      return("A.i")
     }else{
       return("unk")
     }
   }else if (status == "U"){
     if(theoretical.max){
-      return("U_c")
+      return("U.c")
     } else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
-      return("U_i")
+      return("U.i")
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
-      return("U_c")
+      return("U.c")
     }else{
       return("unk")
     }
@@ -50,7 +50,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 
 #' Take the dataframe with variants and status and determine which indivudals
 #' are scored correctly and which are scored incorrectly.
-#' Assign an A_c, A_i, U_c, U_i, unk
+#' Assign an A.c, A.i, U.c, U.i, unk
 #'
 #' Variants can be encoded as binary (0 or 1, genotypes 0/0 or 0/1, or phased genotypes 0|0 0|1).
 #' Note the program assumes alt is the disease allele. homozygous alts are allowed.
@@ -100,10 +100,10 @@ return(indiv.df)
 #' @export
 build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
   indiv.rels = list(
-    "A_c" = c(),
-    "A_i" = c(),
-    "U_c" = c(),
-    "U_i" = c()
+    "A.c" = c(),
+    "A.i" = c(),
+    "U.c" = c(),
+    "U.i" = c()
   )
 
   for(i in seq_along(mat.row)){

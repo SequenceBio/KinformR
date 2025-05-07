@@ -127,45 +127,45 @@ read.pedigree <- function(filename){
 #' penetrance.df <- score.pedigree(example.pedigree.df)
 score.pedigree <- function(h){
 
-  family_vec <- c()
-  penetrance_vec <- c()
-  max_pihat_vec <- c()
-  max_rank_vec <- c()
-  current_pihat_vec <- c()
-  current_rank_vec <- c()
+  family.vec <- c()
+  penetrance.vec <- c()
+  max.pihat.vec <- c()
+  max.rank.vec <- c()
+  current.pihat.vec <- c()
+  current.rank.vec <- c()
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
-    max_a <- h[i, "max_a"]
-    max_b <- h[i, "max_b"]
-    max_c <- h[i, "max_c"]
-    max_d <- h[i, "max_d"]
-    max_n <- h[i, "max_n"]
-    a_actual <- h[i, "a"]
-    b_actual <- h[i, "b"]
-    c_actual <- h[i, "c"]
-    d_actual <- h[i, "d"]
-    n_actual <- h[i, "n"]
+    max.a <- h[i, "max_a"]
+    max.b <- h[i, "max_b"]
+    max.c <- h[i, "max_c"]
+    max.d <- h[i, "max_d"]
+    max.n <- h[i, "max_n"]
+    a.actual <- h[i, "a"]
+    b.actual <- h[i, "b"]
+    c.actual <- h[i, "c"]
+    d.actual <- h[i, "d"]
+    n.actual <- h[i, "n"]
 
-    max_d <- as.numeric(strsplit(as.character(max_d), ",")[[1]])
-    max_n <- as.numeric(strsplit(as.character(max_n), ",")[[1]])
+    max.d <- as.numeric(strsplit(as.character(max.d), ",")[[1]])
+    max.n <- as.numeric(strsplit(as.character(max.n), ",")[[1]])
 
-    K <- optimize(penetrance, c(0,1), max_a, max_b, max_c, max_d, max_n, maximum=TRUE)$max
-    max_pihat <- ibd(max_a, max_b, max_c, max_d, max_n, K)
-    max_rank <- rank(max_pihat, K)
-    current_pihat <- ibd(a_actual, b_actual, c_actual, d_actual, n_actual, K, FALSE)
-    current_rank <- rank(current_pihat, K)
+    K <- optimize(penetrance, c(0,1), max.a, max.b, max.c, max.d, max.n, maximum=TRUE)$max
+    max.pihat <- ibd(max.a, max.b, max.c, max.d, max.n, K)
+    max.rank <- rank(max.pihat, K)
+    current.pihat <- ibd(a.actual, b.actual, c.actual, d.actual, n.actual, K, FALSE)
+    current.rank <- rank(current.pihat, K)
 
-    family_vec <- c(family_vec, family)
-    penetrance_vec <- c(penetrance_vec, K)
-    max_pihat_vec <- c(max_pihat_vec, max_pihat)
-    max_rank_vec <- c(max_rank_vec, max_rank)
-    current_pihat_vec <- c(current_pihat_vec, current_pihat)
-    current_rank_vec <- c(current_rank_vec,current_rank)
+    family.vec <- c(family.vec, family)
+    penetrance.vec <- c(penetrance.vec, K)
+    max.pihat.vec <- c(max.pihat.vec, max.pihat)
+    max.rank.vec <- c(max.rank.vec, max.rank)
+    current.pihat.vec <- c(current.pihat.vec, current.pihat)
+    current.rank.vec <- c(current.rank.vec,current.rank)
   }
 
-  df <- data.frame(family_vec, penetrance_vec, max_pihat_vec, max_rank_vec, current_pihat_vec, current_rank_vec)
-  colnames(df) <- c("family", "penetrance", "max_pi-hat", "max_rank", "current_pi-hat", "current_rank")
-  df$pct_of_max <- df$current_rank / df$max_rank * 100
+  df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.rank.vec, current.pihat.vec, current.rank.vec)
+  colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.rank", "current.pi-hat", "current.rank")
+  df$pct.of.max <- df$current.rank / df$max.rank * 100
   df[, -1] <- round(df[, -1], 2)
   return(df)
 }

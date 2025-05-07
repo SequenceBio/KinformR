@@ -3,12 +3,12 @@
 \name{assign.status}
 \alias{assign.status}
 \title{Take a disease status and a genetic variant and determine which category the combo falls in.
-A_c = Affected individual with ALT variant
-A_i = Affected individual without ALT variant
-U_c = Unaffected individual without ALT variant
-U_i = Unaffected individual with ALT variant
+A.c = Affected individual with ALT variant
+A.i = Affected individual without ALT variant
+U.c = Unaffected individual without ALT variant
+U.i = Unaffected individual with ALT variant
 If theoretical.max = TRUE the true variant statuses are ignored and all
-affected/unaffected are assigned A_c and U_c respectively.
+affected/unaffected are assigned A.c and U.c respectively.
 These encoding can then be used show what a family's max score would be.}
 \usage{
 assign.status(status, variant, theoretical.max = FALSE)
@@ -27,17 +27,17 @@ a string
 }
 \description{
 Take a disease status and a genetic variant and determine which category the combo falls in.
-A_c = Affected individual with ALT variant
-A_i = Affected individual without ALT variant
-U_c = Unaffected individual without ALT variant
-U_i = Unaffected individual with ALT variant
+A.c = Affected individual with ALT variant
+A.i = Affected individual without ALT variant
+U.c = Unaffected individual without ALT variant
+U.i = Unaffected individual with ALT variant
 If theoretical.max = TRUE the true variant statuses are ignored and all
-affected/unaffected are assigned A_c and U_c respectively.
+affected/unaffected are assigned A.c and U.c respectively.
 These encoding can then be used show what a family's max score would be.
 }
 \examples{
-assign.status("A", "0/1") == "A_c"
-assign.status("A", "0|0") == "A_i"
-assign.status("U", 1) == "U_i"
-assign.status("U", "0|0") =="U_c"
+assign.status("A", "0/1") == "A.c"
+assign.status("A", "0|0") == "A.i"
+assign.status("U", 1) == "U.i"
+assign.status("U", "0|0") =="U.c"
 }

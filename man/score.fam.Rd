@@ -22,9 +22,9 @@ score.fam(
 
 \item{status.df}{A dataframe with the encoded variant/disease status of each individual}
 
-\item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
+\item{affected.weight}{A coefficient to multiply the calculated A_c and A.i relatedness values by.}
 
-\item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
+\item{unaffected.weight}{A coefficient to multiply the U.c and U.i relatedness values by.}
 
 \item{return.sums}{Boolean indicating if sum of family variant scores should be returned (default = FALSE).}
 
@@ -63,5 +63,5 @@ tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring
 mat.df <- read.relation.mat(mat.name1)
 ind.df <- read.indiv(tsv.name1)
 ind.df.status <-  score.variant.status(ind.df)
-score_default <- score.fam(mat.df, ind.df.status)
+score.default <- score.fam(mat.df, ind.df.status)
 }
