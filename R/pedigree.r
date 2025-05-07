@@ -2,7 +2,7 @@
 #' Likelihood function for calculation of Pedigree-based autosomal dominant penetrance value.
 #' Formula deployed via optimize so as to determine the optimal value.
 #'
-#' @param K Seed value for the estimate of penetrance rate.
+#' @param K The range of penetrance values to be explored by the optimization function.
 #' @param a Count of affected individuals
 #' @param b Count of obligate carriers
 #' @param c Count of children of either affecteds or carriers, with no children of their own

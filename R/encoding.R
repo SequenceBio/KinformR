@@ -26,6 +26,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
     if(theoretical.max){
       return("A.c")
     }
+    #NOTE - Once in a while 1/0 genotypes crop up; also 0/2 etc. if derived from multi-allelics. This edge case not covered at present.
     else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
       return("A.c")
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
