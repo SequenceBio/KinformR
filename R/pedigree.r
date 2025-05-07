@@ -69,7 +69,7 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 #' @export
 #'
 #' @examples
-score <- function(pihat, K=-1,score.by.K=FALSE) {
+score <- function(pihat, K=-1, score.by.K=FALSE) {
   if(score.by.K==TRUE){
     log(2^pihat*K)
   }

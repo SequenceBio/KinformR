@@ -16,12 +16,11 @@ library(seqbio.variant.scoring)
 
 ## Introduction
 
-The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families ina study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families.
+The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families in a study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families.
 
 ## Estimating power of families
 
 The `cal.penetrance` function generates both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
-
 
 
 ## The input data
