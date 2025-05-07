@@ -4,7 +4,7 @@
 \alias{score.variant.status}
 \title{Take the dataframe with variants and status and determine which indivudals
 are scored correctly and which are scored incorrectly.
-Assign an A_c, A_i, U_c, U_i, unk}
+Assign an A.c, A.i, U.c, U.i, unk}
 \usage{
 score.variant.status(indiv.df, theoretical.max = FALSE)
 }

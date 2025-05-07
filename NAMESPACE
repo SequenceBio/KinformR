@@ -3,7 +3,7 @@
 S3method(sum,fam.scores)
 export(assign.status)
 export(build.relation.dict)
-export(cal.penetrance)
+export(score.pedigree)
 export(calc.rv.score)
 export(encode.rows)
 export(ibd)

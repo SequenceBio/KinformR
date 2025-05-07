@@ -7,23 +7,23 @@
 #' For each encoded relationship, a relationship-informed weight is applied to their sharing
 #' or not sharing of a variant.
 #' The score for affected status is:
-#'     (1 / coefficient_of_relatedness) * status_weight
+#'     (1 / coefficient.of.relatedness) * status.weight
 #' For example, an affected cousin (encoded as a 3) would get a score of:
 #'     (1/0.125) * affected weight
 #'     8 * 1
 #'     = 8 points in favour of the variant.
 #' Whereas for unaffected individuals, scores decay the further a person is in
 #' relation to the proband based on the formula:
-#'     ((unaffected.max*2) * coefficient_of_relatedness ) * unaffected_weight
+#'     ((unaffected.max*2) * coefficient.of.relatedness ) * unaffected.weight
 #' For example, with the default unaffected.max of 8. The sister that does not have a variant would get a score of
-#'     ((8*2) 0.5) * unaffected_weight
+#'     ((8*2) 0.5) * unaffected.weight
 #'     (16 * 0.5) * 0.5
 #'     = 4 points for the variant.
 #' If these were the only two relatives considered we could sum the points
 #' and get a score in favour of the variant of
 #'     8 + 4 = 12
 #' If there is evidence against a variant, this is factored into the score as:
-#'     total_score = evidence_for - evidence_against
+#'     total.score = evidence.for - evidence.against
 #' For example, if there were also an affected sibling without the variant we would have the score against of:
 #'  (1/0.5) * 1 = 2
 #' The final score for the variant would then be
@@ -40,8 +40,8 @@
 #'
 #' Input:
 #'
-#' @param fam_list
-#'         - A list with the names: ['A_c', 'A_i', 'U_c', 'U_i']
+#' @param fam.list
+#'         - A list with the names: ['A.c', 'A.i', 'U.c', 'U.i']
 #'           respectively containing the affected correct, affected incorrect,
 #'           unaffected correct and unaffected incorrect.
 #'         - This can be generated with the function: score.variant.status
@@ -49,8 +49,8 @@
 #'           reference's relatives as encoded based on their degree of relatedness to the
 #'           reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
 #'           cousin = 3, etc.)
-#' @param affected.weight A coefficient to multiply the calculated A_c and A_i relatedness values by.
-#' @param unaffected.weight A coefficient to multiply the U_c and U_i relatedness values by.
+#' @param affected.weight A coefficient to multiply the calculated A.c and A.i relatedness values by.
+#' @param unaffected.weight A coefficient to multiply the U.c and U.i relatedness values by.
 #' @param unaffected.max This  param controls the score given to a first degree unaffected relatives
 #'         scores decay from this specified maximum by half for each subsequent relationship degree.
 #' @param max.err A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
@@ -59,10 +59,10 @@
 #' @return A list with three components: score, score.for, score.against.
 #'
 #' @examples
-#' relations<-list("A_c" = c(0, 1, 3, 1),"A_i" = c(3),"U_c" = c(1, 2),"U_i" = c(1))
+#' relations<-list("A.c" = c(0, 1, 3, 1),"A.i" = c(3),"U.c" = c(1, 2),"U.i" = c(1))
 #' rv.scores <- calc.rv.score(relations)
 #' @export
-calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, unaffected.max=8, max.err=4){
+calc.rv.score <- function(fam.list, affected.weight=1, unaffected.weight=0.5, unaffected.max=8, max.err=4){
 
     relatedness = list()
 
@@ -70,43 +70,43 @@ calc.rv.score <- function(fam_list, affected.weight=1, unaffected.weight=0.5, un
         relatedness[i+1] =  1 / (2 ** (i))
     }
 
-    score_dict = list()
+    score.dict = list()
 
-    score_dict[["A_c"]]
-    score_dict[["A_i"]]
-    score_dict[["U_c"]]
-    score_dict[["U_i"]]
+    score.dict[["A.c"]]
+    score.dict[["A.i"]]
+    score.dict[["U.c"]]
+    score.dict[["U.i"]]
 
     #TODO - change this to apply the different formula for the unaffecteds
-    for (n in names(fam_list)){
+    for (n in names(fam.list)){
         scores = c()
-        if(n == "A_c" || n == "A_i"){
-          for (x in fam_list[[n]]){
+        if(n == "A.c" || n == "A.i"){
+          for (x in fam.list[[n]]){
             #for affected, importance score gets higher the further from reference individual you get.
             scores = c(scores, 1/relatedness[[x+1]])
           }
-        }else if ( n=="U_c" || n == "U_i"){
-          for (x in fam_list[[n]]){
+        }else if ( n=="U.c" || n == "U.i"){
+          for (x in fam.list[[n]]){
             #for unaffected, importance score gets lower the further from reference individual you get.
             scores = c(scores, (unaffected.max*2) * relatedness[[x+1]])
           }
         }
-        score_dict[[n]] = scores
+        score.dict[[n]] = scores
     }
 
-    weighted_for =  sum(score_dict[["A_c"]]*affected.weight ) +
-                    sum(score_dict[["U_c"]]*unaffected.weight)
+    weighted.for =  sum(score.dict[["A.c"]]*affected.weight ) +
+                    sum(score.dict[["U.c"]]*unaffected.weight)
 
 
-    weighted_against = sum(score_dict[["A_i"]]*affected.weight ) +
-                    sum(score_dict[["U_i"]]*unaffected.weight)
+    weighted.against = sum(score.dict[["A.i"]]*affected.weight ) +
+                    sum(score.dict[["U.i"]]*unaffected.weight)
 
-    out.list <-  list("score" = weighted_for - weighted_against,
-                      "score.for" = weighted_for,
-                      "score.against" = weighted_against )
+    out.list <-  list("score" = weighted.for - weighted.against,
+                      "score.for" = weighted.for,
+                      "score.against" = weighted.against )
 
 
-    n.incor <- length(score_dict[["A_i"]]) + length(score_dict[["U_i"]])
+    n.incor <- length(score.dict[["A.i"]]) + length(score.dict[["U.i"]])
     if(n.incor > max.err){
       out.list[["score"]] <- 0
     }
@@ -146,8 +146,8 @@ subset.mat <- function(mat.df, status.df){
 #'
 #' @param relation.mat A relationship matrix for the family.
 #' @param status.df A dataframe with the encoded variant/disease status of each individual
-#' @param affected.weight A coefficient to multiply the calculated A_c and A_i relatedness values by.
-#' @param unaffected.weight A coefficient to multiply the U_c and U_i relatedness values by.
+#' @param affected.weight A coefficient to multiply the calculated A.c and A.i relatedness values by.
+#' @param unaffected.weight A coefficient to multiply the U.c and U.i relatedness values by.
 #' @param return.sums Boolean indicating if sum of family variant scores should be returned (default = FALSE).
 #' @param return.means Boolean indicating if mean of all family variant scores should be returned (default = TRUE).
 #' @param affected.only Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).
@@ -161,7 +161,7 @@ subset.mat <- function(mat.df, status.df){
 #' mat.df <- read.relation.mat(mat.name1)
 #' ind.df <- read.indiv(tsv.name1)
 #' ind.df.status <-  score.variant.status(ind.df)
-#' score_default <- score.fam(mat.df, ind.df.status)
+#' score.default <- score.fam(mat.df, ind.df.status)
 #' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,

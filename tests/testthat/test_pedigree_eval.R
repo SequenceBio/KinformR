@@ -8,5 +8,5 @@ test_that("Data are read from files correctly", {
   example.pedigree.df <- read.pedigree(example.pedigree.file)
 
 
-  penetrance.df <- cal.penetrance(example.pedigree.df)
+  penetrance.df <- score.pedigree(example.pedigree.df)
 })
