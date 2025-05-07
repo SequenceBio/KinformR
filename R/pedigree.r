@@ -70,23 +70,12 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 #'
 #' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
 #' @param K Estimated penetrance value, from function: penetrance.
-<<<<<<< HEAD
-#' @param score.by.K Should the scoreing of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
-=======
->>>>>>> 3c7b0707afec488ed6daceabeb17626cd7b33712
 #'
 #' @return
 #' @export
 #'
 #' @examples
-<<<<<<< HEAD
-score <- function(pihat, K=-1, score.by.K=FALSE) {
-  if(score.by.K==TRUE){
-    log(2^pihat*K)
-  }
-=======
-rank <- function(pihat, K=-1) {
->>>>>>> 3c7b0707afec488ed6daceabeb17626cd7b33712
+score <- function(pihat, K=-1) {
   log(2^pihat)
 }
 
@@ -127,12 +116,7 @@ read.pedigree <- function(filename){
 #'   - Exclude subjects younger than age of onset
 #'
 #' @param h A data frame containing the encoded pedigree information
-<<<<<<< HEAD
-#' @param score.by.K Should the scoreing of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE
-#' @return A data frame containing the theoretical scoreing of the power of a
-=======
-#' @return A data frame containing the theoretical ranking of the power of a
->>>>>>> 3c7b0707afec488ed6daceabeb17626cd7b33712
+#' @return A data frame containing the theoretical scoring of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
 #' as well as a current scoreing, examining only those for whom you currently have DNA.
 #' @export
@@ -140,17 +124,6 @@ read.pedigree <- function(filename){
 #' @examples
 #' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
 #' example.pedigree.df <- read.pedigree(example.pedigree.file)
-<<<<<<< HEAD
-#' penetrance.df <- cal.penetrance(example.pedigree.df)
-cal.penetrance <- function(h, score.by.K=FALSE){
-
-  family_vec <- c()
-  penetrance_vec <- c()
-  max_pihat_vec <- c()
-  max_score_vec <- c()
-  current_pihat_vec <- c()
-  current_score_vec <- c()
-=======
 #' penetrance.df <- score.pedigree(example.pedigree.df)
 score.pedigree <- function(h){
 
@@ -160,7 +133,6 @@ score.pedigree <- function(h){
   max.rank.vec <- c()
   current.pihat.vec <- c()
   current.rank.vec <- c()
->>>>>>> 3c7b0707afec488ed6daceabeb17626cd7b33712
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
     max.a <- h[i, "max_a"]
@@ -177,25 +149,6 @@ score.pedigree <- function(h){
     max.d <- as.numeric(strsplit(as.character(max.d), ",")[[1]])
     max.n <- as.numeric(strsplit(as.character(max.n), ",")[[1]])
 
-<<<<<<< HEAD
-    K <- optimize(penetrance, c(0,1), max_a, max_b, max_c, max_d, max_n, maximum=TRUE)$max
-    max_pihat <- ibd(max_a, max_b, max_c, max_d, max_n, K)
-    max_score <- score(max_pihat, K, score.by.K = score.by.K )
-    current_pihat <- ibd(a_actual, b_actual, c_actual, d_actual, n_actual, K, FALSE)
-    current_score <- score(current_pihat, K)
-
-    family_vec <- c(family_vec, family)
-    penetrance_vec <- c(penetrance_vec, K)
-    max_pihat_vec <- c(max_pihat_vec, max_pihat)
-    max_score_vec <- c(max_score_vec, max_score)
-    current_pihat_vec <- c(current_pihat_vec, current_pihat)
-    current_score_vec <- c(current_score_vec,current_score)
-  }
-
-  df <- data.frame(family_vec, penetrance_vec, max_pihat_vec, max_score_vec, current_pihat_vec, current_score_vec)
-  colnames(df) <- c("family", "penetrance", "max_pi-hat", "max_score", "current_pi-hat", "current_score")
-  df$pct_of_max <- df$current_score / df$max_score * 100
-=======
     K <- optimize(penetrance, c(0,1), max.a, max.b, max.c, max.d, max.n, maximum=TRUE)$max
     max.pihat <- ibd(max.a, max.b, max.c, max.d, max.n, K)
     max.rank <- rank(max.pihat, K)
@@ -213,7 +166,6 @@ score.pedigree <- function(h){
   df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.rank.vec, current.pihat.vec, current.rank.vec)
   colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.rank", "current.pi-hat", "current.rank")
   df$pct.of.max <- df$current.rank / df$max.rank * 100
->>>>>>> 3c7b0707afec488ed6daceabeb17626cd7b33712
   df[, -1] <- round(df[, -1], 2)
   return(df)
 }
