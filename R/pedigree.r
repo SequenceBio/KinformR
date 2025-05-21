@@ -6,7 +6,7 @@
 #' @param a Count of affected individuals
 #' @param b Count of obligate carriers
 #' @param c Count of children of either affecteds or carriers, with no children of their own
-#' @param d Count of Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
+#' @param d Count of trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)
 #' @param n Count of the number of second generation progeny in a given tree.
 #'
 #' @return K Pedigree-based estimation of autosomal dominant penetrance rate.
@@ -66,7 +66,7 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 
 
 
-#' Rank the pedigrees using the pihat values.
+#' Score the pedigrees using the pihat values.
 #'
 #' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
 #' @param K Estimated penetrance value, from function: penetrance.
@@ -75,7 +75,7 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 #' @export
 #'
 #' @examples
-rank <- function(pihat, K=-1) {
+score <- function(pihat, K=-1) {
   log(2^pihat)
 }
 
@@ -100,7 +100,7 @@ read.pedigree <- function(filename){
 
 #' Take the encoded information about the pedigrees and calculate penetrance.
 #'
-#' Determine a value rank of families by comparing their relationship structure.
+#' Determine a value score of families by comparing their relationship structure.
 #' More distant relationships between affecteds (e.g. affected cousins)
 #' is more valuable that close relationships (e.g. affected siblings)
 #' as there is less IBD and therefore a smaller search space.
@@ -116,9 +116,9 @@ read.pedigree <- function(filename){
 #'   - Exclude subjects younger than age of onset
 #'
 #' @param h A data frame containing the encoded pedigree information
-#' @return A data frame containing the theoretical ranking of the power of a
+#' @return A data frame containing the theoretical scoring of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
-#' as well as a current ranking, examining only those for whom you currently have DNA.
+#' as well as a current scoreing, examining only those for whom you currently have DNA.
 #' @export
 #'
 #' @examples

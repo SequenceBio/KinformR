@@ -17,11 +17,27 @@ of unaffected evidence can be customized.
 
 ## How it works
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette: 
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette file: 
+`vignettes/seqbio.variant.scoring-penetrance_and_ibd.Rmd`
+or within R, run:
+```
+vignette('seqbio.variant.scoring-penetrance_and_ibd')
+```
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette: 
+For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette file: 
+`vignettes/seqbio.variant.scoring-variant_scoring.Rmd`
+
+or within R, run:
+```
+vignette('seqbio.variant.scoring-variant_scoring')
+```
+
+## Scoring families
+
+### Then encoding file
 
 
+## Scoring Variants
 
 ### The relationship matrix
 
@@ -31,19 +47,5 @@ This input is a matrix containing all the pairwise relationships of individuals 
 
 This file includes the same individual IDs used in the relationship matrix as well as the disease and variant status for all individuals.
 
-
-## related info
-
-- slides on concept: https://docs.google.com/presentation/d/1yWlj400fbsrS1CCd4wpy7ve9Sov56H82lZh7hoW8vyg/edit#slide=id.g34c18bf0cf2_0_112
-- penetrance related code: https://github.com/SequenceBio/seqbio-pedigree-ranking
-- penetrance related notes: https://sequencebio.atlassian.net/wiki/spaces/SEQUENCEPE/pages/1443364866/Quantifying+power+of+a+family+for+discovery
-
-
-
-## TODO 
-- add a description of the formulas and scoring system here
-- outline how to deploy the code
-- a means of building the relationship matricies easily?
-- generate scores for a variety of situations. Do they make sense? Can they be summed across families?
 
 
