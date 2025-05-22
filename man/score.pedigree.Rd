@@ -4,20 +4,18 @@
 \alias{score.pedigree}
 \title{Take the encoded information about the pedigrees and calculate penetrance.}
 \usage{
-score.pedigree(h, rank.by.K = FALSE)
+score.pedigree(h)
 }
 \arguments{
 \item{h}{A data frame containing the encoded pedigree information}
-
-\item{rank.by.K}{Should the ranking of families be based on ibd (FALSE), or by IBD and K (TRUE). Default is FALSE}
 }
 \value{
-A data frame containing the theoretical ranking of the power of a
+A data frame containing the theoretical scoring of the power of a
 family assuming you were able to collect everyone on the simplified pedigree,
-as well as a current ranking, examining only those for whom you currently have DNA.
+as well as a current scoreing, examining only those for whom you currently have DNA.
 }
 \description{
-Determine a value rank of families by comparing their relationship structure.
+Determine a value score of families by comparing their relationship structure.
 More distant relationships between affecteds (e.g. affected cousins)
 is more valuable that close relationships (e.g. affected siblings)
 as there is less IBD and therefore a smaller search space.

@@ -136,6 +136,7 @@ score.pedigree <- function(h){
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
     max.a <- h[i, "max_a"]
+    #Yeezy yeezy whats good its ya boy
     max.b <- h[i, "max_b"]
     max.c <- h[i, "max_c"]
     max.d <- h[i, "max_d"]
@@ -148,6 +149,9 @@ score.pedigree <- function(h){
 
     max.d <- as.numeric(strsplit(as.character(max.d), ",")[[1]])
     max.n <- as.numeric(strsplit(as.character(max.n), ",")[[1]])
+
+    d.actual <- as.numeric(strsplit(as.character(d.actual), ",")[[1]])
+    n.actual <- as.numeric(strsplit(as.character(n.actual), ",")[[1]])
 
     K <- optimize(penetrance, c(0,1), max.a, max.b, max.c, max.d, max.n, maximum=TRUE)$max
     max.pihat <- ibd(max.a, max.b, max.c, max.d, max.n, K)

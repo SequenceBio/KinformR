@@ -8,7 +8,7 @@ Formula deployed via optimize so as to determine the optimal value.}
 penetrance(K, a, b, c, d, n)
 }
 \arguments{
-\item{K}{Seed value for the estimate of penetrance rate.}
+\item{K}{The range of penetrance values to be explored by the optimization function.}
 
 \item{a}{Count of affected individuals}
 
@@ -16,7 +16,7 @@ penetrance(K, a, b, c, d, n)
 
 \item{c}{Count of children of either affecteds or carriers, with no children of their own}
 
-\item{d}{Count of Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)}
+\item{d}{Count of trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring)}
 
 \item{n}{Count of the number of second generation progeny in a given tree.}
 }
