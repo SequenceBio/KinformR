@@ -130,12 +130,13 @@ score.pedigree <- function(h){
   family.vec <- c()
   penetrance.vec <- c()
   max.pihat.vec <- c()
-  max.rank.vec <- c()
+  max.score.vec <- c()
   current.pihat.vec <- c()
-  current.rank.vec <- c()
+  current.score.vec <- c()
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
     max.a <- h[i, "max_a"]
+    #Yeezy yeezy whats good its ya boy
     max.b <- h[i, "max_b"]
     max.c <- h[i, "max_c"]
     max.d <- h[i, "max_d"]
@@ -149,23 +150,26 @@ score.pedigree <- function(h){
     max.d <- as.numeric(strsplit(as.character(max.d), ",")[[1]])
     max.n <- as.numeric(strsplit(as.character(max.n), ",")[[1]])
 
+    d.actual <- as.numeric(strsplit(as.character(d.actual), ",")[[1]])
+    n.actual <- as.numeric(strsplit(as.character(n.actual), ",")[[1]])
+
     K <- optimize(penetrance, c(0,1), max.a, max.b, max.c, max.d, max.n, maximum=TRUE)$max
     max.pihat <- ibd(max.a, max.b, max.c, max.d, max.n, K)
-    max.rank <- rank(max.pihat, K)
+    max.score <- score(max.pihat, K)
     current.pihat <- ibd(a.actual, b.actual, c.actual, d.actual, n.actual, K, FALSE)
-    current.rank <- rank(current.pihat, K)
+    current.score <- score(current.pihat, K)
 
     family.vec <- c(family.vec, family)
     penetrance.vec <- c(penetrance.vec, K)
     max.pihat.vec <- c(max.pihat.vec, max.pihat)
-    max.rank.vec <- c(max.rank.vec, max.rank)
+    max.score.vec <- c(max.score.vec, max.score)
     current.pihat.vec <- c(current.pihat.vec, current.pihat)
-    current.rank.vec <- c(current.rank.vec,current.rank)
+    current.score.vec <- c(current.score.vec,current.score)
   }
 
-  df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.rank.vec, current.pihat.vec, current.rank.vec)
-  colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.rank", "current.pi-hat", "current.rank")
-  df$pct.of.max <- df$current.rank / df$max.rank * 100
+  df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.score.vec, current.pihat.vec, current.score.vec)
+  colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.score", "current.pi-hat", "current.score")
+  df$pct.of.max <- df$current.score / df$max.score * 100
   df[, -1] <- round(df[, -1], 2)
   return(df)
 }

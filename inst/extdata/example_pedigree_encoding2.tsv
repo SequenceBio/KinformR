@@ -1,0 +1,5 @@
+Family	max_a	a	max_b	b	max_c	c	max_d	d	max_n	n
+Fam1	2	2	1	1	5	0	1	1	1	1
+Fam2	3	2	1	0	4	1	0	0	0	0
+Fam3	3	3	3	0	2	1	0	0	0	0
+Fam4	2	2	0	0	3	0	1,1	1,1	2,4	2,4

@@ -22,7 +22,7 @@ score.fam(
 
 \item{status.df}{A dataframe with the encoded variant/disease status of each individual}
 
-\item{affected.weight}{A coefficient to multiply the calculated A_c and A.i relatedness values by.}
+\item{affected.weight}{A coefficient to multiply the calculated A.c and A.i relatedness values by.}
 
 \item{unaffected.weight}{A coefficient to multiply the U.c and U.i relatedness values by.}
 
