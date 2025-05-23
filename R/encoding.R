@@ -22,6 +22,8 @@
 #' assign.status("U", "0|0") =="U.c"
 #' @export
 assign.status <- function(status, variant,  theoretical.max=FALSE){
+
+  var.err<-"Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'"
   if(status == "A"){
     if(theoretical.max){
       return("A.c")
@@ -32,7 +34,7 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
       return("A.i")
     }else{
-      return("unk")
+      stop(var.err)
     }
   }else if (status == "U"){
     if(theoretical.max){
@@ -42,10 +44,10 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
     }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
       return("U.c")
     }else{
-      return("unk")
+      stop(var.err)
     }
   }else{
-    return("unk")
+    stop("Status must be one of: U or A")
   }
 }
 
