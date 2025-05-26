@@ -1,16 +1,17 @@
 # seqbio.variant.scoring
-## An R package method for scoring variants based on relationships of individuals.
+## An R package for relationship-informed pedigree and variant scoring
 
 
 ## Introduction
 
+Family-based genetic studies are effective for identifying rare variants underlying heritable diseases, yet are often challenged by issues such as incomplete penetrance and the difficulty of prioritizing numerous candidate variants. The proportion of the genome with identity-by-descent (IBD) and estimates of penetrance are metrics that can show the value of different pedigrees in family-based studies. Additionally, IBD and the genotypes of individuals are combined by seqbio.variant.scoringto to score the value of candidate variants.
 
 
 
 ## Installation
 
 
-The development version of `debar` can be installed directly from GitHub. You'll need to have the R package `devtools` installed and loaded. Also note if the build_vignettes option is set to true, you will need to have the R package `knitr` installed.
+The development version of `seqbio.variant.scoring` can be installed directly from GitHub. You'll need to have the R package `devtools` installed and loaded. Also note if the build_vignettes option is set to true, you will need to have the R package `knitr` installed.
 
 ```
 #install.packages("devtools")
@@ -24,14 +25,14 @@ library(seqbio.variant.scoring)
 
 The package's vignette contains detailed explanations of the functions and parameters.
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette file: 
+For a walk through of the `seqbio.variant.scoring` functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette file: 
 `vignettes/seqbio.variant.scoring-penetrance_and_ibd.Rmd`
 or within R, run:
 ```
 vignette('seqbio.variant.scoring-penetrance_and_ibd')
 ```
 
-For a walk through of the seqbio.variant.scoring functions for scoring the value of *variants* within families, see the corresponging vignette file: 
+For a walk through of the `seqbio.variant.scoring` functions for scoring the value of *variants* within families, see the corresponging vignette file: 
 `vignettes/seqbio.variant.scoring-variant_scoring.Rmd`
 
 or within R, run:
