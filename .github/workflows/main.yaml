@@ -1,0 +1,58 @@
+name: ContiniousIntegrationChecks
+run-name: ${{ github.actor }} triggered CI run with event ${{ github.event_name }} for branch ${{ github.ref }}
+on:
+  push:
+    branches: [ main, ci_add]
+  pull_request:
+    branches_ignore: []
+permissions:
+  id-token: write
+  contents: read # This is required for actions/checkout
+jobs:
+  fullCI:
+    defaults:
+      run:
+        shell: bash -l {0}
+    name: CI test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "The job's status is ${{ job.status }}."
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          audience: sts.amazonaws.com
+          aws-region: ca-central-1
+          role-to-assume: arn:aws:iam::188162314097:role/github-action-s3-package-access
+      - name: Set up conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          python-version: 3.12
+          channels: bioconda, conda-forge, defaults
+      - name: Conda create env and install dependencies
+        shell: bash -l {0}
+        run: |
+          conda deactivate
+          conda install boto3
+          conda config --add channels s3://package-mirror-sbi-shared/seqbio-pkgs/
+          conda create --name=sfvf_test python numpy pytest pytest-cov pandas pyyaml seqbiopy
+      - name: Conda activate env and run unit tests
+        shell: bash -l {0}
+        run: |
+          conda activate /usr/share/miniconda/envs/sfvf_test
+          conda install bcftools>=1.21
+          python -m pytest --cov workflow/scripts
+#commands above ensure that the channel is available, that the CLI tool is available, and
+#that unit tests using the package pass
+#      - name: Run PreCommit
+#        uses: pre-commit/action@v3.0.1
+#test syntax with: action-validator .github/workflows/main.yaml
+#from: https://github.com/mpalmer/action-validator
