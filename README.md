@@ -6,10 +6,10 @@
 
 Family-based genetic studies are effective for identifying rare variants underlying heritable diseases, yet are often challenged by issues such as incomplete penetrance and the difficulty of prioritizing numerous candidate variants. The proportion of the genome with identity-by-descent (IBD) and estimates of penetrance are metrics that can show the value of different pedigrees in family-based studies. Additionally, IBD and the genotypes of individuals are combined by seqbio.variant.scoringto to score the value of candidate variants.
 
+The `seqbio.variant.scoring` R package is meant to aid in comparative evaluation of families and candidate variants in rare-variant association studies. The package can be used for two methodologically overlapping but distinct purposes: 1) prior to any genetic/genomic evaluation, evaluation of relative detection power of pedigrees, can direct recruitment efforts by showing which unsampled individuals would be the most meaningful additions to a study, and 2) after sequencing and analysis,  variants based on association with disease status and familial  relationships of individuals, aids in variant prioritization
 
 
 ## Installation
-
 
 The development version of `seqbio.variant.scoring` can be installed directly from GitHub. You'll need to have the R package `devtools` installed and loaded. Also note if the build_vignettes option is set to true, you will need to have the R package `knitr` installed.
 
