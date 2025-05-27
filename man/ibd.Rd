@@ -32,10 +32,13 @@ estimate of the amount of the genome they have inherited it from a
 common ancestor without recombination.
 }
 \details{
-Can do this for the total potential relatedness in a pedigree (theoretical=TRUE),
+Can do this for the total potential relatedness
+in a pedigree (theoretical=TRUE),
 or for the actual relatedness across collected samples (theoretical=FALSE).
-For the theoretical=TRUE case, in the unaffected trees, if we have a sample from the parent,
-then the offspring do not provide any additional information for a max IBD calculation.
+For the theoretical=TRUE case, in the unaffected trees,
+if we have a sample from the parent,
+then the offspring do not provide any additional information
+for a max IBD calculation.
 This means that K does not scale with n.
 
 For theoretical=FALSE,  sometimes we don’t have the healthy parent in an unaffected tree,
@@ -45,4 +48,7 @@ they would contribute 1-1/4 = 3/4 to the total relatedness.
 Either the parent is a non-obligate carrier, or is a non-carrier.
 The probability of the children depends on which of those is true,
 so we have the additional set of terms in the theoretical=FALSE logic.
+}
+\examples{
+ibd <- ibd(3, 1, 5, 2, 1, 0.4576484)
 }

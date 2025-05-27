@@ -6,6 +6,14 @@
 \usage{
 \method{subset}{mat}(mat.df, status.df)
 }
+\arguments{
+\item{mat.df}{The full matrix file to subset}
+
+\item{status.df}{The list of sampled individuals, matrix is subset to only these individuals.}
+}
+\value{
+A subset of the input matrix.
+}
 \description{
 Take the matrix and subset out only the encoded individuals that are present in the status dataframe.
 }

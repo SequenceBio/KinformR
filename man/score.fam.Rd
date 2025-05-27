@@ -13,8 +13,7 @@ score.fam(
   return.sums = FALSE,
   return.means = TRUE,
   affected.only = TRUE,
-  max.err = 4,
-  subset.fam = TRUE
+  max.err = 4
 )
 }
 \arguments{

@@ -12,7 +12,8 @@ score.pedigree(h)
 \value{
 A data frame containing the theoretical scoring of the power of a
 family assuming you were able to collect everyone on the simplified pedigree,
-as well as a current scoreing, examining only those for whom you currently have DNA.
+as well as a current scoreing, examining only those for whom you currently
+have DNA.
 }
 \description{
 Determine a value score of families by comparing their relationship structure.
@@ -27,14 +28,16 @@ Simplifying assumptions:
 \item No ambiguous statuses
 \item No more than two sequential generations of unknown carrier status
 (non-obligate carrier vs. non-carrier).
-Generalized support of arbitrary tree structures gets a lot more complicated, especially for the likelihood function.
+Generalized support of arbitrary tree structures gets a lot more
+complicated, especially for the likelihood function.
 \item Exclude big giant trees of unaffecteds - related to above.
 Will slightly bias the result toward higher penetrance.
 \item Exclude subjects younger than age of onset
 }
 }
 \examples{
-example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv',
+package = 'seqbio.variant.scoring')
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 penetrance.df <- score.pedigree(example.pedigree.df)
 }

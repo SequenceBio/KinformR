@@ -1,5 +1,5 @@
 Package: seqbio.variant.scoring
-Title: Score evidence of rare variants' association with disease status in a family, based on relationships of individuals
+Title: Relationship-informed pedigree and variant scoring
 Version: 0.1.0
 Authors@R: 
     person("Cameron", "Nugent", , "cam.nugent@sequencebio.com", role = c("aut", "cre"),
@@ -7,15 +7,17 @@ Authors@R:
 Description: 
     The seqbio.variant.scoring R package is meant to aid in comparative evaluation of families 
     and candidate variants in rare-variant association studies. The package can be used for 
-    two methodologically overlapping but distinct purposes: First, the prior to any genetic/genomic 
+    two methodologically overlapping but distinct purposes. First, the prior to any genetic or genomic 
     evaluation, evaluation of relative detection power of pedigrees, can direct recruitment 
     efforts by showing which unsampled individuals would be the most meaningful additions to a study. 
     Second, after sequencing and analysis,  variants based on association with disease status 
-    and familial relationships of individuals, aids in variant prioritization
-License: MIT + file LICENSE
+    and familial relationships of individuals, aids in variant prioritization.
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+VignetteBuilder: knitr
 Suggests:
     devtools,
-    testthat
+    testthat,
+    knitr

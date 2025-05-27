@@ -2,8 +2,7 @@
 % Please edit documentation in R/pedigree.r
 \name{read.pedigree}
 \alias{read.pedigree}
-\title{Read in the encoded pedigree data file.
-TODO - can we build this encoded matrix from a more standard file format? i.e. ped-like?}
+\title{Read in the encoded pedigree data file.}
 \usage{
 read.pedigree(filename)
 }
@@ -15,9 +14,9 @@ A data frame containing the encoded pedigree information.
 }
 \description{
 Read in the encoded pedigree data file.
-TODO - can we build this encoded matrix from a more standard file format? i.e. ped-like?
 }
 \examples{
-example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv',
+package = 'seqbio.variant.scoring')
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 }

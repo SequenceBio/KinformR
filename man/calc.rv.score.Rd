@@ -14,7 +14,7 @@ calc.rv.score(
 }
 \arguments{
 \item{fam.list}{\itemize{
-\item A list with the names: \link{'A.c', 'A.i', 'U.c', 'U.i'}
+\item A list with the names: 'A.c', 'A.i', 'U.c', 'U.i'
 respectively containing the affected correct, affected incorrect,
 unaffected correct and unaffected incorrect.
 - This can be generated with the function: score.variant.status

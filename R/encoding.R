@@ -98,8 +98,6 @@ return(indiv.df)
 #' @param drop.unrelated Should unrelated (-1) relationships be dropped? Default = TRUE.
 #'
 #' @return A list with the categorized relationship/variant information.
-#' @examples
-#' #TODO - add
 #' @export
 build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
   indiv.rels = list(
@@ -127,10 +125,9 @@ build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
 #' For each row, generate the encoded data for scoring.
 #' @param relation.mat The relationship matrix for all pairwise combinations of individuals.
 #' @param status.df The ID, status, and genotypes for each individual.
+#' @param ... Additional arguments to be passed between methods.
 #' @return A dictionary with the per-individual relationship lists.
 #' One value for each row of the matrix.
-#' @examples
-#' #TODO - add
 #' @export
 encode.rows <- function(relation.mat, status.df, ...){
 

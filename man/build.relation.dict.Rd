@@ -19,6 +19,3 @@ A list with the categorized relationship/variant information.
 \description{
 Build dictionary with the relationships falling in the different categories for the query row.
 }
-\examples{
-#TODO - add
-}

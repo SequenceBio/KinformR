@@ -80,7 +80,7 @@ d   n
 With the encoded data loaded, the function `cal.penetrance` will generate both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
 
 ```{r}
-penetrance.df <- cal.penetrance(example.pedigree.df)
+penetrance.df <- score.pedigree(example.pedigree.df)
 penetrance.df
 ```
 
@@ -101,14 +101,14 @@ With the scoring completed, the values can be queried to learn more about the re
 Sorting on `current_score` shows which family has the most detection power based on collected samples.
 
 ```{r}
-penetrance.df[order(penetrance.df$current_score, decreasing = TRUE),]
+penetrance.df[order(penetrance.df$current.score, decreasing = TRUE),]
 ```
 If we had to work with only what we have, then family 5031 gives the most detection power.
 
 Sorting on `max_score` shows which family could have the most detection power, if all individuals were sampled. This can be useful in targeting future sampling efforts as it shows where more samples would give the most value.
 
 ```{r}
-penetrance.df[order(penetrance.df$max_score, decreasing = TRUE),]
+penetrance.df[order(penetrance.df$max.score, decreasing = TRUE),]
 ```
 Here we can see that family `0347` has a maximum score of 30.84, but a realized score of only 4.17. Given the high potential detection power for this family, it is an ideal target for future sampling efforts as current samples reveal on 13.5% of the family's potential value.
 

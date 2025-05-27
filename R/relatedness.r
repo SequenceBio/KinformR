@@ -41,7 +41,7 @@
 #' Input:
 #'
 #' @param fam.list
-#'         - A list with the names: ['A.c', 'A.i', 'U.c', 'U.i']
+#'         - A list with the names: 'A.c', 'A.i', 'U.c', 'U.i'
 #'           respectively containing the affected correct, affected incorrect,
 #'           unaffected correct and unaffected incorrect.
 #'         - This can be generated with the function: score.variant.status
@@ -118,6 +118,9 @@ calc.rv.score <- function(fam.list, affected.weight=1, unaffected.weight=0.5, un
 
 
 #' Take the matrix and subset out only the encoded individuals that are present in the status dataframe.
+#' @param mat.df The full matrix file to subset
+#' @param status.df The list of sampled individuals, matrix is subset to only these individuals.
+#' @return A subset of the input matrix.
 subset.mat <- function(mat.df, status.df){
   sub.ids <- rownames(mat.df)[rownames(mat.df) %in% status.df$name]
   sub.mat <- mat.df[sub.ids, sub.ids]
@@ -165,8 +168,7 @@ subset.mat <- function(mat.df, status.df){
 #' @export
 score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
                       return.sums  = FALSE, return.means = TRUE,
-                      affected.only = TRUE, max.err=4,
-                      subset.fam = TRUE){
+                      affected.only = TRUE, max.err=4){
 
   #The family encoding matrix needs to be subset to include only the individuals in the status dataframe
   sub.relation.mat <- subset.mat(relation.mat, status.df)
@@ -200,10 +202,10 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 #' @examples
 #' score.fam1 <- c("score" = 1.0, "score.for" = 2.0, "score.against" = 1.0)
 #' score.fam2 <- c("score" = 1.0, "score.for" = 3.0, "score.against" = 2.0)
-#' # out <- sum.fam.scores(c(score.fam1, score.fam2))
+#' # out <- add.fam.scores(c(score.fam1, score.fam2))
 #' #returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 #' @export
-sum.fam.scores <- function(score.vec){
+add.fam.scores <- function(score.vec){
   outvec<-tapply(score.vec, names(score.vec), sum)
 
   sorted.out<-c("score" = outvec[["score"]],

@@ -27,3 +27,7 @@ K Pedigree-based estimation of autosomal dominant penetrance rate.
 Likelihood function for calculation of Pedigree-based autosomal dominant penetrance value.
 Formula deployed via optimize so as to determine the optimal value.
 }
+\examples{
+# the penetrance function is a function where values is found through optimization
+K <- optimize(penetrance, c(0,1), 3, 1, 5, 2, 1, maximum=TRUE)$max
+}

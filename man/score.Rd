@@ -4,13 +4,18 @@
 \alias{score}
 \title{Score the pedigrees using the pihat values.}
 \usage{
-score(pihat, K = -1)
+score(pihat)
 }
 \arguments{
-\item{pihat}{Estimated proportion of genome shared between individuals, from function: ibd.}
-
-\item{K}{Estimated penetrance value, from function: penetrance.}
+\item{pihat}{Estimated proportion of genome shared between individuals,
+from function: ibd.}
+}
+\value{
+The score value.
 }
 \description{
 Score the pedigrees using the pihat values.
+}
+\examples{
+s.val <- score(12.61)
 }

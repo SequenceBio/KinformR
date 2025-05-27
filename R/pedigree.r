@@ -13,6 +13,8 @@
 #' @export
 #'
 #' @examples
+#' # the penetrance function is a function where values is found through optimization
+#' K <- optimize(penetrance, c(0,1), 3, 1, 5, 2, 1, maximum=TRUE)$max
 penetrance <- function(K, a, b, c, d, n) {
   a*log(K) + b*log(1-K) + c*log(2-K) + sum(d*log(2^n + (1-K)*(2-K)^n) - d*(n+1)*log(2))
 }
@@ -24,10 +26,13 @@ penetrance <- function(K, a, b, c, d, n) {
 #' estimate of the amount of the genome they have inherited it from a
 #' common ancestor without recombination.
 #'
-#' Can do this for the total potential relatedness in a pedigree (theoretical=TRUE),
+#' Can do this for the total potential relatedness
+#' in a pedigree (theoretical=TRUE),
 #' or for the actual relatedness across collected samples (theoretical=FALSE).
-#' For the theoretical=TRUE case, in the unaffected trees, if we have a sample from the parent,
-#' then the offspring do not provide any additional information for a max IBD calculation.
+#' For the theoretical=TRUE case, in the unaffected trees,
+#' if we have a sample from the parent,
+#' then the offspring do not provide any additional information
+#' for a max IBD calculation.
 #' This means that K does not scale with n.
 #'
 #' For theoretical=FALSE,  sometimes we don’t have the healthy parent in an unaffected tree,
@@ -54,6 +59,7 @@ penetrance <- function(K, a, b, c, d, n) {
 #' @export
 #'
 #' @examples
+#' ibd <- ibd(3, 1, 5, 2, 1, 0.4576484)
 ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
   if (theoretical) {
     x <- sum(d) * 2^K
@@ -68,20 +74,19 @@ ibd <- function(a, b, c, d, n, K, theoretical=TRUE) {
 
 #' Score the pedigrees using the pihat values.
 #'
-#' @param pihat Estimated proportion of genome shared between individuals, from function: ibd.
-#' @param K Estimated penetrance value, from function: penetrance.
+#' @param pihat Estimated proportion of genome shared between individuals,
+#' from function: ibd.
 #'
-#' @return
+#' @return The score value.
 #' @export
-#'
 #' @examples
-score <- function(pihat, K=-1) {
+#' s.val <- score(12.61)
+score <- function(pihat) {
   log(2^pihat)
 }
 
 
 #' Read in the encoded pedigree data file.
-#' TODO - can we build this encoded matrix from a more standard file format? i.e. ped-like?
 #'
 #' @param filename name of the file with the data.
 #'
@@ -89,10 +94,12 @@ score <- function(pihat, K=-1) {
 #' @export
 #'
 #' @examples
-#' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+#' example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv',
+#' package = 'seqbio.variant.scoring')
 #' example.pedigree.df <- read.pedigree(example.pedigree.file)
 read.pedigree <- function(filename){
-  h <- read.table(filename, header=TRUE, sep="\t", check.names=FALSE, colClasses=c("Family"="character"))
+  h <- read.table(filename, header=TRUE, sep="\t",
+                  check.names=FALSE, colClasses=c("Family"="character"))
   return(h)
 }
 
@@ -110,7 +117,8 @@ read.pedigree <- function(filename){
 #'   - No ambiguous statuses
 #'   - No more than two sequential generations of unknown carrier status
 #'     (non-obligate carrier vs. non-carrier).
-#'     Generalized support of arbitrary tree structures gets a lot more complicated, especially for the likelihood function.
+#'     Generalized support of arbitrary tree structures gets a lot more
+#'     complicated, especially for the likelihood function.
 #'   - Exclude big giant trees of unaffecteds - related to above.
 #'     Will slightly bias the result toward higher penetrance.
 #'   - Exclude subjects younger than age of onset
@@ -118,11 +126,13 @@ read.pedigree <- function(filename){
 #' @param h A data frame containing the encoded pedigree information
 #' @return A data frame containing the theoretical scoring of the power of a
 #' family assuming you were able to collect everyone on the simplified pedigree,
-#' as well as a current scoreing, examining only those for whom you currently have DNA.
+#' as well as a current scoreing, examining only those for whom you currently
+#' have DNA.
 #' @export
 #'
 #' @examples
-#' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+#' example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv',
+#' package = 'seqbio.variant.scoring')
 #' example.pedigree.df <- read.pedigree(example.pedigree.file)
 #' penetrance.df <- score.pedigree(example.pedigree.df)
 score.pedigree <- function(h){
@@ -153,11 +163,13 @@ score.pedigree <- function(h){
     d.actual <- as.numeric(strsplit(as.character(d.actual), ",")[[1]])
     n.actual <- as.numeric(strsplit(as.character(n.actual), ",")[[1]])
 
-    K <- optimize(penetrance, c(0,1), max.a, max.b, max.c, max.d, max.n, maximum=TRUE)$max
+    K <- optimize(penetrance, c(0,1), max.a, max.b, max.c,
+                  max.d, max.n, maximum=TRUE)$max
     max.pihat <- ibd(max.a, max.b, max.c, max.d, max.n, K)
-    max.score <- score(max.pihat, K)
-    current.pihat <- ibd(a.actual, b.actual, c.actual, d.actual, n.actual, K, FALSE)
-    current.score <- score(current.pihat, K)
+    max.score <- score(max.pihat)
+    current.pihat <- ibd(a.actual, b.actual, c.actual,
+                         d.actual, n.actual, K, FALSE)
+    current.score <- score(current.pihat)
 
     family.vec <- c(family.vec, family)
     penetrance.vec <- c(penetrance.vec, K)
@@ -167,8 +179,10 @@ score.pedigree <- function(h){
     current.score.vec <- c(current.score.vec,current.score)
   }
 
-  df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.score.vec, current.pihat.vec, current.score.vec)
-  colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.score", "current.pi-hat", "current.score")
+  df <- data.frame(family.vec, penetrance.vec, max.pihat.vec, max.score.vec,
+                   current.pihat.vec, current.score.vec)
+  colnames(df) <- c("family", "penetrance", "max.pi-hat", "max.score",
+                    "current.pi-hat", "current.score")
   df$pct.of.max <- df$current.score / df$max.score * 100
   df[, -1] <- round(df[, -1], 2)
   return(df)
