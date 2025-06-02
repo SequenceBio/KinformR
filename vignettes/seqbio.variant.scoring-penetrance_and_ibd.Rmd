@@ -4,7 +4,7 @@ author: "Cameron M. Nugent"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
 vignette: >
-  %\VignetteIndexEntry{seqbio.variant.scoring-vignette}
+  %\VignetteIndexEntry{seqbio.variant.scoring-penetrance_and_ibd}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
