@@ -5,10 +5,10 @@ test_that("Data are read from files correctly", {
 
   #tsv.name1<-"extdata/1234_ex2.tsv"
   # TODO - switch all to this style
-  tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+  tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
   ex1234.df <- read.indiv(tsv.name1)
   #mat.name1<-"extdata/1234_ex2.mat"
-  mat.name1 <-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+  mat.name1 <-system.file('extdata/1234_ex2.mat', package = 'KinformR')
   ex1234.mat <- read.relation.mat(mat.name1)
   # TODO - could make an s3 class with the two data structures, have single func to
   # wrap this and read in both files.
@@ -24,7 +24,7 @@ test_that("Data are read from files correctly", {
                               "status" = c("A", "U", "U", "U", "A"),
                               "variant" = c("0/1", "0/0", "0/0", "0/0", "0/1"))
   infile.test2 <-system.file('extdata/example_vcf_extract_5678.tsv',
-                             package = 'seqbio.variant.scoring')
+                             package = 'KinformR')
 
   test2.df <- read.var.table(infile.test2)
   expect_equal(test2.df, expected.test2)
@@ -37,7 +37,7 @@ test_that("Data are read from files correctly", {
                               "status" = c("U","U","A","A","U", "U","A","U","U"),
                               "variant" = c("0|0","0|0","0|0","0|1","0|0","0|0","0|1","0|0","0|1"))
   infile.test3 <-system.file('extdata/example_vcf_extract_9876.tsv',
-                             package = 'seqbio.variant.scoring')
+                             package = 'KinformR')
 
   test3.df <- read.var.table(infile.test3)
   expect_equal(test3.df, expected.test3)

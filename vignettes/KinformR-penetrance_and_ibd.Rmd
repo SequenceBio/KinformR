@@ -1,16 +1,16 @@
 ---
-title: "seqbio.variant.scoring - penetrance and idb informed scoring of families"
+title: "KinformR - penetrance and idb informed scoring of families"
 author: "Cameron M. Nugent"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
 vignette: >
-  %\VignetteIndexEntry{seqbio.variant.scoring-penetrance_and_ibd}
+  %\VignetteIndexEntry{KinformR-penetrance_and_ibd}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
-library(seqbio.variant.scoring)
+library(KinformR)
 ```
 
 
@@ -28,7 +28,7 @@ The `cal.penetrance` function generates both a theoretical ranking of the power 
 The family power calculations depend on a single tab-delimited input file, where each row represents a family. The input file is read inusing the `read.pedigree` function.
 
 ```{r}
-example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'seqbio.variant.scoring')
+example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'KinformR')
 
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 

@@ -1,12 +1,12 @@
-#library(seqbio.variant.scoring)
+#library(KinformR)
 test_that("Scoring of variant in family single family proceeds as expected", {
 
   ##################################
   # test 1
 
-  mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+  mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
   ex1234.mat <- read.relation.mat(mat.name1)
-  tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+  tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
   ex1234.df <- read.indiv(tsv.name1)
 
   ex1234.df.status <-  score.variant.status(ex1234.df)

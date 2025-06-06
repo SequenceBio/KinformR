@@ -18,6 +18,6 @@ A data frame.
 Read in variant and status info for individuals.
 }
 \examples{
-tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 id.df1 <- read.indiv(tsv.name1)
 }

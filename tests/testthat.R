@@ -1,5 +1,5 @@
 library(testthat)
-library(seqbio.variant.scoring)
+library(KinformR)
 
 
-test_check("seqbio.variant.scoring")
+test_check("KinformR")

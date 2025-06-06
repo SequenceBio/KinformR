@@ -3,14 +3,14 @@ test_that("Scoring of variant in family multiple families proceeds as expected",
   ##################################
   # test 1
 
-  mat.name1<-system.file('extdata/5678_ex1.mat', package = 'seqbio.variant.scoring')
-  tsv.name1<-system.file('extdata/5678_ex1.tsv', package = 'seqbio.variant.scoring')
+  mat.name1<-system.file('extdata/5678_ex1.mat', package = 'KinformR')
+  tsv.name1<-system.file('extdata/5678_ex1.tsv', package = 'KinformR')
 
-  mat.name2<-system.file('extdata/9876_ex1.mat', package = 'seqbio.variant.scoring')
-  tsv.name2<-system.file('extdata/9876_ex1.tsv', package = 'seqbio.variant.scoring')
+  mat.name2<-system.file('extdata/9876_ex1.mat', package = 'KinformR')
+  tsv.name2<-system.file('extdata/9876_ex1.tsv', package = 'KinformR')
 
-  mat.name3<-system.file('extdata/5432_ex1.mat', package = 'seqbio.variant.scoring')
-  tsv.name3<-system.file('extdata/5432_ex1.tsv', package = 'seqbio.variant.scoring')
+  mat.name3<-system.file('extdata/5432_ex1.mat', package = 'KinformR')
+  tsv.name3<-system.file('extdata/5432_ex1.tsv', package = 'KinformR')
 
   mat.fnames <- c(mat.name1, mat.name2, mat.name3)
   tsv.names <- c(tsv.name1, tsv.name2, tsv.name3)

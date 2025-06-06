@@ -159,8 +159,8 @@ subset.mat <- function(mat.df, status.df){
 #' of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.
 #' @return A labelled vector with names: score, score.for, score.against
 #' @examples
-#' mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
-#' tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+#' mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
+#' tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 #' mat.df <- read.relation.mat(mat.name1)
 #' ind.df <- read.indiv(tsv.name1)
 #' ind.df.status <-  score.variant.status(ind.df)
