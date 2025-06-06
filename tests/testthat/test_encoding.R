@@ -28,7 +28,7 @@ test_that("Families are correctly encoded.", {
   expect_error(assign.status("U", "0|."), "Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'")
 
   #tsv.name1<-"Data/1234_ex2.tsv"
-  tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+  tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
   indiv.df <- read.indiv(tsv.name1)
 
   print("score values for a real family")

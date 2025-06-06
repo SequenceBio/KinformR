@@ -1,11 +1,11 @@
-Package: seqbio.variant.scoring
+Package: KinformR
 Title: Relationship-informed pedigree and variant scoring
 Version: 0.1.0
 Authors@R: 
     person("Cameron", "Nugent", , "cam.nugent@sequencebio.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1135-2605"))
 Description: 
-    The seqbio.variant.scoring R package is meant to aid in comparative evaluation of families 
+    The KinformR R package is meant to aid in comparative evaluation of families 
     and candidate variants in rare-variant association studies. The package can be used for 
     two methodologically overlapping but distinct purposes. First, the prior to any genetic or genomic 
     evaluation, evaluation of relative detection power of pedigrees, can direct recruitment 

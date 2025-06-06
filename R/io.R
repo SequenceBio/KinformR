@@ -7,7 +7,7 @@
 #' MS-5678-1001      A      0/1
 #' @return A data frame.
 #' @examples
-#' tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+#' tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 #' id.df1 <- read.indiv(tsv.name1)
 #' @export
 read.indiv <- function(fname){
@@ -24,7 +24,7 @@ read.indiv <- function(fname){
 #' @param fname The file with the relationship matrix information.
 #' @return A matrix with the relationships and individual ids as rownames and colnames.
 #' @examples
-#' mat.name1 <-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+#' mat.name1 <-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 #' mat1 <- read.relation.mat(mat.name1)
 #' @export
 read.relation.mat <- function(fname){
@@ -57,7 +57,7 @@ read.relation.mat <- function(fname){
 #' MS-5678-1001      A      0/1
 #' @examples
 #' ex.infile <-system.file('extdata/example_vcf_extract_5678.tsv',
-#'                          package = 'seqbio.variant.scoring')
+#'                          package = 'KinformR')
 #' read.var.table(ex.infile)
 #' @export
 read.var.table <- function(fname){

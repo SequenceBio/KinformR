@@ -26,6 +26,6 @@ be encoded in a specific fashion for you current purposes.
 }
 \examples{
 ex.infile <-system.file('extdata/example_vcf_extract_5678.tsv',
-                         package = 'seqbio.variant.scoring')
+                         package = 'KinformR')
 read.var.table(ex.infile)
 }

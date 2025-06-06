@@ -1,22 +1,22 @@
 ---
-title: "seqbio.variant.scoring - pedigree-informed rare variant association and penetrance scoring"
+title: "KinformR - pedigree-informed rare variant association and penetrance scoring"
 author: "Cameron M. Nugent"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
 vignette: >
-  %\VignetteIndexEntry{seqbio.variant.scoring-variant_scoring}
+  %\VignetteIndexEntry{KinformR-variant_scoring}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ## Introduction
 
-When looking at rare variants within a family, not all affected and unaffected individuals are of equal importance. `seqbio.variant.scoring` is an R package meant to aid in comparative evaluation of information in family-based rare-variant association studies; the package considers evidence of rare variant's association with disease status in a family and scores the variant based on relationships of individuals in a pedigree. Comparing scores across candidates can thereby help in assessing their relative merit.
+When looking at rare variants within a family, not all affected and unaffected individuals are of equal importance. `KinformR` is an R package meant to aid in comparative evaluation of information in family-based rare-variant association studies; the package considers evidence of rare variant's association with disease status in a family and scores the variant based on relationships of individuals in a pedigree. Comparing scores across candidates can thereby help in assessing their relative merit.
 
 The program leverages Wright’s coefficient of relatedness to score families based on the relationship of individuals as well as their disease status and genotypes for a given variant. A candidate variant is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not due to association with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large IBD portion of the genome shared by the two individuals and thereby gives evidence in favour of the candidate.
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
-library(seqbio.variant.scoring)
+library(KinformR)
 ```
 
 
@@ -28,7 +28,7 @@ This input is a matrix containing all the pairwise relationships of individuals 
 
 The function `read.relation.mat`
 ```{r}
-mat.name1<-system.file('extdata/1234_ex2.mat', package = 'seqbio.variant.scoring')
+mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 rel.mat <- read.relation.mat(mat.name1)
 rel.mat
 ``` 
@@ -42,7 +42,7 @@ Note that the order of individuals can be different between the two files. All i
 
 ```{r}
 
-tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'seqbio.variant.scoring')
+tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 status.df <- read.indiv(tsv.name1)
 
 status.df

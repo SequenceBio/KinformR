@@ -37,7 +37,7 @@ Will slightly bias the result toward higher penetrance.
 }
 \examples{
 example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv',
-package = 'seqbio.variant.scoring')
+package = 'KinformR')
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 penetrance.df <- score.pedigree(example.pedigree.df)
 }
