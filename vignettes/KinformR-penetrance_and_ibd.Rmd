@@ -1,0 +1,142 @@
+---
+title: "KinformR - penetrance and idb informed scoring of families"
+author: "Cameron M. Nugent"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+data: "`r Sys.Date()`"
+output: pdf_document #rmarkdown::html_vignette # 
+pdf_document:
+  df_print: kable
+vignette: >
+  %\VignetteIndexEntry{KinformR-penetrance_and_ibd}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+## Introduction
+
+The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate comparison of the relative "power" of families in a study. This can be accomplished upstream of sequencing (i.e. in the project planning stage) and is therefore only dependent on relationship structure and reported affected status of individuals in a given family or set of families.
+
+## Estimating power of families
+
+The `cal.penetrance` function generates both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
+
+### Load the library
+
+```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(KinformR)
+
+show <- function(df){
+  knitr::kable(df, format = "markdown", digits = 2)
+}
+```
+
+## The input data
+
+The family power calculations depend on a single tab-delimited input file, where each row represents a family. The input file is read in using the `read.pedigree` function.
+
+```{r}
+example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv', 
+                                     package = 'KinformR')
+
+example.pedigree.df <- read.pedigree(example.pedigree.file)
+```
+The input file is expected to have the following 11 columns (with a header). 
+```{r}
+colnames(example.pedigree.df)
+
+```
+
+### Simplified summary of pedigrees
+
+For now this file should be be constructed through careful manual inspection of the predigrees. To encode the rows for each family, you should first prune down pedigrees to informative allele transfers. For
+the purposes of this tool, we exclude young generations (non-adults, younger than age of onset) and large (more than two sequential generations) trees of exclusively unaffected family members. Additionally all individuals require a binary A/U status, there should be no ambigious individuals.  There will be some judgment calls required here.  
+
+
+### Encoding categories of relationships
+
+From the simplified pedigrees, the individuals are assigned to the following categories.
+
+|Category|Description|
+|---:|---|
+|a|Affected individuals|
+|b|Obligate carriers|
+|c|Children of either affecteds or carriers, with no children of their own|
+|d|Trees of unaffected individuals - specifically, two sequential generations (i.e. a parent and their offspring; trees of unaffecteds that are larger than this are omitted.)|
+
+
+The counts of individuals assigned to these categories are then added to the tab-delimited input file:
+
+```{r}
+show(example.pedigree.df)
+```
+
+All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
+the columns without this prefix are the number of each category for whom samples have been collected.  
+
+The categories correspond to A, B, and C as defined above.
+
+Category D is represented by two numbers, d and n.  n is the number of offspring in a tree of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with commas separating the values.  For example, the following represents a family with three total trees of unaffecteds. One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1). 
+
+```
+d   n
+1,2 3,1
+```
+
+## Theoretical vs. current rankings
+
+With the encoded data loaded, the function `cal.penetrance` will generate both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
+
+```{r}
+penetrance.df <- score.pedigree(example.pedigree.df)
+
+show(penetrance.df)
+
+```
+
+The output includes seven columns that with the following information:
+|Output Column|Description|
+|---|---|
+|family|The family id.|
+|penetrance| Estimated penetrance rate (K) for the family.|
+|max_pi-hat| The estimated proportion of the genome that is shared between all individuals  *that could be sampled* in the family (IBD).|
+|max_score| The theoretical maximum score for the given family *that could* be achieved if all individuals were sampled.|
+|current_pi-hat|The estimated proportion of the genome that is shared between all individuals  *that have been sampled* in the family (IBD).|
+|current_score| The score for the given family *that has* been achieved through the sampled individuals|
+|pct_of_max| The percentage of the theoretical maximum score that has been realized in the family sampling.|
+
+
+With the scoring completed, the values can be queried to learn more about the realized and potential value of the families relative to one another.
+
+Sorting on `current_score` shows which family has the most detection power based on collected samples.
+
+```{r}
+ord.df.current <- penetrance.df[order(penetrance.df$current.score, decreasing = TRUE),]
+show(ord.df.current)
+
+```
+If we had to work with only what we have, then family 5031 gives the most detection power.
+
+Sorting on `max_score` shows which family could have the most detection power, if all individuals were sampled. This can be useful in targeting future sampling efforts as it shows where more samples would give the most value.
+
+```{r}
+ord.df.max <- penetrance.df[order(penetrance.df$max.score, decreasing = TRUE),]
+show(ord.df.max)
+
+```
+Here we can see that family `0347` has a maximum score of 30.84, but a realized score of only 4.17. Given the high potential detection power for this family, it is an ideal target for future sampling efforts as current samples reveal on 13.5% of the family's potential value.
+
+
+### Note on a few special cases
+
+In trees of unaffecteds, there are two special cases for current ranking:
+1.  You have collected the parent (regardless of collection status of the child).  In
+this case, the child cannot provide any additional information beyond the parent, so
+we only count the parent. (d=1, n=0; equivalently, c=1)
+2.  You have collected one or more children, but not the parent.  In this case,
+each of the children contribute a portion of what the parent would have contributed
+to our understanding.  (d=1, n>0)
+
+
+

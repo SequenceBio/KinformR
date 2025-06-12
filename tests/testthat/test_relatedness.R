@@ -3,10 +3,10 @@ test_that("Scoring proceeds as expected in all cases", {
 
   print("test per encoding score calculation for several combos")
   print("1. simple proband-sib")
-  encoded.dat1 <- list("A_c" = c(0, 1),
-                      "A_i" = c(),
-                      "U_c" = c(),
-                      "U_i" = c())
+  encoded.dat1 <- list("A.c" = c(0, 1),
+                      "A.i" = c(),
+                      "U.c" = c(),
+                      "U.i" = c())
 
   expected.score1<- list("score" = 3,
                          "score.for" = 3,
@@ -15,10 +15,10 @@ test_that("Scoring proceeds as expected in all cases", {
   expect_equal(expected.score1, score1)
 
   print("2.  correct A proband and cousin, incorrect unaffected sib")
-  encoded.dat2 <- list("A_c" = c(0, 3),
-                      "A_i" = c(),
-                      "U_c" = c(),
-                      "U_i" = c(1))
+  encoded.dat2 <- list("A.c" = c(0, 3),
+                      "A.i" = c(),
+                      "U.c" = c(),
+                      "U.i" = c(1))
 
   expected.score2<- list("score" = 5,
                          "score.for" = 9,
@@ -35,10 +35,10 @@ test_that("Scoring proceeds as expected in all cases", {
 
   print("3.  bad score proband and incorrect unaffected sib")
 
-  encoded.dat3 <- list("A_c" = c(0),
-                      "A_i" = c(),
-                      "U_c" = c(),
-                      "U_i" = c(1))
+  encoded.dat3 <- list("A.c" = c(0),
+                      "A.i" = c(),
+                      "U.c" = c(),
+                      "U.i" = c(1))
 
   expected.score3<- list("score" = -3,
                          "score.for" = 1,
@@ -48,10 +48,10 @@ test_that("Scoring proceeds as expected in all cases", {
 
   print("3.  complex score, all situations covered in one.")
 
-  encoded.dat4 <- list("A_c" = c(0, 1, 3, 1),
-                       "A_i" = c(3),
-                       "U_c" = c(1, 2),
-                       "U_i" = c(1))
+  encoded.dat4 <- list("A.c" = c(0, 1, 3, 1),
+                       "A.i" = c(3),
+                       "U.c" = c(1, 2),
+                       "U.i" = c(1))
 
   expected.score4<- list("score" = 7,
                          "score.for" = 19,
@@ -73,7 +73,7 @@ test_that("Scoring proceeds as expected in all cases", {
   b <- c("score"=20, "score.for"=20, "score.against"=0)
   c <- c("score"=30, "score.for"=40, "score.against"=10)
 
-  abc<- sum.fam.scores(c(a,b,c))
+  abc<- add.fam.scores(c(a,b,c))
   expected.abc <-  c("score"=60, "score.for"=70, "score.against"=10)
   expect_equal(all.equal(names(abc), names(expected.abc)), TRUE)
   for(i in length(abc)){

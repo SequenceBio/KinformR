@@ -5,7 +5,7 @@
 \title{Calculate a relatedness-weighted score for a given rare variant.}
 \usage{
 calc.rv.score(
-  fam_list,
+  fam.list,
   affected.weight = 1,
   unaffected.weight = 0.5,
   unaffected.max = 8,
@@ -13,8 +13,8 @@ calc.rv.score(
 )
 }
 \arguments{
-\item{fam_list}{\itemize{
-\item A list with the names: \link{'A_c', 'A_i', 'U_c', 'U_i'}
+\item{fam.list}{\itemize{
+\item A list with the names: 'A.c', 'A.i', 'U.c', 'U.i'
 respectively containing the affected correct, affected incorrect,
 unaffected correct and unaffected incorrect.
 - This can be generated with the function: score.variant.status
@@ -24,9 +24,9 @@ reference (reference = 0, sibling/parent/offspring = 1, uncle/grandparent = 2,
 cousin = 3, etc.)
 }}
 
-\item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
+\item{affected.weight}{A coefficient to multiply the calculated A.c and A.i relatedness values by.}
 
-\item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
+\item{unaffected.weight}{A coefficient to multiply the U.c and U.i relatedness values by.}
 
 \item{unaffected.max}{This  param controls the score given to a first degree unaffected relatives
 scores decay from this specified maximum by half for each subsequent relationship degree.}
@@ -42,30 +42,30 @@ A list with three components: score, score.for, score.against.
 These scores can be used to compare variants of interest within a family.
 }
 \details{
-For each individual, a relationship-informed weight is applied to their sharing
+For each encoded relationship, a relationship-informed weight is applied to their sharing
 or not sharing of a variant.
 The score for affected status is:
-(1 / coefficient_of_relatedness) * status_weight
+(1 / coefficient.of.relatedness) * status.weight
 For example, an affected cousin (encoded as a 3) would get a score of:
 (1/0.125) * affected weight
 8 * 1
 = 8 points in favour of the variant.
-Whereas for unaffected unaffected individuals, scores decay the further a person is in
+Whereas for unaffected individuals, scores decay the further a person is in
 relation to the proband based on the formula:
-((unaffected.max\emph{2) * coefficient_of_relatedness ) * unaffected_weight
+((unaffected.max\emph{2) * coefficient.of.relatedness ) * unaffected.weight
 For example, with the default unaffected.max of 8. The sister that does not have a variant would get a score of
-((8}2) 0.5) * unaffected_weight
+((8}2) 0.5) * unaffected.weight
 (16 * 0.5) * 0.5
 = 4 points for the variant.
 If these were the only two relatives considered we could sum the points
 and get a score in favour of the variant of
 8 + 4 = 12
-Ig there is evidence against a variant, this is factored into the score as:
-total_score = evidence_for - evidence_against
+If there is evidence against a variant, this is factored into the score as:
+total.score = evidence.for - evidence.against
 For example, if there were also an affected sibling without the variant we would have the score against of:
 (1/0.5) * 1 = 2
 The final score for the variant would then be
-.    for - against = total
+for - against = total
 12 - 2 = 10
 Giving a final score of 10 for the variant. Comparing values across variants can be used
 to rank them based on pedigree-informed levels of variant sharing across affected
@@ -79,6 +79,6 @@ of unaffected individuals that have a variant rather than affected individuals t
 Input:
 }
 \examples{
-relations<-list("A_c" = c(0, 1, 3, 1),"A_i" = c(3),"U_c" = c(1, 2),"U_i" = c(1))
+relations<-list("A.c" = c(0, 1, 3, 1),"A.i" = c(3),"U.c" = c(1, 2),"U.i" = c(1))
 rv.scores <- calc.rv.score(relations)
 }

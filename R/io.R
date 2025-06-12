@@ -4,10 +4,10 @@
 #'
 #' @param fname A file name, expected format of contents is:
 #' name	         status	variant
-#' MS-4107-1001      A      0/1
+#' MS-5678-1001      A      0/1
 #' @return A data frame.
 #' @examples
-#' tsv.name1 <-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+#' tsv.name1 <-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 #' id.df1 <- read.indiv(tsv.name1)
 #' @export
 read.indiv <- function(fname){
@@ -24,7 +24,7 @@ read.indiv <- function(fname){
 #' @param fname The file with the relationship matrix information.
 #' @return A matrix with the relationships and individual ids as rownames and colnames.
 #' @examples
-#' mat.name1 <-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
+#' mat.name1 <-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 #' mat1 <- read.relation.mat(mat.name1)
 #' @export
 read.relation.mat <- function(fname){
@@ -49,15 +49,15 @@ read.relation.mat <- function(fname){
 #'
 #'
 #' @param fname A file name, expected format of contents is:
-#' #CHROM  POS       REF  ALT  MS-4107-1001_A  MS-4107-1002_U  ...
+#' #CHROM  POS       REF  ALT  MS-5678-1001_A  MS-5678-1002_U  ...
 #' chr3    46203838  G    A    0/1             0/0      ...
 #' @return A dataframe.
 #' Data will be worked into a data frame with format.
 #' name	         status	variant
-#' MS-4107-1001      A      0/1
+#' MS-5678-1001      A      0/1
 #' @examples
-#' ex.infile <-system.file('extdata/example_vcf_extract_4107.tsv',
-#'                          package = 'seqbio.variant.scoring')
+#' ex.infile <-system.file('extdata/example_vcf_extract_5678.tsv',
+#'                          package = 'KinformR')
 #' read.var.table(ex.infile)
 #' @export
 read.var.table <- function(fname){

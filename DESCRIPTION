@@ -1,22 +1,23 @@
-Package: seqbio.variant.scoring
-Title: Score evidence of rare variants' association with disease status in a family, based on relationships of individuals
+Package: KinformR
+Title: Relationship-informed pedigree and variant scoring
 Version: 0.1.0
 Authors@R: 
     person("Cameron", "Nugent", , "cam.nugent@sequencebio.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1135-2605"))
 Description: 
-    This R package is designed to score rare variants, assigning values based on 
-    the disease status of individuals, the presence or absence of a rare variant 
-    in those individuals, and their pairwise coefficients of relatedness. 
-    The package uses a custom formula to assign value to a variant that gives 
-    more weight to shared variants common to distantly related affected 
-    individuals. The variant status for unaffected individuals can optionally 
-    be considered as well, with the highest scoring values being given to 
-    closely related individuals that do not share a variant of interst. 
-    Since variants can be incompletely penetrant, the scoring can be based 
-    solely on the affected individuals, or the weight of unaffected evidence 
-    can be customized.
+    The KinformR R package is meant to aid in comparative evaluation of families 
+    and candidate variants in rare-variant association studies. The package can be used for 
+    two methodologically overlapping but distinct purposes. First, the prior to any genetic or genomic 
+    evaluation, evaluation of relative detection power of pedigrees, can direct recruitment 
+    efforts by showing which unsampled individuals would be the most meaningful additions to a study. 
+    Second, after sequencing and analysis,  variants based on association with disease status 
+    and familial relationships of individuals, aids in variant prioritization.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+VignetteBuilder: knitr
+Suggests:
+    devtools,
+    testthat,
+    knitr

@@ -21,9 +21,9 @@ score.fam(
 
 \item{status.df}{A dataframe with the encoded variant/disease status of each individual}
 
-\item{affected.weight}{A coefficient to multiply the calculated A_c and A_i relatedness values by.}
+\item{affected.weight}{A coefficient to multiply the calculated A.c and A.i relatedness values by.}
 
-\item{unaffected.weight}{A coefficient to multiply the U_c and U_i relatedness values by.}
+\item{unaffected.weight}{A coefficient to multiply the U.c and U.i relatedness values by.}
 
 \item{return.sums}{Boolean indicating if sum of family variant scores should be returned (default = FALSE).}
 
@@ -42,7 +42,9 @@ A labelled vector with names: score, score.for, score.against
 By default all individuals are treated as the reference 'proband' and
 the given variant's score  is calculated based on relationships to all other individuals.
 e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
-reference individual that the calcualtion is relative to.
+reference individual that the calculation is relative to.
+Note that the relation.mat can include more individuals than are present within the status.df, but the matrix will
+be subset to include only those individuals that have status information provided.
 }
 \details{
 There are several return options possible.
@@ -55,10 +57,10 @@ NOTE: if affected.only = True, the averages and sums are calculated using only t
 }
 }
 \examples{
-mat.name1<-system.file('extdata/7003_notch3.mat', package = 'seqbio.variant.scoring')
-tsv.name1<-system.file('extdata/7003_notch3.tsv', package = 'seqbio.variant.scoring')
+mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
+tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 mat.df <- read.relation.mat(mat.name1)
 ind.df <- read.indiv(tsv.name1)
 ind.df.status <-  score.variant.status(ind.df)
-score_default <- score.fam(mat.df, ind.df.status)
+score.default <- score.fam(mat.df, ind.df.status)
 }

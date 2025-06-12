@@ -10,14 +10,14 @@ read.var.table(fname)
 }
 \arguments{
 \item{fname}{A file name, expected format of contents is:
-#CHROM  POS       REF  ALT  MS-4107-1001_A  MS-4107-1002_U  ...
+#CHROM  POS       REF  ALT  MS-5678-1001_A  MS-5678-1002_U  ...
 chr3    46203838  G    A    0/1             0/0      ...}
 }
 \value{
 A dataframe.
 Data will be worked into a data frame with format.
 name	         status	variant
-MS-4107-1001      A      0/1
+MS-5678-1001      A      0/1
 }
 \description{
 Note - ensure the status in the names match your desired encoding!
@@ -25,7 +25,7 @@ There are individuals with ambigious statues, that you may require to
 be encoded in a specific fashion for you current purposes.
 }
 \examples{
-ex.infile <-system.file('extdata/example_vcf_extract_4107.tsv',
-                         package = 'seqbio.variant.scoring')
+ex.infile <-system.file('extdata/example_vcf_extract_5678.tsv',
+                         package = 'KinformR')
 read.var.table(ex.infile)
 }
