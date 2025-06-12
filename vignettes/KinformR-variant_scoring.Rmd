@@ -4,6 +4,8 @@ author: "Cameron M. Nugent"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
+pdf_document:
+  df_print: kable
 vignette: >
   %\VignetteIndexEntry{KinformR-variant_scoring}
   %\VignetteEngine{knitr::rmarkdown}
