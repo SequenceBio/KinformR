@@ -1,6 +1,7 @@
 ---
 title: "KinformR - penetrance and idb informed scoring of families"
 author: "Cameron M. Nugent"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
 vignette: >
@@ -9,9 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
-library(KinformR)
-```
 
 
 ## Introduction
@@ -22,13 +20,19 @@ The `cal.penetrance` and associated `penetrance` and `ibd` functions facilitate 
 
 The `cal.penetrance` function generates both a theoretical ranking of the power of a family assuming you were able to collect everyone on the simplified pedigree, as well as a current ranking, examining only those for whom you currently have DNA.  This allows evaluation of the impact on the ranking if certain other family members are enrolled in the study.
 
+### Load the library
+
+```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
+library(KinformR)
+```
 
 ## The input data
 
 The family power calculations depend on a single tab-delimited input file, where each row represents a family. The input file is read inusing the `read.pedigree` function.
 
 ```{r}
-example.pedigree.file <-system.file('extdata/example_pedigree_encoding.tsv', package = 'KinformR')
+example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv', 
+                                     package = 'KinformR')
 
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 
@@ -50,7 +54,7 @@ the purposes of this tool, we exclude young generations (non-adults, younger tha
 From the simplified pedigrees, the individuals are assigned to the following categories.
 
 |Category|Description|
-|---|---|
+|---:|---|
 |a|Affected individuals|
 |b|Obligate carriers|
 |c|Children of either affecteds or carriers, with no children of their own|

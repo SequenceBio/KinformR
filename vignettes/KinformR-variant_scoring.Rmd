@@ -1,6 +1,7 @@
 ---
-title: "KinformR - pedigree-informed rare variant association and penetrance scoring"
+title: "KinformR - pedigree-informed rare variant association scoring"
 author: "Cameron M. Nugent"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
 output: pdf_document #rmarkdown::html_vignette # 
 vignette: >
@@ -13,7 +14,9 @@ vignette: >
 
 When looking at rare variants within a family, not all affected and unaffected individuals are of equal importance. `KinformR` is an R package meant to aid in comparative evaluation of information in family-based rare-variant association studies; the package considers evidence of rare variant's association with disease status in a family and scores the variant based on relationships of individuals in a pedigree. Comparing scores across candidates can thereby help in assessing their relative merit.
 
-The program leverages Wright’s coefficient of relatedness to score families based on the relationship of individuals as well as their disease status and genotypes for a given variant. A candidate variant is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not due to association with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is not associated with the large IBD portion of the genome shared by the two individuals and thereby gives evidence in favour of the candidate.
+The program leverages Wright’s coefficient of relatedness to score families based on the relationship of individuals as well as their disease status and genotypes for a given variant. A candidate variant is considered strongest when it is shared by an affected individual and other distantly-related affected family members and not shared by closely related unaffected family members. The theory behind this is that more distantly related individuals have a smaller proportion of their genome that is IBD, so the chance of a false positive (shared variant through chance, not due to association with disease) is lower. Conversely, when a closely related relative is unaffected, and the affected and unaffected individuals have different genotypes for the candidate variant, this provides evidence that the disease is likely not associated with the large IBD portion of the genome shared by the two individuals and thereby gives evidence in favour of the candidate.
+
+### Load the library
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
 library(KinformR)
@@ -22,11 +25,13 @@ library(KinformR)
 
 ## Input data
 
+Two input are required to score a candidate variant: the family relationship information and the variant status for the individuals.
+
 ### The relation matrix
 
-This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations. = 1, etc. Unrelated individuals are given a value of -1). As of version `0.1.0` the relation matrix is a manually created file, where relationship values are assigned via manual inspection of the family pedigree.
+This input is a matrix containing all the pairwise relationships of individuals in a family. The row and column names are the individual IDs, and the intersecting value denotes the degree of relationship between the individuals (self = 0, 1st degree relations = 1, etc. Unrelated individuals are given a value of -1). As of version `0.1.0` the relation matrix is a manually created file, where relationship values are assigned via manual inspection of the family pedigree.
 
-The function `read.relation.mat`
+To read in the data, one uses the function `read.relation.mat`.
 ```{r}
 mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 rel.mat <- read.relation.mat(mat.name1)
@@ -38,7 +43,9 @@ rel.mat
 
 This file includes the same individual IDs used in the relationship matrix as well as the disease and variant status for all individuals.
 
-Note that the order of individuals can be different between the two files. All individual in the status file must be present within the relationship matrix, but you can have individuals in the realtionship matrix that are not present in the status file. The program assumes there is no genotypes for individuals without a status indicated and they are ignored in the variant scoring.
+Note that the order of individuals can be different between the two files. All individual in the status file must be present within the relationship matrix, but you can have individuals in the relationship matrix that are not present in the status file. The program assumes there is no genotype information for individuals not in the status file and they are ignored in the variant scoring.
+
+To read in the data, one uses the function `read.indiv`.
 
 ```{r}
 
@@ -48,7 +55,7 @@ status.df <- read.indiv(tsv.name1)
 status.df
 ``` 
 
-The disease-genotype scoring can then be encoded using the `score.variant.status` function to produce the status-variant category for all individuals (new output column named: `statvar.cat`).
+The disease-genotype scoring can then be encoded using the `score.variant.status` function to produce the status-variant category for all individuals. This creates a df with the new column: `statvar.cat`.
 
 ```{r}
 
@@ -78,7 +85,8 @@ As previously noted, if an individual is present in the relationship matrix and 
 The scoring can be changed to summing across all combinations as opposed to the mean by passing the following options. Note using the program in this way will return higher scores for more dense pedigrees.
 ```{r}
 
-ex.score.sum <- score.fam(rel.mat, full.df.status, return.sums = TRUE, return.means = FALSE)
+ex.score.sum <- score.fam(rel.mat, full.df.status, 
+                          return.sums = TRUE, return.means = FALSE)
 ex.score.sum
 ``` 
 
@@ -86,9 +94,11 @@ ex.score.sum
 To obtain a long form table with the scores for variants expressed relative to each individual, set both `return.sums` and `return.means` to `FALSE`. This output can aid in identifying which individuals are carrying the most weight in a family's score.
 ```{r}
 
-ex.score.table <- score.fam(rel.mat, full.df.status, return.sums = FALSE, return.means = FALSE)
+ex.score.table <- score.fam(rel.mat, full.df.status, 
+                            return.sums = FALSE, return.means = FALSE)
 ex.score.table
 ``` 
+
 ## How scoring works 
 ### A Minimal example, scoring a variant from perspective of a single individual.
 
@@ -135,7 +145,8 @@ Deriving a relatedness-weighted score for the variant from the perspective of th
 For each degree-encoded relationship, the coefficient of relatedness is used to weight the evidence for or against a variant. The coefficients for different degress of relationship are:
 ```{r}
 for(i in 0:7){
-    print(paste0("Degree of relatedness: ", i, " coefficient of relatedness: ",  1 / (2 ** (i))))  
+    print(paste0("Degree of relatedness: ", i, 
+                 " coefficient of relatedness: ",  1 / (2 ** (i))))  
 }
 ```
 
