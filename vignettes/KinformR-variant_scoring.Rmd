@@ -22,6 +22,11 @@ The program leverages Wright’s coefficient of relatedness to score families ba
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
 library(KinformR)
+
+show <- function(df){
+  knitr::kable(df, format = "markdown", digits = 2)
+}
+
 ```
 
 
@@ -37,7 +42,7 @@ To read in the data, one uses the function `read.relation.mat`.
 ```{r}
 mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 rel.mat <- read.relation.mat(mat.name1)
-rel.mat
+show(rel.mat)
 ``` 
 
 
@@ -54,7 +59,7 @@ To read in the data, one uses the function `read.indiv`.
 tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 status.df <- read.indiv(tsv.name1)
 
-status.df
+show(status.df)
 ``` 
 
 The disease-genotype scoring can then be encoded using the `score.variant.status` function to produce the status-variant category for all individuals. This creates a df with the new column: `statvar.cat`.
@@ -62,7 +67,7 @@ The disease-genotype scoring can then be encoded using the `score.variant.status
 ```{r}
 
 full.df.status <-  score.variant.status(status.df)
-full.df.status 
+show(full.df.status)
 ``` 
 
 
@@ -74,7 +79,7 @@ For most real-world applications, you will likely want to score family members i
 ```{r}
 
 ex.score.default <- score.fam(rel.mat, full.df.status)
-ex.score.default
+show(ex.score.default)
 ``` 
 
 
@@ -89,7 +94,7 @@ The scoring can be changed to summing across all combinations as opposed to the 
 
 ex.score.sum <- score.fam(rel.mat, full.df.status, 
                           return.sums = TRUE, return.means = FALSE)
-ex.score.sum
+show(ex.score.sum)
 ``` 
 
 
@@ -98,7 +103,7 @@ To obtain a long form table with the scores for variants expressed relative to e
 
 ex.score.table <- score.fam(rel.mat, full.df.status, 
                             return.sums = FALSE, return.means = FALSE)
-ex.score.table
+show(ex.score.table)
 ``` 
 
 ## How scoring works 
@@ -112,7 +117,7 @@ For example, the degrees of relationships of all other members of the example fa
 
 ```{r}
 rel.mat.proband <-  rel.mat["MS-1234-1001",]
-rel.mat.proband
+show(rel.mat.proband)
 ```
 This is taken along with a list of encoded statuses of all individuals for the given variant. Above `score.variant.status` used the disease status and a genetic variant of each individual to determine which of the following categories they fall in to:
     - A.c = Affected individual with variant
