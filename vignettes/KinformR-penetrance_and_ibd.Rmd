@@ -26,6 +26,10 @@ The `cal.penetrance` function generates both a theoretical ranking of the power 
 
 ```{r loadlib, echo = TRUE, results = 'hide', message=FALSE, warning=FALSE}
 library(KinformR)
+
+show <- function(df){
+  knitr::kable(df, format = "markdown", digits = 2)
+}
 ```
 
 ## The input data
@@ -65,9 +69,7 @@ From the simplified pedigrees, the individuals are assigned to the following cat
 The counts of individuals assigned to these categories are then added to the tab-delimited input file:
 
 ```{r}
-#example.pedigree.df
-knitr::kable(example.pedigree.df, format = "markdown", digits = 2)
-
+show(example.pedigree.df)
 ```
 
 All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
@@ -88,8 +90,8 @@ With the encoded data loaded, the function `cal.penetrance` will generate both a
 
 ```{r}
 penetrance.df <- score.pedigree(example.pedigree.df)
-#penetrance.df
-knitr::kable(penetrance.df, format = "markdown", digits = 2)
+
+show(penetrance.df)
 
 ```
 
@@ -111,7 +113,7 @@ Sorting on `current_score` shows which family has the most detection power based
 
 ```{r}
 ord.df.current <- penetrance.df[order(penetrance.df$current.score, decreasing = TRUE),]
-knitr::kable(ord.df.current, format = "markdown", digits = 2)
+show(ord.df.current)
 
 ```
 If we had to work with only what we have, then family 5031 gives the most detection power.
@@ -120,7 +122,8 @@ Sorting on `max_score` shows which family could have the most detection power, i
 
 ```{r}
 ord.df.max <- penetrance.df[order(penetrance.df$max.score, decreasing = TRUE),]
-knitr::kable(ord.df.max, format = "markdown", digits = 2)
+show(ord.df.max)
+
 ```
 Here we can see that family `0347` has a maximum score of 30.84, but a realized score of only 4.17. Given the high potential detection power for this family, it is an ideal target for future sampling efforts as current samples reveal on 13.5% of the family's potential value.
 
