@@ -39,5 +39,5 @@ These encoding can then be used show what a family's max score would be.
 assign.status("A", "0/1") == "A.c"
 assign.status("A", "0|0") == "A.i"
 assign.status("U", 1) == "U.i"
-assign.status("U", "0|0") =="U.c"
+assign.status("U", "0|0") == "U.c"
 }

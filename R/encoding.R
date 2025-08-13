@@ -1,3 +1,31 @@
+#' For affecteds: Take genetic variant and determine the category of the combo.
+#' @param variant Variant for individual. genotypes, phased genotypes, or binary encodings accepted.
+assign.a <- function(variant) {
+  alt.codes <- c("0/1", "1/1", "1", "0|1", "1|0", "1|1")
+  ref.codes <- c("0/0", "0", "0|0")
+  if (variant %in% alt.codes) {
+    return("A.c")
+  } else if (variant %in% ref.codes) {
+    return("A.i")
+  } else {
+    stop("Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'")
+  }
+}
+
+#' For unaffecteds:  Take a genetic variant and determine the category of the combo.
+#' @param variant Variant for individual. genotypes, phased genotypes, or binary encodings accepted.
+assign.u <- function(variant) {
+  alt.codes <- c("0/1", "1/1", "1", "0|1", "1|0", "1|1")
+  ref.codes <- c("0/0", "0", "0|0")
+
+  if (variant %in% alt.codes) {
+    return("U.i")
+  } else if (variant %in% ref.codes) {
+    return("U.c")
+  } else {
+    stop("Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'")
+  }
+}
 
 
 #' Take a disease status and a genetic variant and determine which category the combo falls in.
@@ -19,37 +47,31 @@
 #' assign.status("A", "0/1") == "A.c"
 #' assign.status("A", "0|0") == "A.i"
 #' assign.status("U", 1) == "U.i"
-#' assign.status("U", "0|0") =="U.c"
+#' assign.status("U", "0|0") == "U.c"
 #' @export
-assign.status <- function(status, variant,  theoretical.max=FALSE){
-
-  var.err<-"Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'"
-  if(status == "A"){
-    if(theoretical.max){
+assign.status <- function(status, variant, theoretical.max = FALSE) {
+  var.err <- "Incompatible variant value! Supported encodings are: '0' '1' '0/0' '0/1' '0|0' '0|1'"
+  if (status == "A") {
+    if (theoretical.max) {
       return("A.c")
+      # NOTE - Once in a while 1/0 genotypes crop up; also 0/2 etc. if derived from multi-allelics.
+      #        This edge case not covered at present.
+    } else {
+      assign.a(variant)
     }
-    #NOTE - Once in a while 1/0 genotypes crop up; also 0/2 etc. if derived from multi-allelics. This edge case not covered at present.
-    else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
-      return("A.c")
-    }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
-      return("A.i")
-    }else{
-      stop(var.err)
-    }
-  }else if (status == "U"){
-    if(theoretical.max){
+  } else if (status == "U") {
+    if (theoretical.max) {
       return("U.c")
-    } else if(variant == "0/1" || variant == "1/1" || variant == "1" || variant == "0|1" || variant == "1|0" || variant == "1|1"  ){
-      return("U.i")
-    }else if (variant == "0/0" || variant == "0" || variant == "0|0" ){
-      return("U.c")
-    }else{
-      stop(var.err)
+    } else {
+      assign.u(variant)
     }
-  }else{
+  } else {
     stop("Status must be one of: U or A")
   }
 }
+
+
+
 
 #' Take the dataframe with variants and status and determine which indivudals
 #' are scored correctly and which are scored incorrectly.
@@ -70,23 +92,21 @@ assign.status <- function(status, variant,  theoretical.max=FALSE){
 #' Default is FALSE.
 #' @return Copy of input dataframe, with dataframe with the status categroies added as a new column "statvar.cat"
 #' @examples
-#' #TODO - add
+#' # TODO - add
 #' @export
-score.variant.status <- function(indiv.df, theoretical.max=FALSE){
-
-  #when encoding theoretical max, dummy perfect associating variant generated to see what a family could score.
-  if(theoretical.max){
-    indiv.df$statvar.cat <- unlist(lapply(1:nrow(indiv.df), function(i){
-      assign.status(indiv.df$status[[i]], indiv.df$variant[[i]] ,  theoretical.max=TRUE )
+score.variant.status <- function(indiv.df, theoretical.max = FALSE) {
+  # when encoding theoretical max, dummy perfect associating variant generated to see what a family could score.
+  if (theoretical.max) {
+    indiv.df$statvar.cat <- unlist(lapply(seq_len(nrow(indiv.df)), function(i) {
+      assign.status(indiv.df$status[[i]], indiv.df$variant[[i]], theoretical.max = TRUE)
     }))
-
-  }else{
-    indiv.df$statvar.cat <- unlist(lapply(1:nrow(indiv.df), function(i){
-      assign.status(indiv.df$status[[i]], indiv.df$variant[[i]] )
+  } else {
+    indiv.df$statvar.cat <- unlist(lapply(seq_len(nrow(indiv.df)), function(i) {
+      assign.status(indiv.df$status[[i]], indiv.df$variant[[i]])
     }))
   }
 
-return(indiv.df)
+  return(indiv.df)
 }
 
 
@@ -99,23 +119,22 @@ return(indiv.df)
 #'
 #' @return A list with the categorized relationship/variant information.
 #' @export
-build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
-  indiv.rels = list(
+build.relation.dict <- function(mat.row, name.stat.dict, drop.unrelated = TRUE) {
+  indiv.rels <- list(
     "A.c" = c(),
     "A.i" = c(),
     "U.c" = c(),
     "U.i" = c()
   )
 
-  for(i in seq_along(mat.row)){
-
+  for (i in seq_along(mat.row)) {
     status.i <- name.stat.dict[[names(mat.row)[[i]]]]
     rel.i <- mat.row[[i]]
 
-    if (rel.i != -1 || drop.unrelated == FALSE){
+    if (rel.i != -1 || drop.unrelated == FALSE) {
       indiv.rels[[status.i]] <- c(indiv.rels[[status.i]], rel.i)
     }
-    }
+  }
 
   return(indiv.rels)
 }
@@ -129,20 +148,15 @@ build.relation.dict <- function( mat.row, name.stat.dict, drop.unrelated=TRUE){
 #' @return A dictionary with the per-individual relationship lists.
 #' One value for each row of the matrix.
 #' @export
-encode.rows <- function(relation.mat, status.df, ...){
-
+encode.rows <- function(relation.mat, status.df, ...) {
   name.stat.dict <- status.df$statvar.cat
   names(name.stat.dict) <- status.df$name
 
-  score.dicts <- lapply(1:nrow(relation.mat), function(i){
-    build.relation.dict(relation.mat[i,], name.stat.dict)
+  score.dicts <- lapply(seq_len(nrow(relation.mat)), function(i) {
+    build.relation.dict(relation.mat[i, ], name.stat.dict)
   })
 
   names(score.dicts) <- colnames(relation.mat)
 
   return(score.dicts)
 }
-
-
-
-

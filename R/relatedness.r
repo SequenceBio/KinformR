@@ -1,5 +1,3 @@
-
-
 #' Calculate a relatedness-weighted score for a given rare variant.
 #'
 #' These scores can be used to compare variants of interest within a family.
@@ -59,60 +57,61 @@
 #' @return A list with three components: score, score.for, score.against.
 #'
 #' @examples
-#' relations<-list("A.c" = c(0, 1, 3, 1),"A.i" = c(3),"U.c" = c(1, 2),"U.i" = c(1))
+#' relations <- list("A.c" = c(0, 1, 3, 1), "A.i" = c(3), "U.c" = c(1, 2), "U.i" = c(1))
 #' rv.scores <- calc.rv.score(relations)
 #' @export
-calc.rv.score <- function(fam.list, affected.weight=1, unaffected.weight=0.5, unaffected.max=8, max.err=4){
+calc.rv.score <- function(fam.list, affected.weight = 1, unaffected.weight = 0.5, unaffected.max = 8, max.err = 4) {
+  relatedness <- list()
 
-    relatedness = list()
+  for (i in 0:8) {
+    relatedness[i + 1] <- 1 / (2^(i))
+  }
 
-    for(i in 0:8){
-        relatedness[i+1] =  1 / (2 ** (i))
+  score.dict <- list()
+
+  score.dict[["A.c"]]
+  score.dict[["A.i"]]
+  score.dict[["U.c"]]
+  score.dict[["U.i"]]
+
+  # TODO - change this to apply the different formula for the unaffecteds
+  for (n in names(fam.list)) {
+    scores <- c()
+    if (n == "A.c" || n == "A.i") {
+      for (x in fam.list[[n]]) {
+        # for affected, importance score gets higher the further from reference individual you get.
+        scores <- c(scores, 1 / relatedness[[x + 1]])
+      }
+    } else if (n == "U.c" || n == "U.i") {
+      for (x in fam.list[[n]]) {
+        # for unaffected, importance score gets lower the further from reference individual you get.
+        scores <- c(scores, (unaffected.max * 2) * relatedness[[x + 1]])
+      }
     }
+    score.dict[[n]] <- scores
+  }
 
-    score.dict = list()
-
-    score.dict[["A.c"]]
-    score.dict[["A.i"]]
-    score.dict[["U.c"]]
-    score.dict[["U.i"]]
-
-    #TODO - change this to apply the different formula for the unaffecteds
-    for (n in names(fam.list)){
-        scores = c()
-        if(n == "A.c" || n == "A.i"){
-          for (x in fam.list[[n]]){
-            #for affected, importance score gets higher the further from reference individual you get.
-            scores = c(scores, 1/relatedness[[x+1]])
-          }
-        }else if ( n=="U.c" || n == "U.i"){
-          for (x in fam.list[[n]]){
-            #for unaffected, importance score gets lower the further from reference individual you get.
-            scores = c(scores, (unaffected.max*2) * relatedness[[x+1]])
-          }
-        }
-        score.dict[[n]] = scores
-    }
-
-    weighted.for =  sum(score.dict[["A.c"]]*affected.weight ) +
-                    sum(score.dict[["U.c"]]*unaffected.weight)
+  weighted.for <- sum(score.dict[["A.c"]] * affected.weight) +
+    sum(score.dict[["U.c"]] * unaffected.weight)
 
 
-    weighted.against = sum(score.dict[["A.i"]]*affected.weight ) +
-                    sum(score.dict[["U.i"]]*unaffected.weight)
+  weighted.against <- sum(score.dict[["A.i"]] * affected.weight) +
+    sum(score.dict[["U.i"]] * unaffected.weight)
 
-    out.list <-  list("score" = weighted.for - weighted.against,
-                      "score.for" = weighted.for,
-                      "score.against" = weighted.against )
+  out.list <- list(
+    "score" = weighted.for - weighted.against,
+    "score.for" = weighted.for,
+    "score.against" = weighted.against
+  )
 
 
-    n.incor <- length(score.dict[["A.i"]]) + length(score.dict[["U.i"]])
-    if(n.incor > max.err){
-      out.list[["score"]] <- 0
-    }
-    return(
-      out.list
-    )
+  n.incor <- length(score.dict[["A.i"]]) + length(score.dict[["U.i"]])
+  if (n.incor > max.err) {
+    out.list[["score"]] <- 0
+  }
+  return(
+    out.list
+  )
 }
 
 
@@ -121,7 +120,7 @@ calc.rv.score <- function(fam.list, affected.weight=1, unaffected.weight=0.5, un
 #' @param mat.df The full matrix file to subset
 #' @param status.df The list of sampled individuals, matrix is subset to only these individuals.
 #' @return A subset of the input matrix.
-subset.mat <- function(mat.df, status.df){
+subset.mat <- function(mat.df, status.df) {
   sub.ids <- rownames(mat.df)[rownames(mat.df) %in% status.df$name]
   sub.mat <- mat.df[sub.ids, sub.ids]
   return(sub.mat)
@@ -134,7 +133,7 @@ subset.mat <- function(mat.df, status.df){
 #'
 #' By default all individuals are treated as the reference 'proband' and
 #' the given variant's score  is calculated based on relationships to all other individuals.
-#' e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
+#' e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indicating the
 #' reference individual that the calculation is relative to.
 #' Note that the relation.mat can include more individuals than are present within the status.df, but the matrix will
 #' be subset to include only those individuals that have status information provided.
@@ -153,42 +152,42 @@ subset.mat <- function(mat.df, status.df){
 #' @param unaffected.weight A coefficient to multiply the U.c and U.i relatedness values by.
 #' @param return.sums Boolean indicating if sum of family variant scores should be returned (default = FALSE).
 #' @param return.means Boolean indicating if mean of all family variant scores should be returned (default = TRUE).
-#' @param affected.only Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).
+#' @param affected.only Boolean indicating if family score should be calculated using only affected individuals (default = TRUE).
 #' @param max.err A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
 #' of incorrect (sum of affected and unaffected) is exceeded,  the variant's score is set to 0, regardless of the number
 #' of points for or against. This simplifies scoring and allows for fast filtering of poor quality variants. Default is 4.
 #' @return A labelled vector with names: score, score.for, score.against
 #' @examples
-#' mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
-#' tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
+#' mat.name1 <- system.file("extdata/1234_ex2.mat", package = "KinformR")
+#' tsv.name1 <- system.file("extdata/1234_ex2.tsv", package = "KinformR")
 #' mat.df <- read.relation.mat(mat.name1)
 #' ind.df <- read.indiv(tsv.name1)
-#' ind.df.status <-  score.variant.status(ind.df)
+#' ind.df.status <- score.variant.status(ind.df)
 #' score.default <- score.fam(mat.df, ind.df.status)
 #' @export
-score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.weight=0.5,
-                      return.sums  = FALSE, return.means = TRUE,
-                      affected.only = TRUE, max.err=4){
-
-  #The family encoding matrix needs to be subset to include only the individuals in the status dataframe
+score.fam <- function(relation.mat, status.df, affected.weight = 1, unaffected.weight = 0.5,
+                      return.sums = FALSE, return.means = TRUE,
+                      affected.only = TRUE, max.err = 4) {
+  # The family encoding matrix needs to be subset to include only the individuals in the status dataframe
   sub.relation.mat <- subset.mat(relation.mat, status.df)
 
-  encoded.dat <- encode.rows(sub.relation.mat, status.df, drop.unrelated=TRUE)
+  encoded.dat <- encode.rows(sub.relation.mat, status.df, drop.unrelated = TRUE)
 
   per.indv.scores <- lapply(encoded.dat, calc.rv.score,
-                            affected.weight=affected.weight, unaffected.weight=unaffected.weight,
-                            max.err=max.err)
+    affected.weight = affected.weight, unaffected.weight = unaffected.weight,
+    max.err = max.err
+  )
 
-  scores <- do.call(rbind.data.frame,  per.indv.scores)
+  scores <- do.call(rbind.data.frame, per.indv.scores)
 
-  if (affected.only){
-        affected.indiv = status.df[status.df$status == "A",]
-        scores<-scores[row.names(scores) %in% affected.indiv$name,]
+  if (affected.only) {
+    affected.indiv <- status.df[status.df$status == "A", ]
+    scores <- scores[row.names(scores) %in% affected.indiv$name, ]
   }
 
-  if(return.sums){
+  if (return.sums) {
     return(colSums(scores))
-  }else if(return.means){
+  } else if (return.means) {
     return(colMeans(scores))
   }
   return(scores)
@@ -203,17 +202,15 @@ score.fam <- function(relation.mat, status.df, affected.weight=1, unaffected.wei
 #' score.fam1 <- c("score" = 1.0, "score.for" = 2.0, "score.against" = 1.0)
 #' score.fam2 <- c("score" = 1.0, "score.for" = 3.0, "score.against" = 2.0)
 #' # out <- add.fam.scores(c(score.fam1, score.fam2))
-#' #returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
+#' # returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
 #' @export
-add.fam.scores <- function(score.vec){
-  outvec<-tapply(score.vec, names(score.vec), sum)
+add.fam.scores <- function(score.vec) {
+  outvec <- tapply(score.vec, names(score.vec), sum)
 
-  sorted.out<-c("score" = outvec[["score"]],
-                "score.for" = outvec[["score.for"]],
-                "score.against" = outvec[["score.against"]])
+  sorted.out <- c(
+    "score" = outvec[["score"]],
+    "score.for" = outvec[["score.for"]],
+    "score.against" = outvec[["score.against"]]
+  )
   return(sorted.out)
 }
-
-
-
-
