@@ -29,7 +29,7 @@ score.fam(
 
 \item{return.means}{Boolean indicating if mean of all family variant scores should be returned (default = TRUE).}
 
-\item{affected.only}{Boolean indicating if the family score should be calculated using only the affected individuals? (default = TRUE).}
+\item{affected.only}{Boolean indicating if family score should be calculated using only affected individuals (default = TRUE).}
 
 \item{max.err}{A heuristic cap of the number of incorrect assignments allowed when scoring. When the total number
 of incorrect (sum of affected and unaffected) is exceeded,  the variant's score is set to 0, regardless of the number
@@ -41,7 +41,7 @@ A labelled vector with names: score, score.for, score.against
 \description{
 By default all individuals are treated as the reference 'proband' and
 the given variant's score  is calculated based on relationships to all other individuals.
-e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indiciating the
+e.g. for each row in the relationship matrix. calc.rv.score is run, with the row name indicating the
 reference individual that the calculation is relative to.
 Note that the relation.mat can include more individuals than are present within the status.df, but the matrix will
 be subset to include only those individuals that have status information provided.
@@ -57,10 +57,10 @@ NOTE: if affected.only = True, the averages and sums are calculated using only t
 }
 }
 \examples{
-mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
-tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
+mat.name1 <- system.file("extdata/1234_ex2.mat", package = "KinformR")
+tsv.name1 <- system.file("extdata/1234_ex2.tsv", package = "KinformR")
 mat.df <- read.relation.mat(mat.name1)
 ind.df <- read.indiv(tsv.name1)
-ind.df.status <-  score.variant.status(ind.df)
+ind.df.status <- score.variant.status(ind.df)
 score.default <- score.fam(mat.df, ind.df.status)
 }

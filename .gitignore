@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.pre-commit-config.yaml
+.ignore_spelling.txt
+.flake8
+.lintr

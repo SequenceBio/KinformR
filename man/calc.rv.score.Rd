@@ -79,6 +79,6 @@ of unaffected individuals that have a variant rather than affected individuals t
 Input:
 }
 \examples{
-relations<-list("A.c" = c(0, 1, 3, 1),"A.i" = c(3),"U.c" = c(1, 2),"U.i" = c(1))
+relations <- list("A.c" = c(0, 1, 3, 1), "A.i" = c(3), "U.c" = c(1, 2), "U.i" = c(1))
 rv.scores <- calc.rv.score(relations)
 }
