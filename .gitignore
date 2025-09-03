@@ -6,3 +6,5 @@
 .ignore_spelling.txt
 .flake8
 .lintr
+/doc/
+/Meta/
