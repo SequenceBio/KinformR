@@ -3,7 +3,7 @@ title: "KinformR - pedigree-informed rare variant association scoring"
 author: "Cameron M. Nugent"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
-output: pdf_document #rmarkdown::html_vignette # 
+output: rmarkdown::pdf_document #rmarkdown::html_vignette # 
 pdf_document:
   df_print: kable
 vignette: >

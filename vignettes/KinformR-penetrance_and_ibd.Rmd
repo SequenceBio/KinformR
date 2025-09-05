@@ -3,7 +3,7 @@ title: "KinformR - penetrance and idb informed scoring of families"
 author: "Cameron M. Nugent"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
-output: pdf_document #rmarkdown::html_vignette # 
+output: rmarkdown::pdf_document # rmarkdown::html_vignette # 
 pdf_document:
   df_print: kable
 vignette: >
@@ -96,6 +96,7 @@ show(penetrance.df)
 ```
 
 The output includes seven columns that with the following information:
+
 |Output Column|Description|
 |---|---|
 |family|The family id.|
