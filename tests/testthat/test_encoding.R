@@ -37,10 +37,10 @@ test_that("Families are correctly encoded.", {
   expect_equal(scores$statvar.cat, expected.scores)
 
   print("theoretical.max high score values for a family")
-  ther.scores <- score.variant.status(indiv.df, theoretical.max=TRUE)
+  theory.scores <- score.variant.status(indiv.df, theoretical.max=TRUE)
 
   expected.thermax.scores <- c("A.c","U.c","A.c","A.c","A.c" ,"U.c", "A.c", "U.c")
-  expect_equal(ther.scores$statvar.cat, expected.thermax.scores)
+  expect_equal(theory.scores$statvar.cat, expected.thermax.scores)
 
 
 })

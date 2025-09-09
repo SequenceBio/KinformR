@@ -3,7 +3,7 @@ title: "KinformR - penetrance and idb informed scoring of families"
 author: "Cameron M. Nugent"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
-output: rmarkdown::pdf_document # rmarkdown::html_vignette # 
+output: rmarkdown::pdf_document # rmarkdown::html_vignette #
 pdf_document:
   df_print: kable
 vignette: >
@@ -37,12 +37,12 @@ show <- function(df){
 The family power calculations depend on a single tab-delimited input file, where each row represents a family. The input file is read in using the `read.pedigree` function.
 
 ```{r}
-example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv', 
+example.pedigree.file <- system.file('extdata/example_pedigree_encoding.tsv',
                                      package = 'KinformR')
 
 example.pedigree.df <- read.pedigree(example.pedigree.file)
 ```
-The input file is expected to have the following 11 columns (with a header). 
+The input file is expected to have the following 11 columns (with a header).
 ```{r}
 colnames(example.pedigree.df)
 
@@ -51,7 +51,7 @@ colnames(example.pedigree.df)
 ### Simplified summary of pedigrees
 
 For now this file should be be constructed through careful manual inspection of the predigrees. To encode the rows for each family, you should first prune down pedigrees to informative allele transfers. For
-the purposes of this tool, we exclude young generations (non-adults, younger than age of onset) and large (more than two sequential generations) trees of exclusively unaffected family members. Additionally all individuals require a binary A/U status, there should be no ambigious individuals.  There will be some judgment calls required here.  
+the purposes of this tool, we exclude young generations (non-adults, younger than age of onset) and large (more than two sequential generations) trees of exclusively unaffected family members. Additionally all individuals require a binary A/U status, there should be no ambiguous individuals.  There will be some judgment calls required here.
 
 
 ### Encoding categories of relationships
@@ -73,11 +73,11 @@ show(example.pedigree.df)
 ```
 
 All columns with the prefix `max_` are meant to count the total number of each category in the pedigree, while
-the columns without this prefix are the number of each category for whom samples have been collected.  
+the columns without this prefix are the number of each category for whom samples have been collected.
 
 The categories correspond to A, B, and C as defined above.
 
-Category D is represented by two numbers, d and n.  n is the number of offspring in a tree of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with commas separating the values.  For example, the following represents a family with three total trees of unaffecteds. One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1). 
+Category D is represented by two numbers, d and n.  n is the number of offspring in a tree of unaffecteds; d is the number of those types of trees across the pedigree.  Multiple types of trees are encoded with commas separating the values.  For example, the following represents a family with three total trees of unaffecteds. One tree (d=1) has three offspring (n=3); two trees (d=2) each have one offspring (n=1).
 
 ```
 d   n
@@ -138,6 +138,3 @@ we only count the parent. (d=1, n=0; equivalently, c=1)
 2.  You have collected one or more children, but not the parent.  In this case,
 each of the children contribute a portion of what the parent would have contributed
 to our understanding.  (d=1, n>0)
-
-
-

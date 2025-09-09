@@ -3,7 +3,7 @@ title: "KinformR - pedigree-informed rare variant association scoring"
 author: "Cameron M. Nugent"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 data: "`r Sys.Date()`"
-output: rmarkdown::pdf_document #rmarkdown::html_vignette # 
+output: rmarkdown::pdf_document #rmarkdown::html_vignette #
 pdf_document:
   df_print: kable
 vignette: >
@@ -43,7 +43,7 @@ To read in the data, one uses the function `read.relation.mat`.
 mat.name1<-system.file('extdata/1234_ex2.mat', package = 'KinformR')
 rel.mat <- read.relation.mat(mat.name1)
 show(rel.mat)
-``` 
+```
 
 
 ### The status file
@@ -60,7 +60,7 @@ tsv.name1<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 status.df <- read.indiv(tsv.name1)
 
 show(status.df)
-``` 
+```
 
 The disease-genotype scoring can then be encoded using the `score.variant.status` function to produce the status-variant category for all individuals. This creates a df with the new column: `statvar.cat`.
 
@@ -68,7 +68,7 @@ The disease-genotype scoring can then be encoded using the `score.variant.status
 
 full.df.status <-  score.variant.status(status.df)
 show(full.df.status)
-``` 
+```
 
 
 
@@ -80,7 +80,7 @@ For most real-world applications, you will likely want to score family members i
 
 ex.score.default <- score.fam(rel.mat, full.df.status)
 show(ex.score.default)
-``` 
+```
 
 
 By default `score.fam` returns:
@@ -92,26 +92,26 @@ As previously noted, if an individual is present in the relationship matrix and 
 The scoring can be changed to summing across all combinations as opposed to the mean by passing the following options. Note using the program in this way will return higher scores for more dense pedigrees.
 ```{r}
 
-ex.score.sum <- score.fam(rel.mat, full.df.status, 
+ex.score.sum <- score.fam(rel.mat, full.df.status,
                           return.sums = TRUE, return.means = FALSE)
 show(ex.score.sum)
-``` 
+```
 
 
 To obtain a long form table with the scores for variants expressed relative to each individual, set both `return.sums` and `return.means` to `FALSE`. This output can aid in identifying which individuals are carrying the most weight in a family's score.
 ```{r}
 
-ex.score.table <- score.fam(rel.mat, full.df.status, 
+ex.score.table <- score.fam(rel.mat, full.df.status,
                             return.sums = FALSE, return.means = FALSE)
 show(ex.score.table)
-``` 
+```
 
-## How scoring works 
+## How scoring works
 ### A Minimal example, scoring a variant from perspective of a single individual.
 
-This section is meant to demonstrate how the variant scoring is accomplished on a finer scale. A user does not need to interact with the package on this level of granularity. This section is for explanatory purposes only, demonstrating how the `score.fam` function operated "under the hood". 
+This section is meant to demonstrate how the variant scoring is accomplished on a finer scale. A user does not need to interact with the package on this level of granularity. This section is for explanatory purposes only, demonstrating how the `score.fam` function operated "under the hood".
 
-The `score.fam` function runs the scoring method once for each affected individual in the status dataframe (or for each individual regardless of status if `affected.only = FALSE`). To do this, for each individual, the program takes corresponding row of the relationship matrix to determine the relations to all other individuals in the pedigree.  
+The `score.fam` function runs the scoring method once for each affected individual in the status dataframe (or for each individual regardless of status if `affected.only = FALSE`). To do this, for each individual, the program takes corresponding row of the relationship matrix to determine the relations to all other individuals in the pedigree.
 
 For example, the degrees of relationships of all other members of the example family relative to the reference individual `"MS-1234-1001"` are show in the following subset of the matrix:
 
@@ -135,25 +135,25 @@ name.stat.dict
 ```{r}
 rel.dict<-build.relation.dict(rel.mat.proband, name.stat.dict)
 rel.dict
-``` 
+```
 In this example, the proband, two first degree relations, and a third degree relations are all affected and share the candidate variant. For the affected correct (`A.c`) category we therefore see the following encoded:
 
 ```{r}
 rel.dict$A.c
-``` 
+```
 
 Since one first degree unaffected relative has the variant, they are categorized as "unaffected incorrect"(`U.i`) and we see:
 ```{r}
 rel.dict$U.i
-``` 
+```
 
 Deriving a relatedness-weighted score for the variant from the perspective of the given individual is then performed by `calc.rv.score`
 
-For each degree-encoded relationship, the coefficient of relatedness is used to weight the evidence for or against a variant. The coefficients for different degress of relationship are:
+For each degree-encoded relationship, the coefficient of relatedness is used to weight the evidence for or against a variant. The coefficients for different degrees of relationship are:
 ```{r}
 for(i in 0:7){
-    print(paste0("Degree of relatedness: ", i, 
-                 " coefficient of relatedness: ",  1 / (2 ** (i))))  
+    print(paste0("Degree of relatedness: ", i,
+                 " coefficient of relatedness: ",  1 / (2 ** (i))))
 }
 ```
 
@@ -200,10 +200,10 @@ The final score for the variant would then be:
 ```
 Giving a final score of 10 for the variant.
 
-This is all accomplished by the function `calc.rv.score`. 
+This is all accomplished by the function `calc.rv.score`.
 ```{r}
 calc.rv.score(rel.dict)
-``` 
+```
 
 The weights of the scoring can be adjusted, for example if we wanted to consider only `affected`-based evidence, we could turn off the unaffected part of the calculation by setting the unaffected weighting to 0. This can be useful for incompletely penetrant variants, where disease status and genotype of unaffected individuals are more likely to have imperfect concordance.
 
@@ -211,8 +211,6 @@ Additionally, families with low numbers of affected individuals sequenced and hi
 
 ```{r}
 calc.rv.score(rel.dict, unaffected.weight=0)
-``` 
+```
 
 The `score.fam` function automatically walks through this process from all specified perspectives in the pedigree and by default returns the average score. The use of the averages and different perspectives is meant to eliminate pedigree-associated bias, such as for instances when a proband is distantly related to all other members in a family (considering the relationships from only the perspective of the proband in this case would give an inflated score for the variant's value).
-
-

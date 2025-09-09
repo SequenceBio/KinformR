@@ -21,7 +21,7 @@ MS-5678-1001      A      0/1
 }
 \description{
 Note - ensure the status in the names match your desired encoding!
-There are individuals with ambigious statues, that you may require to
+There are individuals with ambiguous statues, that you may require to
 be encoded in a specific fashion for you current purposes.
 }
 \examples{

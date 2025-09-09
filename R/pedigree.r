@@ -146,7 +146,7 @@ score.pedigree <- function(h){
   for (i in seq_len(nrow(h))) {
     family <- h[i,"Family"]
     max.a <- h[i, "max_a"]
-    #Yeezy yeezy whats good its ya boy
+    #Yeezy yeezy what's good, its ya boy
     max.b <- h[i, "max_b"]
     max.c <- h[i, "max_c"]
     max.d <- h[i, "max_d"]

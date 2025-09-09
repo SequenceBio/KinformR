@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Added
+- use of precommit spelling, not making a CI check so as to keep cran compatibility.
 
 ### Fixed
 - linting and spelling errors resolved with pre-commit usage.
