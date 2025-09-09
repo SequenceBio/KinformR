@@ -16,7 +16,7 @@ The development version of `KinformR` can be installed directly from GitHub. You
 ```
 #install.packages("devtools")
 #install.packages("knitr") #required if build_vignettes = TRUE
-#library(devtools) 
+#library(devtools)
 devtools::install_github("SequenceBio/KinformR", build_vignettes = TRUE)
 library(KinformR)
 ```
@@ -25,14 +25,14 @@ library(KinformR)
 
 The package's vignette contains detailed explanations of the functions and parameters.
 
-For a walk through of the `KinformR` functions for scoring the value of *families* based on penetrance and IBD, see the corresponging vignette file: 
+For a walk through of the `KinformR` functions for scoring the value of *families* based on penetrance and IBD, see the corresponding vignette file:
 `vignettes/KinformR-penetrance_and_ibd.Rmd`
 or within R, run:
 ```
 vignette('KinformR-penetrance_and_ibd')
 ```
 
-For a walk through of the `KinformR` functions for scoring the value of *variants* within families, see the corresponging vignette file: 
+For a walk through of the `KinformR` functions for scoring the value of *variants* within families, see the corresponding vignette file:
 `vignettes/KinformR-variant_scoring.Rmd`
 
 or within R, run:
@@ -59,7 +59,7 @@ and scoring then performed:
 
 ## Scoring Variants
 
-When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. This R package is designed to score rare variants, assigning values based on the disease status of individuals, the presence or absence of a rare variant in those individuals, and their pairwise coefficients of relatedness. The package uses a custom formula to assign value to a variant that gives more weight to shared variants common to distantly related affected individuals. The variant status for unaffected individuals can optionally be considered as well, with the highest scoring values being given to closely related individuals that *do not* share a variant of interst. Since variants can be incompletely penetrant, the scoring can be based solely on the affected individuals, or the weight of unaffected evidence can be customized.
+When looking at shared rare variants across families, not all sets of affected and unaffected individuals are equal. This R package is designed to score rare variants, assigning values based on the disease status of individuals, the presence or absence of a rare variant in those individuals, and their pairwise coefficients of relatedness. The package uses a custom formula to assign value to a variant that gives more weight to shared variants common to distantly related affected individuals. The variant status for unaffected individuals can optionally be considered as well, with the highest scoring values being given to closely related individuals that *do not* share a variant of interest. Since variants can be incompletely penetrant, the scoring can be based solely on the affected individuals, or the weight of unaffected evidence can be customized.
 
 
 ### The relationship matrix

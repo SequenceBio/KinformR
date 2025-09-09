@@ -34,6 +34,6 @@ jobs:
         run: |
           conda create -n test_r r-base r-devtools r-testthat
           conda activate test_r
-          Rscript -e "testthat::test_local()" 
+          Rscript -e "testthat::test_local()"
       - name: PreCommit
         uses: pre-commit/action@v3.0.1

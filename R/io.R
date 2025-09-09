@@ -43,7 +43,7 @@ read.relation.mat <- function(fname){
 #' status encoded in the indivudal's names
 #'
 #' Note - ensure the status in the names match your desired encoding!
-#' There are individuals with ambigious statues, that you may require to
+#' There are individuals with ambiguous statues, that you may require to
 #' be encoded in a specific fashion for you current purposes.
 #'
 #'
@@ -80,6 +80,3 @@ read.var.table <- function(fname){
                      "variant" = in.variants)
   return(out.df)
 }
-
-
-
