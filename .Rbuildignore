@@ -5,6 +5,7 @@
 ^Meta$
 ^\.git$
 ^./.git/*$
+./.git/
 CHANGELOG.md
 KinformR.Rproj
 ^.Rproj.user/*$

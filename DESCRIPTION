@@ -1,6 +1,6 @@
 Package: KinformR
 Title: Relationship-Informed Pedigree and Variant Scoring
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
     person("Cameron M.", "Nugent", , "cam.nugent@sequencebio.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1135-2605"))
@@ -15,6 +15,8 @@ Description:
     Second, after sequencing and analysis,  variants based on association with disease status
     and familial relationships of individuals, aids in variant prioritization.
 License: MIT + file LICENSE
+URL: https://github.com/SequenceBio/KinformR
+BugReports: https://github.com/SequenceBio/KinformR/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
