@@ -81,7 +81,7 @@ This file includes the same individual IDs used in the relationship matrix as we
 tsv.name<-system.file('extdata/1234_ex2.tsv', package = 'KinformR')
 ind.df <- read.indiv(tsv.name)
 
-ind.df.status <-  score.variant.status(ex1234.df)
+ind.df.status <- score.variant.status(ind.df)
 
 ```
 
