@@ -91,3 +91,8 @@ The two streams of information can then be combined to score a variant based off
 ```
 score.example <- score.fam(rel.mat, ind.df.status)
 ```
+
+## Citation
+Preprint available on medRxiv.
+
+Nugent CM, MacMillan M, Barber T, Ballew BJ. KinformR: novel pedigree and candidate variant scoring methods for family-based genetic studies. medRxiv. 2025:2025-10. doi: https://doi.org/10.1101/2025.10.06.25337426
