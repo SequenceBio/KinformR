@@ -1,17 +1,16 @@
 Package: KinformR
 Title: Relationship-Informed Pedigree and Variant Scoring
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
     person("Cameron M.", "Nugent", , "cam.nugent@sequencebio.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1135-2605"))
-Author: Cameron M. Nugent
 Maintainer: Cameron M. Nugent <cam.nugent@sequencebio.com>
 Description:
-    The KinformR R package is meant to aid in comparative evaluation of families
-    and candidate variants in rare-variant association studies. The package can be used for
+    Tools to aid in comparative evaluation of families and candidate variants in
+    rare-variant association studies. The package can be used for
     two methodologically overlapping but distinct purposes. First, the prior to any genetic or genomic
     evaluation, evaluation of relative detection power of pedigrees, can direct recruitment
-    efforts by showing which unsampled individuals would be the most meaningful additions to a study.
+    efforts by showing which individuals not yet sampled would be the most meaningful additions to a study.
     Second, after sequencing and analysis,  variants based on association with disease status
     and familial relationships of individuals, aids in variant prioritization.
 License: MIT + file LICENSE

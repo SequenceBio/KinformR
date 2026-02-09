@@ -20,7 +20,7 @@ The development version of `KinformR` can be installed directly from GitHub. You
 devtools::install_github("SequenceBio/KinformR", build_vignettes = TRUE)
 library(KinformR)
 ```
-If you're a mac user and the install command is returning a LaTeX error when `build_vignettes = TRUE`, then [ensure you have a LaTeX distribution installed on your system.](https://cran.r-project.org/web/packages/tinytex/index.html)
+If you're a mac user and the install command is returning a LaTeX error when `build_vignettes = TRUE`, then [ensure you have a LaTeX distribution installed on your system.](https://CRAN.R-project.org/package=tinytex)
 
 ## How it works
 
