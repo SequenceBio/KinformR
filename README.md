@@ -11,6 +11,15 @@ The `KinformR` R package is meant to aid in comparative evaluation of families a
 
 ## Installation
 
+### CRAN version
+
+KinformR can be [installed directly from CRAN](https://cran.r-project.org/web/packages/KinformR/index.html).
+```
+install.packages("KinformR")
+library(KinformR)
+```
+
+### Development version
 The development version of `KinformR` can be installed directly from GitHub. You'll need to have the R package `devtools` installed and loaded. Also note if the build_vignettes option is set to true, you will need to have the R package `knitr` installed.
 
 ```

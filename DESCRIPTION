@@ -6,13 +6,15 @@ Authors@R:
            comment = c(ORCID = "0000-0002-1135-2605"))
 Maintainer: Cameron M. Nugent <cam.nugent@sequencebio.com>
 Description:
-    Tools to aid in comparative evaluation of families and candidate variants in
+    Comparative evaluation of families and candidate variants in
     rare-variant association studies. The package can be used for
     two methodologically overlapping but distinct purposes. First, the prior to any genetic or genomic
     evaluation, evaluation of relative detection power of pedigrees, can direct recruitment
     efforts by showing which individuals not yet sampled would be the most meaningful additions to a study.
     Second, after sequencing and analysis,  variants based on association with disease status
     and familial relationships of individuals, aids in variant prioritization.
+    Methodology is described in
+    Nugent (2025) <doi:10.1101/2025.10.06.25337426>.
 License: MIT + file LICENSE
 URL: https://github.com/SequenceBio/KinformR
 BugReports: https://github.com/SequenceBio/KinformR/issues

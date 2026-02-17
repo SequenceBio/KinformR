@@ -13,7 +13,6 @@
 #' @export
 #'
 #' @examples
-#' # the penetrance function is a function where values is found through optimization
 #' K <- optimize(penetrance, c(0,1), 3, 1, 5, 2, 1, maximum=TRUE)$max
 penetrance <- function(K, a, b, c, d, n) {
   a*log(K) + b*log(1-K) + c*log(2-K) + sum(d*log(2^n + (1-K)*(2-K)^n) - d*(n+1)*log(2))

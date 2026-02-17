@@ -201,8 +201,7 @@ score.fam <- function(relation.mat, status.df, affected.weight = 1, unaffected.w
 #' @examples
 #' score.fam1 <- c("score" = 1.0, "score.for" = 2.0, "score.against" = 1.0)
 #' score.fam2 <- c("score" = 1.0, "score.for" = 3.0, "score.against" = 2.0)
-#' # out <- add.fam.scores(c(score.fam1, score.fam2))
-#' # returns:  c("score" = 2.0,"score.for" = 5.0, "score.against" = 3.0)
+#' out <- add.fam.scores(c(score.fam1, score.fam2))
 #' @export
 add.fam.scores <- function(score.vec) {
   outvec <- tapply(score.vec, names(score.vec), sum)

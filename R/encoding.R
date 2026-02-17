@@ -91,8 +91,6 @@ assign.status <- function(status, variant, theoretical.max = FALSE) {
 #' When true, the scoring assumes correct variant-status pair for each individual.
 #' Default is FALSE.
 #' @return Copy of input dataframe, with dataframe with the status categroies added as a new column "statvar.cat"
-#' @examples
-#' # TODO - add
 #' @export
 score.variant.status <- function(indiv.df, theoretical.max = FALSE) {
   # when encoding theoretical max, dummy perfect associating variant generated to see what a family could score.
